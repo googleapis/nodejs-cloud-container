@@ -16,8 +16,13 @@
 
 const container = require('../src');
 
-if (!process.env.GCLOUD_PROJECT || !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-  throw new Error('Usage: GCLOUD_PROJECT=<project_id> GOOGLE_APPLICATION_CREDENTIALS=<path to key json file> node #{$0}');
+if (
+  !process.env.GCLOUD_PROJECT ||
+  !process.env.GOOGLE_APPLICATION_CREDENTIALS
+) {
+  throw new Error(
+    'Usage: GCLOUD_PROJECT=<project_id> GOOGLE_APPLICATION_CREDENTIALS=<path to key json file> node #{$0}'
+  );
 }
 var projectId = process.env.GCLOUD_PROJECT;
 
@@ -31,9 +36,7 @@ var request = {
   projectId: projectId2,
   zone: zone,
 };
-client
-  .listClusters(request)
-  .then(responses => {
-    var response = responses[0];
-    console.log(response);
-  });
+client.listClusters(request).then(responses => {
+  var response = responses[0];
+  console.log(response);
+});
