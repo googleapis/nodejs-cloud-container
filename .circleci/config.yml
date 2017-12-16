@@ -5,13 +5,19 @@ unit_tests: &unit_tests
     - checkout
     - run:
         name: Install modules and dependencies.
-        command: npm install
+        command: |
+          su node
+          npm install
     - run:
         name: Run unit tests.
-        command: npm test
+        command: |
+          su node
+          npm test
     - run:
         name: Submit coverage data to codecov.
-        command: node_modules/.bin/codecov
+        command: |
+          su node
+          node_modules/.bin/codecov
         when: always
 
 version: 2.0
@@ -85,13 +91,19 @@ jobs:
       - checkout
       - run:
           name: Install modules and dependencies.
-          command: npm install --unsafe-perm
+          command: |
+            su node
+            npm install --unsafe-perm
       - run:
           name: Run unit tests.
-          command: npm test
+          command: |
+            su node
+            npm test
       - run:
           name: Submit coverage data to codecov.
-          command: node_modules/.bin/codecov
+          command: |
+            su node
+            node_modules/.bin/codecov
           when: always
   node6:
     docker:
@@ -118,11 +130,14 @@ jobs:
       - run:
           name: Install modules and dependencies.
           command: |
+            su node
             npm install
             npm link
       - run:
           name: Run linting.
-          command: npm run lint
+          command: |
+            su node
+            npm run lint
 
   docs:
     docker:
@@ -131,10 +146,14 @@ jobs:
       - checkout
       - run:
           name: Install modules and dependencies.
-          command: npm install
+          command: |
+            su node
+            npm install
       - run:
           name: Build documentation.
-          command: npm run docs
+          command: |
+            su node
+            npm run docs
 
   system_tests:
     docker:
@@ -144,21 +163,28 @@ jobs:
       - run:
           name: Decrypt credentials.
           command: |
+            su node
             openssl aes-256-cbc -d -in .circleci/key.json.enc \
                 -out .circleci/key.json \
                 -k "${SYSTEM_TESTS_ENCRYPTION_KEY}"
       - run:
           name: Install modules and dependencies.
-          command: npm install
+          command: |
+            su node
+            npm install
       - run:
           name: Run system tests.
-          command: npm run system-test
+          command: |
+            su node
+            npm run system-test
           environment:
             GCLOUD_PROJECT: long-door-651
             GOOGLE_APPLICATION_CREDENTIALS: .circleci/key.json
       - run:
           name: Remove unencrypted key.
-          command: rm .circleci/key.json
+          command: |
+            su node
+            rm .circleci/key.json
           when: always
 
   publish_npm:
@@ -168,7 +194,11 @@ jobs:
       - checkout
       - run:
           name: Set NPM authentication.
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          command: |
+            su node
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
-         name: Publish the module to npm.
-         command: npm publish
+          name: Publish the module to npm.
+          command: |
+           su node
+           npm publish
