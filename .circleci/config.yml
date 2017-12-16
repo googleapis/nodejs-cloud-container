@@ -5,19 +5,13 @@ unit_tests: &unit_tests
     - checkout
     - run:
         name: Install modules and dependencies.
-        command: |
-          su node
-          npm install
+        command: npm install
     - run:
         name: Run unit tests.
-        command: |
-          su node
-          npm test
+        command: npm test
     - run:
         name: Submit coverage data to codecov.
-        command: |
-          su node
-          node_modules/.bin/codecov
+        command: node_modules/.bin/codecov
         when: always
 
 version: 2.0
@@ -87,118 +81,103 @@ jobs:
   node4:
     docker:
       - image: node:4
+      - user: node
     steps:
       - checkout
       - run:
           name: Install modules and dependencies.
-          command: |
-            su node
-            npm install --unsafe-perm
+          command: npm install --unsafe-perm
       - run:
           name: Run unit tests.
-          command: |
-            su node
-            npm test
+          command: npm test
       - run:
           name: Submit coverage data to codecov.
-          command: |
-            su node
-            node_modules/.bin/codecov
+          command: node_modules/.bin/codecov
           when: always
   node6:
     docker:
       - image: node:6
+      - user: node
     <<: *unit_tests
   node7:
     docker:
       - image: node:7
+      - user: node
     <<: *unit_tests
   node8:
     docker:
       - image: node:8
+      - user: node
     <<: *unit_tests
   node9:
     docker:
       - image: node:9
+      - user: node
     <<: *unit_tests
 
   lint:
     docker:
       - image: node:8
+      - user: node
     steps:
       - checkout
       - run:
           name: Install modules and dependencies.
           command: |
-            su node
             npm install
             npm link
       - run:
           name: Run linting.
-          command: |
-            su node
-            npm run lint
+          command: npm run lint
 
   docs:
     docker:
       - image: node:8
+      - user: node
     steps:
       - checkout
       - run:
           name: Install modules and dependencies.
-          command: |
-            su node
-            npm install
+          command: npm install
       - run:
           name: Build documentation.
-          command: |
-            su node
-            npm run docs
+          command: npm run docs
 
   system_tests:
     docker:
       - image: node:8
+      - user: node
     steps:
       - checkout
       - run:
           name: Decrypt credentials.
           command: |
-            su node
             openssl aes-256-cbc -d -in .circleci/key.json.enc \
                 -out .circleci/key.json \
                 -k "${SYSTEM_TESTS_ENCRYPTION_KEY}"
       - run:
           name: Install modules and dependencies.
-          command: |
-            su node
-            npm install
+          command: npm install
       - run:
           name: Run system tests.
-          command: |
-            su node
-            npm run system-test
+          command: npm run system-test
           environment:
             GCLOUD_PROJECT: long-door-651
             GOOGLE_APPLICATION_CREDENTIALS: .circleci/key.json
       - run:
           name: Remove unencrypted key.
-          command: |
-            su node
-            rm .circleci/key.json
+          command: rm .circleci/key.json
           when: always
 
   publish_npm:
     docker:
       - image: node:8
+      - user: node
     steps:
       - checkout
       - run:
           name: Set NPM authentication.
-          command: |
-            su node
-            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
-          name: Publish the module to npm.
-          command: |
-           su node
-           npm publish
+         name: Publish the module to npm.
+         command: npm publish
