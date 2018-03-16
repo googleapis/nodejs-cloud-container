@@ -43,7 +43,7 @@ workflows:
             - docs
           filters:
             branches:
-              only: setup-nightly-build
+              only: master
             tags:
               only: '/^v[\d.]+$/'
       - publish_npm:
@@ -60,7 +60,7 @@ workflows:
           cron: 0 7 * * *
           filters:
             branches:
-              only: setup-nightly-build
+              only: master
     jobs: *workflow_jobs
 jobs:
   node4:
@@ -171,13 +171,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: 'TEST: assert that no npm publish will happen during nightly build.'
-          command: |
-            echo "We should not get here! We don't want to publish anything!"
-            false
-      - run:
           name: Set NPM authentication.
           command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
       - run:
           name: Publish the module to npm.
-          command: echo no no no npm publish --access=public
+          command: npm publish --access=public
