@@ -13,9 +13,9 @@ import urllib2
 
 def main():
     try:
-        build_num = os.environ['CIRCLE_BUILD_NUM']
         username = os.environ['CIRCLE_PROJECT_USERNAME']
         reponame = os.environ['CIRCLE_PROJECT_REPONAME']
+        build_num = os.environ['CIRCLE_BUILD_NUM']
     except:
         sys.stderr.write(
             'Looks like we are not inside CircleCI container. Exiting...\n')
@@ -23,7 +23,8 @@ def main():
 
     try:
         request = urllib2.Request(
-            "https://circleci.com/api/v1.1/project/github/googleapis/nodejs-dlp/918",
+            "https://circleci.com/api/v1.1/project/github/%s/%s/%s" %
+            (username, reponame, build_num),
             headers={"Accept": "application/json"})
         contents = urllib2.urlopen(request).read()
     except:
