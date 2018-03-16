@@ -1,21 +1,8 @@
-unit_tests:
-  steps:
-    - checkout
-    - run:
-        name: Install modules and dependencies.
-        command: npm install
-    - run:
-        name: Run unit tests.
-        command: npm test
-    - run:
-        name: Submit coverage data to codecov.
-        command: node_modules/.bin/codecov
-        when: always
 version: 2
 workflows:
   version: 2
   tests:
-    jobs:
+    jobs: &workflow_jobs
       - node4:
           filters:
             tags:
@@ -56,7 +43,7 @@ workflows:
             - docs
           filters:
             branches:
-              only: master
+              only: setup-nightly-build
             tags:
               only: '/^v[\d.]+$/'
       - publish_npm:
@@ -68,43 +55,34 @@ workflows:
             tags:
               only: '/^v[\d.]+$/'
   nightly:
-    jobs:
-      - node4
-      - node6
-      - node8
-      - node9
-      - lint:
-          requires:
-            - node4
-            - node6
-            - node8
-            - node9
-      - docs:
-          requires:
-            - node4
-            - node6
-            - node8
-            - node9
-      - system_tests:
-          requires:
-            - lint
-            - docs
     triggers:
       - schedule:
           cron: 0 7 * * *
           filters:
             branches:
-              only: master
+              only: setup-nightly-build
+    jobs: *workflow_jobs
 jobs:
   node4:
     docker:
       - image: 'node:4'
         user: node
-    steps:
+    steps: &unit_tests_steps
       - checkout
+      - run: &remove_package_lock
+          name: Remove package-lock.json if needed.
+          command: |
+            WORKFLOW_NAME=`python .circleci/get_workflow_name.py`
+            echo "Workflow name: $WORKFLOW_NAME"
+            if [ "$WORKFLOW_NAME" = "nightly" ]; then
+              echo "Nightly build detected, removing package-lock.json"
+              rm -f package-lock.json samples/package-lock.json
+            else
+              echo "Not a nightly build, skipping this step."
+            fi
       - run:
           name: Install modules and dependencies.
-          command: npm install --unsafe-perm
+          command: npm install
       - run:
           name: Run unit tests.
           command: npm test
@@ -116,56 +94,24 @@ jobs:
     docker:
       - image: 'node:6'
         user: node
-    steps:
-      - checkout
-      - run:
-          name: Install modules and dependencies.
-          command: npm install
-      - run:
-          name: Run unit tests.
-          command: npm test
-      - run:
-          name: Submit coverage data to codecov.
-          command: node_modules/.bin/codecov
-          when: always
+    steps: *unit_tests_steps
   node8:
     docker:
       - image: 'node:8'
         user: node
-    steps:
-      - checkout
-      - run:
-          name: Install modules and dependencies.
-          command: npm install
-      - run:
-          name: Run unit tests.
-          command: npm test
-      - run:
-          name: Submit coverage data to codecov.
-          command: node_modules/.bin/codecov
-          when: always
+    steps: *unit_tests_steps
   node9:
     docker:
       - image: 'node:9'
         user: node
-    steps:
-      - checkout
-      - run:
-          name: Install modules and dependencies.
-          command: npm install
-      - run:
-          name: Run unit tests.
-          command: npm test
-      - run:
-          name: Submit coverage data to codecov.
-          command: node_modules/.bin/codecov
-          when: always
+    steps: *unit_tests_steps
   lint:
     docker:
       - image: 'node:8'
         user: node
     steps:
       - checkout
+      - run: *remove_package_lock
       - run:
           name: Install modules and dependencies.
           command: |
@@ -185,6 +131,7 @@ jobs:
         user: node
     steps:
       - checkout
+      - run: *remove_package_lock
       - run:
           name: Install modules and dependencies.
           command: npm install
@@ -197,6 +144,7 @@ jobs:
         user: node
     steps:
       - checkout
+      - run: *remove_package_lock
       - run:
           name: Decrypt credentials.
           command: |
@@ -223,8 +171,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: 'TEST: assert that no npm publish will happen during nightly build.'
+          command: |
+            echo "We should not get here! We don't want to publish anything!"
+            false
+      - run:
           name: Set NPM authentication.
           command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
       - run:
           name: Publish the module to npm.
-          command: npm publish --access=public
+          command: echo no no no npm publish --access=public
