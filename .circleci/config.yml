@@ -27,14 +27,20 @@ workflows:
           requires:
             - lint
             - docs
-          filters:
+          filters: &master_and_releases
             branches:
               only: master
             tags: &releases
               only: '/^v[\d.]+$/'
+      - sample_tests:
+          requires:
+            - lint
+            - docs
+          filters: *master_and_releases
       - publish_npm:
           requires:
             - system_tests
+            - sample_tests
           filters:
             branches:
               ignore: /.*/
@@ -60,7 +66,7 @@ jobs:
             WORKFLOW_NAME=`python .circleci/get_workflow_name.py`
             echo "Workflow name: $WORKFLOW_NAME"
             if [ "$WORKFLOW_NAME" = "nightly" ]; then
-              echo "Nightly build detected, removing package-lock.json"
+              echo "Nightly build detected, removing package-lock.json."
               rm -f package-lock.json samples/package-lock.json
             else
               echo "Not a nightly build, skipping this step."
@@ -70,10 +76,17 @@ jobs:
           command: |-
             mkdir -p /home/node/.npm-global
             npm install
+            npm link
+            chmod +x node_modules/@google-cloud/nodejs-repo-tools/bin/tools
           environment:
             NPM_CONFIG_PREFIX: /home/node/.npm-global
-      - run: npm test
-      - run: node_modules/.bin/codecov
+      - run:
+          name: Run unit tests.
+          command: npm test
+      - run:
+          name: Submit coverage data to codecov.
+          command: node_modules/.bin/codecov
+          when: always
   node8:
     docker:
       - image: 'node:8'
@@ -86,7 +99,7 @@ jobs:
     steps: *unit_tests_steps
   lint:
     docker:
-      - image: 'node:8'
+      - image: 'node:10'
         user: node
     steps:
       - checkout
@@ -96,8 +109,9 @@ jobs:
           name: Link the module being tested to the samples.
           command: |
             cd samples/
+            npm link @google-cloud/container
             npm install
-            npm link ../
+            cd ..
           environment:
             NPM_CONFIG_PREFIX: /home/node/.npm-global
       - run:
@@ -107,8 +121,7 @@ jobs:
             NPM_CONFIG_PREFIX: /home/node/.npm-global
   docs:
     docker:
-      - image: 'node:8'
-        user: node
+      - image: 'node:10'
     steps:
       - checkout
       - run: *remove_package_lock
@@ -116,9 +129,36 @@ jobs:
       - run:
           name: Build documentation.
           command: npm run docs
+  sample_tests:
+    docker:
+      - image: 'node:10'
+        user: node
+    steps:
+      - checkout
+      - run: *remove_package_lock
+      - run:
+          name: Decrypt credentials.
+          command: |
+            openssl aes-256-cbc -d -in .circleci/key.json.enc \
+                -out .circleci/key.json \
+                -k "${SYSTEM_TESTS_ENCRYPTION_KEY}"
+      - run: *npm_install_and_link
+      - run: *samples_npm_install_and_link
+      - run:
+          name: Run sample tests.
+          command: npm run samples-test
+          environment:
+            GCLOUD_PROJECT: long-door-651
+            GOOGLE_APPLICATION_CREDENTIALS: /home/node/cloud-container-samples/.circleci/key.json
+            NPM_CONFIG_PREFIX: /home/node/.npm-global
+      - run:
+          name: Remove unencrypted key.
+          command: rm .circleci/key.json
+          when: always
+    working_directory: /home/node/cloud-container-samples/
   system_tests:
     docker:
-      - image: 'node:8'
+      - image: 'node:10'
         user: node
     steps:
       - checkout
@@ -142,9 +182,13 @@ jobs:
           when: always
   publish_npm:
     docker:
-      - image: 'node:8'
+      - image: 'node:10'
         user: node
     steps:
       - checkout
-      - run: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
-      - run: npm publish --access=public
+      - run:
+          name: Set NPM authentication.
+          command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
+      - run:
+          name: Publish the module to npm.
+          command: npm publish
