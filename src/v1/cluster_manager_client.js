@@ -184,7 +184,9 @@ class ClusterManagerClient {
    * in this service.
    */
   static get scopes() {
-    return ['https://www.googleapis.com/auth/cloud-platform'];
+    return [
+      'https://www.googleapis.com/auth/cloud-platform',
+    ];
   }
 
   /**
@@ -599,11 +601,7 @@ class ClusterManagerClient {
     }
     options = options || {};
 
-    return this._innerApiCalls.setNodePoolAutoscaling(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.setNodePoolAutoscaling(request, options, callback);
   }
 
   /**
@@ -1624,11 +1622,7 @@ class ClusterManagerClient {
     }
     options = options || {};
 
-    return this._innerApiCalls.rollbackNodePoolUpgrade(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.rollbackNodePoolUpgrade(request, options, callback);
   }
 
   /**
@@ -1698,11 +1692,7 @@ class ClusterManagerClient {
     }
     options = options || {};
 
-    return this._innerApiCalls.setNodePoolManagement(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.setNodePoolManagement(request, options, callback);
   }
 
   /**
@@ -2163,5 +2153,6 @@ class ClusterManagerClient {
     return this._innerApiCalls.setMaintenancePolicy(request, options, callback);
   }
 }
+
 
 module.exports = ClusterManagerClient;

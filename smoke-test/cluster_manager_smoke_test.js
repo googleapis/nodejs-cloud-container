@@ -16,7 +16,7 @@
 
 describe('ClusterManagerSmokeTest', () => {
   if (!process.env.GCLOUD_PROJECT) {
-    throw new Error('Usage: GCLOUD_PROJECT=<project_id> node #{$0}');
+    throw new Error("Usage: GCLOUD_PROJECT=<project_id> node #{$0}");
   }
   var projectId = process.env.GCLOUD_PROJECT;
 
@@ -33,8 +33,7 @@ describe('ClusterManagerSmokeTest', () => {
       projectId: projectId2,
       zone: zone,
     };
-    client
-      .listClusters(request)
+    client.listClusters(request)
       .then(responses => {
         var response = responses[0];
         console.log(response);
