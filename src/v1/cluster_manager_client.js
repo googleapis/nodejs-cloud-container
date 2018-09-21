@@ -150,7 +150,7 @@ class ClusterManagerClient {
       'setNetworkPolicy',
       'setMaintenancePolicy',
     ];
-    for (const methodName of clusterManagerStubMethods) {
+    for (let methodName of clusterManagerStubMethods) {
       this._innerApiCalls[methodName] = gax.createApiCall(
         clusterManagerStub.then(
           stub =>
