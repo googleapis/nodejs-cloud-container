@@ -27,9 +27,11 @@ describe('ClusterManagerSmokeTest', () => {
       // optional auth parameters.
     });
 
+    const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
     const projectId2 = projectId;
     const zone = 'us-central1-a';
     const request = {
+      parent: formattedParent,
       projectId: projectId2,
       zone: zone,
     };

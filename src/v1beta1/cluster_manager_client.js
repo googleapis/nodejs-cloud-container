@@ -22,7 +22,7 @@ const path = require('path');
 const VERSION = require('../../package.json').version;
 
 /**
- * Google Kubernetes Engine Cluster Manager v1
+ * Google Kubernetes Engine Cluster Manager v1beta1
  *
  * @class
  * @memberof v1
@@ -92,7 +92,7 @@ class ClusterManagerClient {
       {},
       gaxGrpc.loadProto(
         path.join(__dirname, '..', '..', 'protos'),
-        'google/container/v1/cluster_service.proto'
+        'google/container/v1beta1/cluster_service.proto'
       )
     );
 
@@ -100,6 +100,7 @@ class ClusterManagerClient {
     // identifiers to uniquely identify resources within the API.
     // Create useful helper objects for these.
     this._pathTemplates = {
+      projectPathTemplate: new gax.PathTemplate('projects/{project}'),
       locationPathTemplate: new gax.PathTemplate(
         'projects/{project}/locations/{location}'
       ),
@@ -114,9 +115,20 @@ class ClusterManagerClient {
       ),
     };
 
+    // Some of the methods on this service return "paged" results,
+    // (e.g. 50 results at a time, with tokens to get subsequent
+    // pages). Denote the keys used for pagination and results.
+    this._descriptors.page = {
+      listUsableSubnetworks: new gax.PageDescriptor(
+        'pageToken',
+        'nextPageToken',
+        'subnetworks'
+      ),
+    };
+
     // Put together the default options sent with requests.
     const defaults = gaxGrpc.constructSettings(
-      'google.container.v1.ClusterManager',
+      'google.container.v1beta1.ClusterManager',
       gapicConfig,
       opts.clientConfig,
       {'x-goog-api-client': clientHeader.join(' ')}
@@ -128,9 +140,9 @@ class ClusterManagerClient {
     this._innerApiCalls = {};
 
     // Put together the "service stub" for
-    // google.container.v1.ClusterManager.
+    // google.container.v1beta1.ClusterManager.
     const clusterManagerStub = gaxGrpc.createStub(
-      protos.google.container.v1.ClusterManager,
+      protos.google.container.v1beta1.ClusterManager,
       opts
     );
 
@@ -167,6 +179,8 @@ class ClusterManagerClient {
       'setNodePoolSize',
       'setNetworkPolicy',
       'setMaintenancePolicy',
+      'listUsableSubnetworks',
+      'listLocations',
     ];
     for (const methodName of clusterManagerStubMethods) {
       this._innerApiCalls[methodName] = gax.createApiCall(
@@ -178,7 +192,7 @@ class ClusterManagerClient {
             }
         ),
         defaults[methodName],
-        null
+        this._descriptors.page[methodName]
       );
     }
   }
@@ -243,9 +257,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [ListClustersResponse]{@link google.container.v1.ListClustersResponse}.
+   *   The second parameter to the callback is an object representing [ListClustersResponse]{@link google.container.v1beta1.ListClustersResponse}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ListClustersResponse]{@link google.container.v1.ListClustersResponse}.
+   *   The first element of the array is an object representing [ListClustersResponse]{@link google.container.v1beta1.ListClustersResponse}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -277,7 +291,7 @@ class ClusterManagerClient {
   }
 
   /**
-   * Gets the details of a specific cluster.
+   * Gets the details for a specific cluster.
    *
    * @param {Object} request
    *   The request object that will be sent.
@@ -302,9 +316,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Cluster]{@link google.container.v1.Cluster}.
+   *   The second parameter to the callback is an object representing [Cluster]{@link google.container.v1beta1.Cluster}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Cluster]{@link google.container.v1.Cluster}.
+   *   The first element of the array is an object representing [Cluster]{@link google.container.v1beta1.Cluster}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -354,9 +368,9 @@ class ClusterManagerClient {
    *   The request object that will be sent.
    * @param {Object} request.cluster
    *   A [cluster
-   *   resource](https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters)
+   *   resource](https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.zones.clusters)
    *
-   *   This object should have the same structure as [Cluster]{@link google.container.v1.Cluster}
+   *   This object should have the same structure as [Cluster]{@link google.container.v1beta1.Cluster}
    * @param {string} request.parent
    *   The parent (project and location) where the cluster will be created.
    *   Specified in the format 'projects/* /locations/*'.
@@ -375,9 +389,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -414,14 +428,14 @@ class ClusterManagerClient {
   }
 
   /**
-   * Updates the settings of a specific cluster.
+   * Updates the settings for a specific cluster.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {Object} request.update
    *   A description of the update.
    *
-   *   This object should have the same structure as [ClusterUpdate]{@link google.container.v1.ClusterUpdate}
+   *   This object should have the same structure as [ClusterUpdate]{@link google.container.v1beta1.ClusterUpdate}
    * @param {string} request.name
    *   The name (project, location, cluster) of the cluster to update.
    *   Specified in the format 'projects/* /locations/* /clusters/*'.
@@ -443,9 +457,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -482,7 +496,7 @@ class ClusterManagerClient {
   }
 
   /**
-   * Updates the version and/or image type for a specific node pool.
+   * Updates the version and/or image type of a specific node pool.
    *
    * @param {Object} request
    *   The request object that will be sent.
@@ -525,9 +539,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -566,14 +580,14 @@ class ClusterManagerClient {
   }
 
   /**
-   * Sets the autoscaling settings for a specific node pool.
+   * Sets the autoscaling settings of a specific node pool.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {Object} request.autoscaling
    *   Autoscaling configuration for the node pool.
    *
-   *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1.NodePoolAutoscaling}
+   *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1beta1.NodePoolAutoscaling}
    * @param {string} request.name
    *   The name (project, location, cluster, node pool) of the node pool to set
    *   autoscaler settings. Specified in the format
@@ -599,9 +613,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -673,9 +687,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -743,9 +757,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -790,7 +804,7 @@ class ClusterManagerClient {
    *   The desired configurations for the various addons available to run in the
    *   cluster.
    *
-   *   This object should have the same structure as [AddonsConfig]{@link google.container.v1.AddonsConfig}
+   *   This object should have the same structure as [AddonsConfig]{@link google.container.v1beta1.AddonsConfig}
    * @param {string} request.name
    *   The name (project, location, cluster) of the cluster to set addons.
    *   Specified in the format 'projects/* /locations/* /clusters/*'.
@@ -812,9 +826,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -884,9 +898,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -930,8 +944,8 @@ class ClusterManagerClient {
    * @param {string} request.masterVersion
    *   The Kubernetes version to change the master to.
    *
-   *   Users may specify either explicit versions offered by Kubernetes Engine or
-   *   version aliases, which have the following behavior:
+   *   Users may specify either explicit versions offered by
+   *   Kubernetes Engine or version aliases, which have the following behavior:
    *
    *   - "latest": picks the highest valid Kubernetes version
    *   - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
@@ -959,9 +973,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1000,18 +1014,19 @@ class ClusterManagerClient {
   /**
    * Used to set master auth materials. Currently supports :-
    * Changing the admin password for a specific cluster.
-   * This can be either via password generation or explicitly set the password.
+   * This can be either via password generation or explicitly set.
+   * Modify basic_auth.csv and reset the K8S API server.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {number} request.action
    *   The exact form of action to be taken on the master auth.
    *
-   *   The number should be among the values of [Action]{@link google.container.v1.Action}
+   *   The number should be among the values of [Action]{@link google.container.v1beta1.Action}
    * @param {Object} request.update
    *   A description of the update.
    *
-   *   This object should have the same structure as [MasterAuth]{@link google.container.v1.MasterAuth}
+   *   This object should have the same structure as [MasterAuth]{@link google.container.v1beta1.MasterAuth}
    * @param {string} request.name
    *   The name (project, location, cluster) of the cluster to set auth.
    *   Specified in the format 'projects/* /locations/* /clusters/*'.
@@ -1033,9 +1048,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1107,9 +1122,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1163,9 +1178,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [ListOperationsResponse]{@link google.container.v1.ListOperationsResponse}.
+   *   The second parameter to the callback is an object representing [ListOperationsResponse]{@link google.container.v1beta1.ListOperationsResponse}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ListOperationsResponse]{@link google.container.v1.ListOperationsResponse}.
+   *   The first element of the array is an object representing [ListOperationsResponse]{@link google.container.v1beta1.ListOperationsResponse}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1222,9 +1237,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1327,9 +1342,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [ServerConfig]{@link google.container.v1.ServerConfig}.
+   *   The second parameter to the callback is an object representing [ServerConfig]{@link google.container.v1beta1.ServerConfig}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ServerConfig]{@link google.container.v1.ServerConfig}.
+   *   The first element of the array is an object representing [ServerConfig]{@link google.container.v1beta1.ServerConfig}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1386,9 +1401,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [ListNodePoolsResponse]{@link google.container.v1.ListNodePoolsResponse}.
+   *   The second parameter to the callback is an object representing [ListNodePoolsResponse]{@link google.container.v1beta1.ListNodePoolsResponse}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ListNodePoolsResponse]{@link google.container.v1.ListNodePoolsResponse}.
+   *   The first element of the array is an object representing [ListNodePoolsResponse]{@link google.container.v1beta1.ListNodePoolsResponse}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1449,9 +1464,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [NodePool]{@link google.container.v1.NodePool}.
+   *   The second parameter to the callback is an object representing [NodePool]{@link google.container.v1beta1.NodePool}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [NodePool]{@link google.container.v1.NodePool}.
+   *   The first element of the array is an object representing [NodePool]{@link google.container.v1beta1.NodePool}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1490,7 +1505,7 @@ class ClusterManagerClient {
    * @param {Object} request.nodePool
    *   The node pool to create.
    *
-   *   This object should have the same structure as [NodePool]{@link google.container.v1.NodePool}
+   *   This object should have the same structure as [NodePool]{@link google.container.v1beta1.NodePool}
    * @param {string} request.parent
    *   The parent (project, location, cluster id) where the node pool will be
    *   created. Specified in the format
@@ -1513,9 +1528,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1581,9 +1596,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1645,9 +1660,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1690,7 +1705,7 @@ class ClusterManagerClient {
    * @param {Object} request.management
    *   NodeManagement configuration for the node pool.
    *
-   *   This object should have the same structure as [NodeManagement]{@link google.container.v1.NodeManagement}
+   *   This object should have the same structure as [NodeManagement]{@link google.container.v1beta1.NodeManagement}
    * @param {string} request.name
    *   The name (project, location, cluster, node pool id) of the node pool to set
    *   management properties. Specified in the format
@@ -1716,9 +1731,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1793,9 +1808,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1861,9 +1876,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1927,9 +1942,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -1991,9 +2006,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -2056,9 +2071,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -2102,7 +2117,7 @@ class ClusterManagerClient {
    * @param {Object} request.networkPolicy
    *   Configuration options for the NetworkPolicy feature.
    *
-   *   This object should have the same structure as [NetworkPolicy]{@link google.container.v1.NetworkPolicy}
+   *   This object should have the same structure as [NetworkPolicy]{@link google.container.v1beta1.NetworkPolicy}
    * @param {string} request.name
    *   The name (project, location, cluster id) of the cluster to set networking
    *   policy. Specified in the format 'projects/* /locations/* /clusters/*'.
@@ -2124,9 +2139,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -2171,7 +2186,7 @@ class ClusterManagerClient {
    *   The maintenance policy to be set for the cluster. An empty field
    *   clears the existing maintenance policy.
    *
-   *   This object should have the same structure as [MaintenancePolicy]{@link google.container.v1.MaintenancePolicy}
+   *   This object should have the same structure as [MaintenancePolicy]{@link google.container.v1beta1.MaintenancePolicy}
    * @param {string} request.name
    *   The name (project, location, cluster id) of the cluster to set maintenance
    *   policy.
@@ -2191,9 +2206,9 @@ class ClusterManagerClient {
    * @param {function(?Error, ?Object)} [callback]
    *   The function which will be called with the result of the API call.
    *
-   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The second parameter to the callback is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+   *   The first element of the array is an object representing [Operation]{@link google.container.v1beta1.Operation}.
    *   The promise has a method named "cancel" which cancels the ongoing API call.
    *
    * @example
@@ -2229,9 +2244,248 @@ class ClusterManagerClient {
     return this._innerApiCalls.setMaintenancePolicy(request, options, callback);
   }
 
+  /**
+   * Lists subnetworks that are usable for creating clusters in a project.
+   *
+   * @param {Object} request
+   *   The request object that will be sent.
+   * @param {string} request.parent
+   *   The parent project where subnetworks are usable.
+   *   Specified in the format 'projects/*'.
+   * @param {string} request.filter
+   *   Filtering currently only supports equality on the networkProjectId and must
+   *   be in the form: "networkProjectId=[PROJECTID]", where `networkProjectId`
+   *   is the project which owns the listed subnetworks. This defaults to the
+   *   parent project ID.
+   * @param {number} [request.pageSize]
+   *   The maximum number of resources contained in the underlying API
+   *   response. If page streaming is performed per-resource, this
+   *   parameter does not affect the return value. If page streaming is
+   *   performed per-page, this determines the maximum number of
+   *   resources in a page.
+   * @param {Object} [options]
+   *   Optional parameters. You can override the default settings for this call, e.g, timeout,
+   *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
+   * @param {function(?Error, ?Array, ?Object, ?Object)} [callback]
+   *   The function which will be called with the result of the API call.
+   *
+   *   The second parameter to the callback is Array of [UsableSubnetwork]{@link google.container.v1beta1.UsableSubnetwork}.
+   *
+   *   When autoPaginate: false is specified through options, it contains the result
+   *   in a single response. If the response indicates the next page exists, the third
+   *   parameter is set to be used for the next request object. The fourth parameter keeps
+   *   the raw response object of an object representing [ListUsableSubnetworksResponse]{@link google.container.v1beta1.ListUsableSubnetworksResponse}.
+   * @returns {Promise} - The promise which resolves to an array.
+   *   The first element of the array is Array of [UsableSubnetwork]{@link google.container.v1beta1.UsableSubnetwork}.
+   *
+   *   When autoPaginate: false is specified through options, the array has three elements.
+   *   The first element is Array of [UsableSubnetwork]{@link google.container.v1beta1.UsableSubnetwork} in a single response.
+   *   The second element is the next request object if the response
+   *   indicates the next page exists, or null. The third element is
+   *   an object representing [ListUsableSubnetworksResponse]{@link google.container.v1beta1.ListUsableSubnetworksResponse}.
+   *
+   *   The promise has a method named "cancel" which cancels the ongoing API call.
+   *
+   * @example
+   *
+   * const container = require('@google-cloud/container');
+   *
+   * const client = new container.v1.ClusterManagerClient({
+   *   // optional auth parameters.
+   * });
+   *
+   * // Iterate over all elements.
+   * const formattedParent = client.projectPath('[PROJECT]');
+   * const filter = '';
+   * const request = {
+   *   parent: formattedParent,
+   *   filter: filter,
+   * };
+   *
+   * client.listUsableSubnetworks(request)
+   *   .then(responses => {
+   *     const resources = responses[0];
+   *     for (let i = 0; i < resources.length; i += 1) {
+   *       // doThingsWith(resources[i])
+   *     }
+   *   })
+   *   .catch(err => {
+   *     console.error(err);
+   *   });
+   *
+   * // Or obtain the paged response.
+   * const formattedParent = client.projectPath('[PROJECT]');
+   * const filter = '';
+   * const request = {
+   *   parent: formattedParent,
+   *   filter: filter,
+   * };
+   *
+   *
+   * const options = {autoPaginate: false};
+   * const callback = responses => {
+   *   // The actual resources in a response.
+   *   const resources = responses[0];
+   *   // The next request if the response shows that there are more responses.
+   *   const nextRequest = responses[1];
+   *   // The actual response object, if necessary.
+   *   // const rawResponse = responses[2];
+   *   for (let i = 0; i < resources.length; i += 1) {
+   *     // doThingsWith(resources[i]);
+   *   }
+   *   if (nextRequest) {
+   *     // Fetch the next page.
+   *     return client.listUsableSubnetworks(nextRequest, options).then(callback);
+   *   }
+   * }
+   * client.listUsableSubnetworks(request, options)
+   *   .then(callback)
+   *   .catch(err => {
+   *     console.error(err);
+   *   });
+   */
+  listUsableSubnetworks(request, options, callback) {
+    if (options instanceof Function && callback === undefined) {
+      callback = options;
+      options = {};
+    }
+    options = options || {};
+
+    return this._innerApiCalls.listUsableSubnetworks(
+      request,
+      options,
+      callback
+    );
+  }
+
+  /**
+   * Equivalent to {@link listUsableSubnetworks}, but returns a NodeJS Stream object.
+   *
+   * This fetches the paged responses for {@link listUsableSubnetworks} continuously
+   * and invokes the callback registered for 'data' event for each element in the
+   * responses.
+   *
+   * The returned object has 'end' method when no more elements are required.
+   *
+   * autoPaginate option will be ignored.
+   *
+   * @see {@link https://nodejs.org/api/stream.html}
+   *
+   * @param {Object} request
+   *   The request object that will be sent.
+   * @param {string} request.parent
+   *   The parent project where subnetworks are usable.
+   *   Specified in the format 'projects/*'.
+   * @param {string} request.filter
+   *   Filtering currently only supports equality on the networkProjectId and must
+   *   be in the form: "networkProjectId=[PROJECTID]", where `networkProjectId`
+   *   is the project which owns the listed subnetworks. This defaults to the
+   *   parent project ID.
+   * @param {number} [request.pageSize]
+   *   The maximum number of resources contained in the underlying API
+   *   response. If page streaming is performed per-resource, this
+   *   parameter does not affect the return value. If page streaming is
+   *   performed per-page, this determines the maximum number of
+   *   resources in a page.
+   * @param {Object} [options]
+   *   Optional parameters. You can override the default settings for this call, e.g, timeout,
+   *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
+   * @returns {Stream}
+   *   An object stream which emits an object representing [UsableSubnetwork]{@link google.container.v1beta1.UsableSubnetwork} on 'data' event.
+   *
+   * @example
+   *
+   * const container = require('@google-cloud/container');
+   *
+   * const client = new container.v1.ClusterManagerClient({
+   *   // optional auth parameters.
+   * });
+   *
+   * const formattedParent = client.projectPath('[PROJECT]');
+   * const filter = '';
+   * const request = {
+   *   parent: formattedParent,
+   *   filter: filter,
+   * };
+   * client.listUsableSubnetworksStream(request)
+   *   .on('data', element => {
+   *     // doThingsWith(element)
+   *   }).on('error', err => {
+   *     console.log(err);
+   *   });
+   */
+  listUsableSubnetworksStream(request, options) {
+    options = options || {};
+
+    return this._descriptors.page.listUsableSubnetworks.createStream(
+      this._innerApiCalls.listUsableSubnetworks,
+      request,
+      options
+    );
+  }
+
+  /**
+   * Used to fetch locations that offer GKE.
+   *
+   * @param {Object} request
+   *   The request object that will be sent.
+   * @param {string} request.parent
+   *   Contains the name of the resource requested.
+   *   Specified in the format 'projects/*'.
+   * @param {Object} [options]
+   *   Optional parameters. You can override the default settings for this call, e.g, timeout,
+   *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
+   * @param {function(?Error, ?Object)} [callback]
+   *   The function which will be called with the result of the API call.
+   *
+   *   The second parameter to the callback is an object representing [ListLocationsResponse]{@link google.container.v1beta1.ListLocationsResponse}.
+   * @returns {Promise} - The promise which resolves to an array.
+   *   The first element of the array is an object representing [ListLocationsResponse]{@link google.container.v1beta1.ListLocationsResponse}.
+   *   The promise has a method named "cancel" which cancels the ongoing API call.
+   *
+   * @example
+   *
+   * const container = require('@google-cloud/container');
+   *
+   * const client = new container.v1.ClusterManagerClient({
+   *   // optional auth parameters.
+   * });
+   *
+   * const formattedParent = client.projectPath('[PROJECT]');
+   * client.listLocations({parent: formattedParent})
+   *   .then(responses => {
+   *     const response = responses[0];
+   *     // doThingsWith(response)
+   *   })
+   *   .catch(err => {
+   *     console.error(err);
+   *   });
+   */
+  listLocations(request, options, callback) {
+    if (options instanceof Function && callback === undefined) {
+      callback = options;
+      options = {};
+    }
+    options = options || {};
+
+    return this._innerApiCalls.listLocations(request, options, callback);
+  }
+
   // --------------------
   // -- Path templates --
   // --------------------
+
+  /**
+   * Return a fully-qualified project resource name string.
+   *
+   * @param {String} project
+   * @returns {String}
+   */
+  projectPath(project) {
+    return this._pathTemplates.projectPathTemplate.render({
+      project: project,
+    });
+  }
 
   /**
    * Return a fully-qualified location resource name string.
@@ -2295,6 +2549,17 @@ class ClusterManagerClient {
       location: location,
       operation: operation,
     });
+  }
+
+  /**
+   * Parse the projectName from a project resource.
+   *
+   * @param {String} projectName
+   *   A fully-qualified path representing a project resources.
+   * @returns {String} - A string representing the project.
+   */
+  matchProjectFromProjectName(projectName) {
+    return this._pathTemplates.projectPathTemplate.match(projectName).project;
   }
 
   /**
