@@ -1,6 +1,6 @@
 {
   "interfaces": {
-    "google.container.v1.ClusterManager": {
+    "google.container.v1beta1.ClusterManager": {
       "retry_codes": {
         "idempotent": [
           "DEADLINE_EXCEEDED",
@@ -31,7 +31,7 @@
           "retry_params_name": "default"
         },
         "CreateCluster": {
-          "timeout_millis": 45000,
+          "timeout_millis": 20000,
           "retry_codes_name": "non_idempotent",
           "retry_params_name": "default"
         },
@@ -168,6 +168,16 @@
         "SetMaintenancePolicy": {
           "timeout_millis": 20000,
           "retry_codes_name": "non_idempotent",
+          "retry_params_name": "default"
+        },
+        "ListUsableSubnetworks": {
+          "timeout_millis": 20000,
+          "retry_codes_name": "idempotent",
+          "retry_params_name": "default"
+        },
+        "ListLocations": {
+          "timeout_millis": 20000,
+          "retry_codes_name": "idempotent",
           "retry_params_name": "default"
         }
       }

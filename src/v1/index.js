@@ -15,5 +15,9 @@
 'use strict';
 
 const ClusterManagerClient = require('./cluster_manager_client');
+const ClusterManagerClient = require('./cluster_manager_client');
+const ClusterManagerClient = require('./cluster_manager_client');
 
+module.exports.ClusterManagerClient = ClusterManagerClient;
+module.exports.ClusterManagerClient = ClusterManagerClient;
 module.exports.ClusterManagerClient = ClusterManagerClient;

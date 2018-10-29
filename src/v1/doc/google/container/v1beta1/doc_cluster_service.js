@@ -63,9 +63,9 @@
  *    "cluster-name"
  *    "cluster-uid"
  *    "configure-sh"
- *    "enable-os-login"
- *    "gci-update-strategy"
+ *    "enable-oslogin"
  *    "gci-ensure-gke-docker"
+ *    "gci-update-strategy"
  *    "instance-template"
  *    "kube-env"
  *    "startup-script"
@@ -108,14 +108,14 @@
  * @property {boolean} preemptible
  *   Whether the nodes are created as preemptible VM instances. See:
  *   https://cloud.google.com/compute/docs/instances/preemptible for more
- *   information about preemptible VM instances.
+ *   inforamtion about preemptible VM instances.
  *
  * @property {Object[]} accelerators
  *   A list of hardware accelerators to be attached to each node.
  *   See https://cloud.google.com/compute/docs/gpus for more information about
  *   support for GPUs.
  *
- *   This object should have the same structure as [AcceleratorConfig]{@link google.container.v1.AcceleratorConfig}
+ *   This object should have the same structure as [AcceleratorConfig]{@link google.container.v1beta1.AcceleratorConfig}
  *
  * @property {string} diskType
  *   Type of the disk attached to each node (e.g. 'pd-standard' or 'pd-ssd')
@@ -131,12 +131,80 @@
  *   information, read [how to specify min CPU
  *   platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
  *
+ * @property {Object} workloadMetadataConfig
+ *   The workload metadata configuration for this node.
+ *
+ *   This object should have the same structure as [WorkloadMetadataConfig]{@link google.container.v1beta1.WorkloadMetadataConfig}
+ *
+ * @property {Object[]} taints
+ *   List of kubernetes taints to be applied to each node.
+ *
+ *   For more information, including usage and the valid values, see:
+ *   https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+ *
+ *   This object should have the same structure as [NodeTaint]{@link google.container.v1beta1.NodeTaint}
+ *
  * @typedef NodeConfig
- * @memberof google.container.v1
- * @see [google.container.v1.NodeConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.NodeConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const NodeConfig = {
   // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * Kubernetes taint is comprised of three fields: key, value, and effect. Effect
+ * can only be one of three types:  NoSchedule, PreferNoSchedule or NoExecute.
+ *
+ * For more information, including usage and the valid values, see:
+ * https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+ *
+ * @property {string} key
+ *   Key for taint.
+ *
+ * @property {string} value
+ *   Value for taint.
+ *
+ * @property {number} effect
+ *   Effect for taint.
+ *
+ *   The number should be among the values of [Effect]{@link google.container.v1beta1.Effect}
+ *
+ * @typedef NodeTaint
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.NodeTaint definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const NodeTaint = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+
+  /**
+   * Possible values for Effect in taint.
+   *
+   * @enum {number}
+   * @memberof google.container.v1beta1
+   */
+  Effect: {
+
+    /**
+     * Not set
+     */
+    EFFECT_UNSPECIFIED: 0,
+
+    /**
+     * NoSchedule
+     */
+    NO_SCHEDULE: 1,
+
+    /**
+     * PreferNoSchedule
+     */
+    PREFER_NO_SCHEDULE: 2,
+
+    /**
+     * NoExecute
+     */
+    NO_EXECUTE: 3
+  }
 };
 
 /**
@@ -160,7 +228,7 @@ const NodeConfig = {
  *   clusters before v1.12, if no configuration is specified, a client
  *   certificate is issued.
  *
- *   This object should have the same structure as [ClientCertificateConfig]{@link google.container.v1.ClientCertificateConfig}
+ *   This object should have the same structure as [ClientCertificateConfig]{@link google.container.v1beta1.ClientCertificateConfig}
  *
  * @property {string} clusterCaCertificate
  *   [Output only] Base64-encoded public certificate that is the root of
@@ -175,8 +243,8 @@ const NodeConfig = {
  *   to the cluster endpoint.
  *
  * @typedef MasterAuth
- * @memberof google.container.v1
- * @see [google.container.v1.MasterAuth definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.MasterAuth definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const MasterAuth = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -189,8 +257,8 @@ const MasterAuth = {
  *   Issue a client certificate.
  *
  * @typedef ClientCertificateConfig
- * @memberof google.container.v1
- * @see [google.container.v1.ClientCertificateConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ClientCertificateConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ClientCertificateConfig = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -204,30 +272,30 @@ const ClientCertificateConfig = {
  *   Configuration for the HTTP (L7) load balancing controller addon, which
  *   makes it easy to set up HTTP load balancers for services in a cluster.
  *
- *   This object should have the same structure as [HttpLoadBalancing]{@link google.container.v1.HttpLoadBalancing}
+ *   This object should have the same structure as [HttpLoadBalancing]{@link google.container.v1beta1.HttpLoadBalancing}
  *
  * @property {Object} horizontalPodAutoscaling
  *   Configuration for the horizontal pod autoscaling feature, which
  *   increases or decreases the number of replica pods a replication controller
  *   has based on the resource usage of the existing pods.
  *
- *   This object should have the same structure as [HorizontalPodAutoscaling]{@link google.container.v1.HorizontalPodAutoscaling}
+ *   This object should have the same structure as [HorizontalPodAutoscaling]{@link google.container.v1beta1.HorizontalPodAutoscaling}
  *
  * @property {Object} kubernetesDashboard
  *   Configuration for the Kubernetes Dashboard.
  *
- *   This object should have the same structure as [KubernetesDashboard]{@link google.container.v1.KubernetesDashboard}
+ *   This object should have the same structure as [KubernetesDashboard]{@link google.container.v1beta1.KubernetesDashboard}
  *
  * @property {Object} networkPolicyConfig
  *   Configuration for NetworkPolicy. This only tracks whether the addon
  *   is enabled or not on the Master, it does not track whether network policy
  *   is enabled for the nodes.
  *
- *   This object should have the same structure as [NetworkPolicyConfig]{@link google.container.v1.NetworkPolicyConfig}
+ *   This object should have the same structure as [NetworkPolicyConfig]{@link google.container.v1beta1.NetworkPolicyConfig}
  *
  * @typedef AddonsConfig
- * @memberof google.container.v1
- * @see [google.container.v1.AddonsConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.AddonsConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const AddonsConfig = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -243,8 +311,8 @@ const AddonsConfig = {
  *   balancers.
  *
  * @typedef HttpLoadBalancing
- * @memberof google.container.v1
- * @see [google.container.v1.HttpLoadBalancing definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.HttpLoadBalancing definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const HttpLoadBalancing = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -261,8 +329,8 @@ const HttpLoadBalancing = {
  *   which is also used by the Cloud Monitoring service.
  *
  * @typedef HorizontalPodAutoscaling
- * @memberof google.container.v1
- * @see [google.container.v1.HorizontalPodAutoscaling definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.HorizontalPodAutoscaling definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const HorizontalPodAutoscaling = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -275,8 +343,8 @@ const HorizontalPodAutoscaling = {
  *   Whether the Kubernetes Dashboard is enabled for this cluster.
  *
  * @typedef KubernetesDashboard
- * @memberof google.container.v1
- * @see [google.container.v1.KubernetesDashboard definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.KubernetesDashboard definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const KubernetesDashboard = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -291,10 +359,39 @@ const KubernetesDashboard = {
  *   Whether NetworkPolicy is enabled for this cluster.
  *
  * @typedef NetworkPolicyConfig
- * @memberof google.container.v1
- * @see [google.container.v1.NetworkPolicyConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.NetworkPolicyConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const NetworkPolicyConfig = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * Configuration options for private clusters.
+ *
+ * @property {boolean} enablePrivateNodes
+ *   Whether nodes have only private IP addresses, and communicate with the
+ *   master via private networking.
+ *
+ * @property {boolean} enablePrivateEndpoint
+ *   Whether the master's internal IP address is used as the cluster endpoint.
+ *
+ * @property {string} masterIpv4CidrBlock
+ *   The IP prefix in CIDR notation to use for the hosted master network. This
+ *   prefix will be used for assigning private IP addresses to the master or
+ *   set of masters, as well as the ILB VIP.
+ *
+ * @property {string} privateEndpoint
+ *   Output only. The internal IP address of this cluster's master endpoint.
+ *
+ * @property {string} publicEndpoint
+ *   Output only. The external IP address of this cluster's master endpoint.
+ *
+ * @typedef PrivateClusterConfig
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.PrivateClusterConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const PrivateClusterConfig = {
   // This is for documentation. Actual contents will be loaded by gRPC.
 };
 
@@ -311,11 +408,11 @@ const NetworkPolicyConfig = {
  *   cidr_blocks define up to 10 external networks that could access
  *   Kubernetes master through HTTPS.
  *
- *   This object should have the same structure as [CidrBlock]{@link google.container.v1.CidrBlock}
+ *   This object should have the same structure as [CidrBlock]{@link google.container.v1beta1.CidrBlock}
  *
  * @typedef MasterAuthorizedNetworksConfig
- * @memberof google.container.v1
- * @see [google.container.v1.MasterAuthorizedNetworksConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.MasterAuthorizedNetworksConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const MasterAuthorizedNetworksConfig = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -330,8 +427,8 @@ const MasterAuthorizedNetworksConfig = {
    *   cidr_block must be specified in CIDR notation.
    *
    * @typedef CidrBlock
-   * @memberof google.container.v1
-   * @see [google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+   * @memberof google.container.v1beta1
+   * @see [google.container.v1beta1.MasterAuthorizedNetworksConfig.CidrBlock definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
    */
   CidrBlock: {
     // This is for documentation. Actual contents will be loaded by gRPC.
@@ -349,8 +446,8 @@ const MasterAuthorizedNetworksConfig = {
  *   provided by the RBAC configuration or IAM.
  *
  * @typedef LegacyAbac
- * @memberof google.container.v1
- * @see [google.container.v1.LegacyAbac definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.LegacyAbac definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const LegacyAbac = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -363,14 +460,14 @@ const LegacyAbac = {
  * @property {number} provider
  *   The selected network policy provider.
  *
- *   The number should be among the values of [Provider]{@link google.container.v1.Provider}
+ *   The number should be among the values of [Provider]{@link google.container.v1beta1.Provider}
  *
  * @property {boolean} enabled
  *   Whether network policy is enabled on the cluster.
  *
  * @typedef NetworkPolicy
- * @memberof google.container.v1
- * @see [google.container.v1.NetworkPolicy definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.NetworkPolicy definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const NetworkPolicy = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -379,7 +476,7 @@ const NetworkPolicy = {
    * Allowed Network Policy providers.
    *
    * @enum {number}
-   * @memberof google.container.v1
+   * @memberof google.container.v1beta1
    */
   Provider: {
 
@@ -426,7 +523,7 @@ const NetworkPolicy = {
  *   addresses. This must be an existing secondary range associated
  *   with the cluster subnetwork.
  *
- *   This field is only applicable with use_ip_aliases is true and
+ *   This field is only applicable with use_ip_aliases and
  *   create_subnetwork is false.
  *
  * @property {string} servicesSecondaryRangeName
@@ -435,7 +532,7 @@ const NetworkPolicy = {
  *   ClusterIPs. This must be an existing secondary range associated
  *   with the cluster subnetwork.
  *
- *   This field is only applicable with use_ip_aliases is true and
+ *   This field is only applicable with use_ip_aliases and
  *   create_subnetwork is false.
  *
  * @property {string} clusterIpv4CidrBlock
@@ -488,11 +585,72 @@ const NetworkPolicy = {
  *   `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
  *   to use.
  *
+ * @property {boolean} allowRouteOverlap
+ *   If true, allow allocation of cluster CIDR ranges that overlap with certain
+ *   kinds of network routes. By default we do not allow cluster CIDR ranges to
+ *   intersect with any user declared routes. With allow_route_overlap == true,
+ *   we allow overlapping with CIDR ranges that are larger than the cluster CIDR
+ *   range.
+ *
+ *   If this field is set to true, then cluster and services CIDRs must be
+ *   fully-specified (e.g. `10.96.0.0/14`, but not `/14`), which means:
+ *   1) When `use_ip_aliases` is true, `cluster_ipv4_cidr_block` and
+ *      `services_ipv4_cidr_block` must be fully-specified.
+ *   2) When `use_ip_aliases` is false, `cluster.cluster_ipv4_cidr` muse be
+ *      fully-specified.
+ *
+ * @property {string} tpuIpv4CidrBlock
+ *   The IP address range of the Cloud TPUs in this cluster. If unspecified, a
+ *   range will be automatically chosen with the default size.
+ *
+ *   This field is only applicable when `use_ip_aliases` is true.
+ *
+ *   If unspecified, the range will use the default size.
+ *
+ *   Set to /netmask (e.g. `/14`) to have a range chosen with a specific
+ *   netmask.
+ *
+ *   Set to a
+ *   [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+ *   notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+ *   `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+ *   to use.
+ *
  * @typedef IPAllocationPolicy
- * @memberof google.container.v1
- * @see [google.container.v1.IPAllocationPolicy definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.IPAllocationPolicy definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const IPAllocationPolicy = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * Configuration for Binary Authorization.
+ *
+ * @property {boolean} enabled
+ *   Enable Binary Authorization for this cluster. If enabled, all container
+ *   images will be validated by Google Binauthz.
+ *
+ * @typedef BinaryAuthorization
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.BinaryAuthorization definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const BinaryAuthorization = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * Configuration for the PodSecurityPolicy feature.
+ *
+ * @property {boolean} enabled
+ *   Enable the PodSecurityPolicy controller for this cluster. If enabled, pods
+ *   must be valid under a PodSecurityPolicy to be created.
+ *
+ * @typedef PodSecurityPolicyConfig
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.PodSecurityPolicyConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const PodSecurityPolicyConfig = {
   // This is for documentation. Actual contents will be loaded by gRPC.
 };
 
@@ -532,12 +690,12 @@ const IPAllocationPolicy = {
  *
  *   If unspecified, the defaults are used.
  *
- *   This object should have the same structure as [NodeConfig]{@link google.container.v1.NodeConfig}
+ *   This object should have the same structure as [NodeConfig]{@link google.container.v1beta1.NodeConfig}
  *
  * @property {Object} masterAuth
  *   The authentication information for accessing the master endpoint.
  *
- *   This object should have the same structure as [MasterAuth]{@link google.container.v1.MasterAuth}
+ *   This object should have the same structure as [MasterAuth]{@link google.container.v1beta1.MasterAuth}
  *
  * @property {string} loggingService
  *   The logging service the cluster should use to write logs.
@@ -559,7 +717,8 @@ const IPAllocationPolicy = {
  *   The name of the Google Compute Engine
  *   [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks) to which the
  *   cluster is connected. If left unspecified, the `default` network
- *   will be used.
+ *   will be used. On output this shows the network ID instead of
+ *   the name.
  *
  * @property {string} clusterIpv4Cidr
  *   The IP address range of the container pods in this cluster, in
@@ -570,19 +729,20 @@ const IPAllocationPolicy = {
  * @property {Object} addonsConfig
  *   Configurations for the various addons available to run in the cluster.
  *
- *   This object should have the same structure as [AddonsConfig]{@link google.container.v1.AddonsConfig}
+ *   This object should have the same structure as [AddonsConfig]{@link google.container.v1beta1.AddonsConfig}
  *
  * @property {string} subnetwork
  *   The name of the Google Compute Engine
  *   [subnetwork](https://cloud.google.com/compute/docs/subnetworks) to which the
- *   cluster is connected.
+ *   cluster is connected. On output this shows the subnetwork ID instead of
+ *   the name.
  *
  * @property {Object[]} nodePools
  *   The node pools associated with this cluster.
  *   This field should not be set if "node_config" or "initial_node_count" are
  *   specified.
  *
- *   This object should have the same structure as [NodePool]{@link google.container.v1.NodePool}
+ *   This object should have the same structure as [NodePool]{@link google.container.v1beta1.NodePool}
  *
  * @property {string[]} locations
  *   The list of Google Compute Engine
@@ -591,7 +751,7 @@ const IPAllocationPolicy = {
  *
  * @property {boolean} enableKubernetesAlpha
  *   Kubernetes alpha features are enabled on this cluster. This includes alpha
- *   API groups (e.g. v1alpha1) and features that may not be production ready in
+ *   API groups (e.g. v1beta1) and features that may not be production ready in
  *   the kubernetes version of the master and nodes.
  *   The cluster has no SLA for uptime and master/node upgrades are disabled.
  *   Alpha enabled clusters are automatically deleted thirty days after
@@ -607,32 +767,72 @@ const IPAllocationPolicy = {
  * @property {Object} legacyAbac
  *   Configuration for the legacy ABAC authorization mode.
  *
- *   This object should have the same structure as [LegacyAbac]{@link google.container.v1.LegacyAbac}
+ *   This object should have the same structure as [LegacyAbac]{@link google.container.v1beta1.LegacyAbac}
  *
  * @property {Object} networkPolicy
  *   Configuration options for the NetworkPolicy feature.
  *
- *   This object should have the same structure as [NetworkPolicy]{@link google.container.v1.NetworkPolicy}
+ *   This object should have the same structure as [NetworkPolicy]{@link google.container.v1beta1.NetworkPolicy}
  *
  * @property {Object} ipAllocationPolicy
  *   Configuration for cluster IP allocation.
  *
- *   This object should have the same structure as [IPAllocationPolicy]{@link google.container.v1.IPAllocationPolicy}
+ *   This object should have the same structure as [IPAllocationPolicy]{@link google.container.v1beta1.IPAllocationPolicy}
  *
  * @property {Object} masterAuthorizedNetworksConfig
  *   The configuration options for master authorized networks feature.
  *
- *   This object should have the same structure as [MasterAuthorizedNetworksConfig]{@link google.container.v1.MasterAuthorizedNetworksConfig}
+ *   This object should have the same structure as [MasterAuthorizedNetworksConfig]{@link google.container.v1beta1.MasterAuthorizedNetworksConfig}
  *
  * @property {Object} maintenancePolicy
  *   Configure the maintenance policy for this cluster.
  *
- *   This object should have the same structure as [MaintenancePolicy]{@link google.container.v1.MaintenancePolicy}
+ *   This object should have the same structure as [MaintenancePolicy]{@link google.container.v1beta1.MaintenancePolicy}
+ *
+ * @property {Object} binaryAuthorization
+ *   Configuration for Binary Authorization.
+ *
+ *   This object should have the same structure as [BinaryAuthorization]{@link google.container.v1beta1.BinaryAuthorization}
+ *
+ * @property {Object} podSecurityPolicyConfig
+ *   Configuration for the PodSecurityPolicy feature.
+ *
+ *   This object should have the same structure as [PodSecurityPolicyConfig]{@link google.container.v1beta1.PodSecurityPolicyConfig}
+ *
+ * @property {Object} autoscaling
+ *   Cluster-level autoscaling configuration.
+ *
+ *   This object should have the same structure as [ClusterAutoscaling]{@link google.container.v1beta1.ClusterAutoscaling}
  *
  * @property {Object} networkConfig
  *   Configuration for cluster networking.
  *
- *   This object should have the same structure as [NetworkConfig]{@link google.container.v1.NetworkConfig}
+ *   This object should have the same structure as [NetworkConfig]{@link google.container.v1beta1.NetworkConfig}
+ *
+ * @property {boolean} privateCluster
+ *   If this is a private cluster setup. Private clusters are clusters that, by
+ *   default have no external IP addresses on the nodes and where nodes and the
+ *   master communicate over private IP addresses.
+ *   This field is deprecated, use private_cluster_config.enabled instead.
+ *
+ * @property {string} masterIpv4CidrBlock
+ *   The IP prefix in CIDR notation to use for the hosted master network.
+ *   This prefix will be used for assigning private IP addresses to the
+ *   master or set of masters, as well as the ILB VIP.
+ *   This field is deprecated, use
+ *   private_cluster_config.master_ipv4_cidr_block instead.
+ *
+ * @property {Object} defaultMaxPodsConstraint
+ *   The default constraint on the maximum number of pods that can be run
+ *   simultaneously on a node in the node pool of this cluster. Only honored
+ *   if cluster created with IP Alias support.
+ *
+ *   This object should have the same structure as [MaxPodsConstraint]{@link google.container.v1beta1.MaxPodsConstraint}
+ *
+ * @property {Object} privateClusterConfig
+ *   Configuration for private cluster.
+ *
+ *   This object should have the same structure as [PrivateClusterConfig]{@link google.container.v1beta1.PrivateClusterConfig}
  *
  * @property {string} selfLink
  *   [Output only] Server-defined URL for the resource.
@@ -671,10 +871,10 @@ const IPAllocationPolicy = {
  *
  * @property {string} currentNodeVersion
  *   [Output only] Deprecated, use
- *   [NodePool.version](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters.nodePool)
- *   instead. The current version of the node software components. If they are
- *   currently at multiple versions because they're in the process of being
- *   upgraded, this reflects the minimum version of all nodes.
+ *   [NodePool.version](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.zones.clusters.nodePool)
+ *   instead. The current version of the node software components.
+ *   If they are currently at multiple versions because they're in the process
+ *   of being upgraded, this reflects the minimum version of all nodes.
  *
  * @property {string} createTime
  *   [Output only] The time the cluster was created, in
@@ -683,7 +883,7 @@ const IPAllocationPolicy = {
  * @property {number} status
  *   [Output only] The current status of this cluster.
  *
- *   The number should be among the values of [Status]{@link google.container.v1.Status}
+ *   The number should be among the values of [Status]{@link google.container.v1beta1.Status}
  *
  * @property {string} statusMessage
  *   [Output only] Additional information about the current status of this
@@ -717,9 +917,22 @@ const IPAllocationPolicy = {
  *   [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) in which
  *   the cluster resides.
  *
+ * @property {boolean} enableTpu
+ *   Enable the ability to use Cloud TPUs in this cluster.
+ *
+ * @property {string} tpuIpv4CidrBlock
+ *   [Output only] The IP address range of the Cloud TPUs in this cluster, in
+ *   [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+ *   notation (e.g. `1.2.3.4/29`).
+ *
+ * @property {Object[]} conditions
+ *   Which conditions caused the current cluster state.
+ *
+ *   This object should have the same structure as [StatusCondition]{@link google.container.v1beta1.StatusCondition}
+ *
  * @typedef Cluster
- * @memberof google.container.v1
- * @see [google.container.v1.Cluster definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.Cluster definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const Cluster = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -728,7 +941,7 @@ const Cluster = {
    * The current status of the cluster.
    *
    * @enum {number}
-   * @memberof google.container.v1
+   * @memberof google.container.v1beta1
    */
   Status: {
 
@@ -796,13 +1009,15 @@ const Cluster = {
  *   The monitoring service the cluster should use to write metrics.
  *   Currently available options:
  *
+ *   * "monitoring.googleapis.com/kubernetes" - the Google Cloud Monitoring
+ *   service with Kubernetes-native resource model in Stackdriver
  *   * "monitoring.googleapis.com" - the Google Cloud Monitoring service
  *   * "none" - no metrics will be exported from the cluster
  *
  * @property {Object} desiredAddonsConfig
  *   Configurations for the various addons available to run in the cluster.
  *
- *   This object should have the same structure as [AddonsConfig]{@link google.container.v1.AddonsConfig}
+ *   This object should have the same structure as [AddonsConfig]{@link google.container.v1beta1.AddonsConfig}
  *
  * @property {string} desiredNodePoolId
  *   The node pool to be upgraded. This field is mandatory if
@@ -820,7 +1035,7 @@ const Cluster = {
  *   cluster and desired_node_pool_id is not provided then
  *   the change applies to that single node pool.
  *
- *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1.NodePoolAutoscaling}
+ *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1beta1.NodePoolAutoscaling}
  *
  * @property {string[]} desiredLocations
  *   The desired list of Google Compute Engine
@@ -834,10 +1049,35 @@ const Cluster = {
  * @property {Object} desiredMasterAuthorizedNetworksConfig
  *   The desired configuration options for master authorized networks feature.
  *
- *   This object should have the same structure as [MasterAuthorizedNetworksConfig]{@link google.container.v1.MasterAuthorizedNetworksConfig}
+ *   This object should have the same structure as [MasterAuthorizedNetworksConfig]{@link google.container.v1beta1.MasterAuthorizedNetworksConfig}
+ *
+ * @property {Object} desiredPodSecurityPolicyConfig
+ *   The desired configuration options for the PodSecurityPolicy feature.
+ *
+ *   This object should have the same structure as [PodSecurityPolicyConfig]{@link google.container.v1beta1.PodSecurityPolicyConfig}
+ *
+ * @property {Object} desiredClusterAutoscaling
+ *   Cluster-level autoscaling configuration.
+ *
+ *   This object should have the same structure as [ClusterAutoscaling]{@link google.container.v1beta1.ClusterAutoscaling}
+ *
+ * @property {Object} desiredBinaryAuthorization
+ *   The desired configuration options for the Binary Authorization feature.
+ *
+ *   This object should have the same structure as [BinaryAuthorization]{@link google.container.v1beta1.BinaryAuthorization}
+ *
+ * @property {string} desiredLoggingService
+ *   The logging service the cluster should use to write metrics.
+ *   Currently available options:
+ *
+ *   * "logging.googleapis.com/kubernetes" - the Google Cloud Logging
+ *   service with Kubernetes-native resource model in Stackdriver
+ *   * "logging.googleapis.com" - the Google Cloud Logging service
+ *   * "none" - no logs will be exported from the cluster
  *
  * @property {string} desiredMasterVersion
- *   The Kubernetes version to change the master to.
+ *   The Kubernetes version to change the master to. The only valid value is the
+ *   latest supported version.
  *
  *   Users may specify either explicit versions offered by
  *   Kubernetes Engine or version aliases, which have the following behavior:
@@ -849,8 +1089,8 @@ const Cluster = {
  *   - "-": picks the default Kubernetes version
  *
  * @typedef ClusterUpdate
- * @memberof google.container.v1
- * @see [google.container.v1.ClusterUpdate definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ClusterUpdate definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ClusterUpdate = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -872,12 +1112,12 @@ const ClusterUpdate = {
  * @property {number} operationType
  *   The operation type.
  *
- *   The number should be among the values of [Type]{@link google.container.v1.Type}
+ *   The number should be among the values of [Type]{@link google.container.v1beta1.Type}
  *
  * @property {number} status
  *   The current status of the operation.
  *
- *   The number should be among the values of [Status]{@link google.container.v1.Status}
+ *   The number should be among the values of [Status]{@link google.container.v1beta1.Status}
  *
  * @property {string} detail
  *   Detailed operation progress, if available.
@@ -905,9 +1145,24 @@ const ClusterUpdate = {
  *   [Output only] The time the operation completed, in
  *   [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
  *
+ * @property {Object} progress
+ *   [Output only] Progress information for an operation.
+ *
+ *   This object should have the same structure as [OperationProgress]{@link google.container.v1beta1.OperationProgress}
+ *
+ * @property {Object[]} clusterConditions
+ *   Which conditions caused the current cluster state.
+ *
+ *   This object should have the same structure as [StatusCondition]{@link google.container.v1beta1.StatusCondition}
+ *
+ * @property {Object[]} nodepoolConditions
+ *   Which conditions caused the current node pool state.
+ *
+ *   This object should have the same structure as [StatusCondition]{@link google.container.v1beta1.StatusCondition}
+ *
  * @typedef Operation
- * @memberof google.container.v1
- * @see [google.container.v1.Operation definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.Operation definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const Operation = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -916,7 +1171,7 @@ const Operation = {
    * Current status of the operation.
    *
    * @enum {number}
-   * @memberof google.container.v1
+   * @memberof google.container.v1beta1
    */
   Status: {
 
@@ -950,7 +1205,7 @@ const Operation = {
    * Operation type.
    *
    * @enum {number}
-   * @memberof google.container.v1
+   * @memberof google.container.v1beta1
    */
   Type: {
 
@@ -1042,6 +1297,66 @@ const Operation = {
 };
 
 /**
+ * Information about operation (or operation stage) progress.
+ *
+ * @property {string} name
+ *   A non-parameterized string describing an operation stage.
+ *   Unset for single-stage operations.
+ *
+ * @property {number} status
+ *   Status of an operation stage.
+ *   Unset for single-stage operations.
+ *
+ *   The number should be among the values of [Status]{@link google.container.v1beta1.Status}
+ *
+ * @property {Object[]} metrics
+ *   Progress metric bundle, for example:
+ *     metrics: [{name: "nodes done",     int_value: 15},
+ *               {name: "nodes total",    int_value: 32}]
+ *   or
+ *     metrics: [{name: "progress",       double_value: 0.56},
+ *               {name: "progress scale", double_value: 1.0}]
+ *
+ *   This object should have the same structure as [Metric]{@link google.container.v1beta1.Metric}
+ *
+ * @property {Object[]} stages
+ *   Substages of an operation or a stage.
+ *
+ *   This object should have the same structure as [OperationProgress]{@link google.container.v1beta1.OperationProgress}
+ *
+ * @typedef OperationProgress
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.OperationProgress definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const OperationProgress = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+
+  /**
+   * Progress metric is (string, int|float|string) pair.
+   *
+   * @property {string} name
+   *   Metric name, required.
+   *   e.g., "nodes total", "percent done"
+   *
+   * @property {number} intValue
+   *   For metrics with integer value.
+   *
+   * @property {number} doubleValue
+   *   For metrics with floating point value.
+   *
+   * @property {string} stringValue
+   *   For metrics with custom values (ratios, visual progress, etc.).
+   *
+   * @typedef Metric
+   * @memberof google.container.v1beta1
+   * @see [google.container.v1beta1.OperationProgress.Metric definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+   */
+  Metric: {
+    // This is for documentation. Actual contents will be loaded by gRPC.
+  }
+};
+
+/**
  * CreateClusterRequest creates a cluster.
  *
  * @property {string} projectId
@@ -1057,17 +1372,17 @@ const Operation = {
  *
  * @property {Object} cluster
  *   A [cluster
- *   resource](https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters)
+ *   resource](https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.zones.clusters)
  *
- *   This object should have the same structure as [Cluster]{@link google.container.v1.Cluster}
+ *   This object should have the same structure as [Cluster]{@link google.container.v1beta1.Cluster}
  *
  * @property {string} parent
  *   The parent (project and location) where the cluster will be created.
  *   Specified in the format 'projects/* /locations/*'.
  *
  * @typedef CreateClusterRequest
- * @memberof google.container.v1
- * @see [google.container.v1.CreateClusterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.CreateClusterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const CreateClusterRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1096,8 +1411,8 @@ const CreateClusterRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef GetClusterRequest
- * @memberof google.container.v1
- * @see [google.container.v1.GetClusterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.GetClusterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const GetClusterRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1124,22 +1439,22 @@ const GetClusterRequest = {
  * @property {Object} update
  *   A description of the update.
  *
- *   This object should have the same structure as [ClusterUpdate]{@link google.container.v1.ClusterUpdate}
+ *   This object should have the same structure as [ClusterUpdate]{@link google.container.v1beta1.ClusterUpdate}
  *
  * @property {string} name
  *   The name (project, location, cluster) of the cluster to update.
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef UpdateClusterRequest
- * @memberof google.container.v1
- * @see [google.container.v1.UpdateClusterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.UpdateClusterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const UpdateClusterRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
 };
 
 /**
- * UpdateNodePoolRequests update a node pool's image and/or version.
+ * SetNodePoolVersionRequest updates the version of a node pool.
  *
  * @property {string} projectId
  *   Deprecated. The Google Developers Console [project ID or project
@@ -1182,8 +1497,8 @@ const UpdateClusterRequest = {
  *   'projects/* /locations/* /clusters/* /nodePools/*'.
  *
  * @typedef UpdateNodePoolRequest
- * @memberof google.container.v1
- * @see [google.container.v1.UpdateNodePoolRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.UpdateNodePoolRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const UpdateNodePoolRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1214,7 +1529,7 @@ const UpdateNodePoolRequest = {
  * @property {Object} autoscaling
  *   Autoscaling configuration for the node pool.
  *
- *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1.NodePoolAutoscaling}
+ *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1beta1.NodePoolAutoscaling}
  *
  * @property {string} name
  *   The name (project, location, cluster, node pool) of the node pool to set
@@ -1222,8 +1537,8 @@ const UpdateNodePoolRequest = {
  *   'projects/* /locations/* /clusters/* /nodePools/*'.
  *
  * @typedef SetNodePoolAutoscalingRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetNodePoolAutoscalingRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetNodePoolAutoscalingRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetNodePoolAutoscalingRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1259,8 +1574,8 @@ const SetNodePoolAutoscalingRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetLoggingServiceRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetLoggingServiceRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetLoggingServiceRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetLoggingServiceRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1296,15 +1611,15 @@ const SetLoggingServiceRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetMonitoringServiceRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetMonitoringServiceRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetMonitoringServiceRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetMonitoringServiceRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
 };
 
 /**
- * SetAddonsConfigRequest sets the addons associated with the cluster.
+ * SetAddonsRequest sets the addons associated with the cluster.
  *
  * @property {string} projectId
  *   Deprecated. The Google Developers Console [project ID or project
@@ -1325,15 +1640,15 @@ const SetMonitoringServiceRequest = {
  *   The desired configurations for the various addons available to run in the
  *   cluster.
  *
- *   This object should have the same structure as [AddonsConfig]{@link google.container.v1.AddonsConfig}
+ *   This object should have the same structure as [AddonsConfig]{@link google.container.v1beta1.AddonsConfig}
  *
  * @property {string} name
  *   The name (project, location, cluster) of the cluster to set addons.
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetAddonsConfigRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetAddonsConfigRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetAddonsConfigRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetAddonsConfigRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1371,8 +1686,8 @@ const SetAddonsConfigRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetLocationsRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetLocationsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetLocationsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetLocationsRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1399,8 +1714,8 @@ const SetLocationsRequest = {
  * @property {string} masterVersion
  *   The Kubernetes version to change the master to.
  *
- *   Users may specify either explicit versions offered by Kubernetes Engine or
- *   version aliases, which have the following behavior:
+ *   Users may specify either explicit versions offered by
+ *   Kubernetes Engine or version aliases, which have the following behavior:
  *
  *   - "latest": picks the highest valid Kubernetes version
  *   - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
@@ -1413,8 +1728,8 @@ const SetLocationsRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef UpdateMasterRequest
- * @memberof google.container.v1
- * @see [google.container.v1.UpdateMasterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.UpdateMasterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const UpdateMasterRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1441,20 +1756,20 @@ const UpdateMasterRequest = {
  * @property {number} action
  *   The exact form of action to be taken on the master auth.
  *
- *   The number should be among the values of [Action]{@link google.container.v1.Action}
+ *   The number should be among the values of [Action]{@link google.container.v1beta1.Action}
  *
  * @property {Object} update
  *   A description of the update.
  *
- *   This object should have the same structure as [MasterAuth]{@link google.container.v1.MasterAuth}
+ *   This object should have the same structure as [MasterAuth]{@link google.container.v1beta1.MasterAuth}
  *
  * @property {string} name
  *   The name (project, location, cluster) of the cluster to set auth.
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetMasterAuthRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetMasterAuthRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetMasterAuthRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetMasterAuthRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1463,7 +1778,7 @@ const SetMasterAuthRequest = {
    * Operation type: what type update to perform.
    *
    * @enum {number}
-   * @memberof google.container.v1
+   * @memberof google.container.v1beta1
    */
   Action: {
 
@@ -1515,8 +1830,8 @@ const SetMasterAuthRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef DeleteClusterRequest
- * @memberof google.container.v1
- * @see [google.container.v1.DeleteClusterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.DeleteClusterRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const DeleteClusterRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1542,8 +1857,8 @@ const DeleteClusterRequest = {
  *   Location "-" matches all zones and all regions.
  *
  * @typedef ListClustersRequest
- * @memberof google.container.v1
- * @see [google.container.v1.ListClustersRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListClustersRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ListClustersRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1556,15 +1871,15 @@ const ListClustersRequest = {
  *   A list of clusters in the project in the specified zone, or
  *   across all ones.
  *
- *   This object should have the same structure as [Cluster]{@link google.container.v1.Cluster}
+ *   This object should have the same structure as [Cluster]{@link google.container.v1beta1.Cluster}
  *
  * @property {string[]} missingZones
  *   If any zones are listed here, the list of clusters returned
  *   may be missing those zones.
  *
  * @typedef ListClustersResponse
- * @memberof google.container.v1
- * @see [google.container.v1.ListClustersResponse definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListClustersResponse definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ListClustersResponse = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1593,8 +1908,8 @@ const ListClustersResponse = {
  *   Specified in the format 'projects/* /locations/* /operations/*'.
  *
  * @typedef GetOperationRequest
- * @memberof google.container.v1
- * @see [google.container.v1.GetOperationRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.GetOperationRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const GetOperationRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1619,8 +1934,8 @@ const GetOperationRequest = {
  *   Location "-" matches all zones and all regions.
  *
  * @typedef ListOperationsRequest
- * @memberof google.container.v1
- * @see [google.container.v1.ListOperationsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListOperationsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ListOperationsRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1648,8 +1963,8 @@ const ListOperationsRequest = {
  *   Specified in the format 'projects/* /locations/* /operations/*'.
  *
  * @typedef CancelOperationRequest
- * @memberof google.container.v1
- * @see [google.container.v1.CancelOperationRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.CancelOperationRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const CancelOperationRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1661,15 +1976,15 @@ const CancelOperationRequest = {
  * @property {Object[]} operations
  *   A list of operations in the project in the specified zone.
  *
- *   This object should have the same structure as [Operation]{@link google.container.v1.Operation}
+ *   This object should have the same structure as [Operation]{@link google.container.v1beta1.Operation}
  *
  * @property {string[]} missingZones
  *   If any zones are listed here, the list of operations returned
  *   may be missing the operations from those zones.
  *
  * @typedef ListOperationsResponse
- * @memberof google.container.v1
- * @see [google.container.v1.ListOperationsResponse definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListOperationsResponse definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ListOperationsResponse = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1693,8 +2008,8 @@ const ListOperationsResponse = {
  *   Specified in the format 'projects/* /locations/*'.
  *
  * @typedef GetServerConfigRequest
- * @memberof google.container.v1
- * @see [google.container.v1.GetServerConfigRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.GetServerConfigRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const GetServerConfigRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1719,8 +2034,8 @@ const GetServerConfigRequest = {
  *   List of valid master versions.
  *
  * @typedef ServerConfig
- * @memberof google.container.v1
- * @see [google.container.v1.ServerConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ServerConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ServerConfig = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1747,7 +2062,7 @@ const ServerConfig = {
  * @property {Object} nodePool
  *   The node pool to create.
  *
- *   This object should have the same structure as [NodePool]{@link google.container.v1.NodePool}
+ *   This object should have the same structure as [NodePool]{@link google.container.v1beta1.NodePool}
  *
  * @property {string} parent
  *   The parent (project, location, cluster id) where the node pool will be
@@ -1755,8 +2070,8 @@ const ServerConfig = {
  *   'projects/* /locations/* /clusters/*'.
  *
  * @typedef CreateNodePoolRequest
- * @memberof google.container.v1
- * @see [google.container.v1.CreateNodePoolRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.CreateNodePoolRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const CreateNodePoolRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1790,8 +2105,8 @@ const CreateNodePoolRequest = {
  *   'projects/* /locations/* /clusters/* /nodePools/*'.
  *
  * @typedef DeleteNodePoolRequest
- * @memberof google.container.v1
- * @see [google.container.v1.DeleteNodePoolRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.DeleteNodePoolRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const DeleteNodePoolRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1820,8 +2135,8 @@ const DeleteNodePoolRequest = {
  *   listed. Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef ListNodePoolsRequest
- * @memberof google.container.v1
- * @see [google.container.v1.ListNodePoolsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListNodePoolsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ListNodePoolsRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1855,8 +2170,8 @@ const ListNodePoolsRequest = {
  *   'projects/* /locations/* /clusters/* /nodePools/*'.
  *
  * @typedef GetNodePoolRequest
- * @memberof google.container.v1
- * @see [google.container.v1.GetNodePoolRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.GetNodePoolRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const GetNodePoolRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1876,7 +2191,7 @@ const GetNodePoolRequest = {
  * @property {Object} config
  *   The node configuration of the pool.
  *
- *   This object should have the same structure as [NodeConfig]{@link google.container.v1.NodeConfig}
+ *   This object should have the same structure as [NodeConfig]{@link google.container.v1beta1.NodeConfig}
  *
  * @property {number} initialNodeCount
  *   The initial node count for the pool. You must ensure that your
@@ -1898,7 +2213,7 @@ const GetNodePoolRequest = {
  * @property {number} status
  *   [Output only] The status of the nodes in this pool instance.
  *
- *   The number should be among the values of [Status]{@link google.container.v1.Status}
+ *   The number should be among the values of [Status]{@link google.container.v1beta1.Status}
  *
  * @property {string} statusMessage
  *   [Output only] Additional information about the current status of this
@@ -1908,16 +2223,27 @@ const GetNodePoolRequest = {
  *   Autoscaler configuration for this NodePool. Autoscaler is enabled
  *   only if a valid configuration is present.
  *
- *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1.NodePoolAutoscaling}
+ *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1beta1.NodePoolAutoscaling}
  *
  * @property {Object} management
  *   NodeManagement configuration for this NodePool.
  *
- *   This object should have the same structure as [NodeManagement]{@link google.container.v1.NodeManagement}
+ *   This object should have the same structure as [NodeManagement]{@link google.container.v1beta1.NodeManagement}
+ *
+ * @property {Object} maxPodsConstraint
+ *   The constraint on the maximum number of pods that can be run
+ *   simultaneously on a node in the node pool.
+ *
+ *   This object should have the same structure as [MaxPodsConstraint]{@link google.container.v1beta1.MaxPodsConstraint}
+ *
+ * @property {Object[]} conditions
+ *   Which conditions caused the current node pool state.
+ *
+ *   This object should have the same structure as [StatusCondition]{@link google.container.v1beta1.StatusCondition}
  *
  * @typedef NodePool
- * @memberof google.container.v1
- * @see [google.container.v1.NodePool definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.NodePool definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const NodePool = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -1926,7 +2252,7 @@ const NodePool = {
    * The current status of the node pool instance.
    *
    * @enum {number}
-   * @memberof google.container.v1
+   * @memberof google.container.v1beta1
    */
   Status: {
 
@@ -1979,24 +2305,19 @@ const NodePool = {
  * node pool.
  *
  * @property {boolean} autoUpgrade
- *   A flag that specifies whether node auto-upgrade is enabled for the node
- *   pool. If enabled, node auto-upgrade helps keep the nodes in your node pool
- *   up to date with the latest release version of Kubernetes.
+ *   Whether the nodes will be automatically upgraded.
  *
  * @property {boolean} autoRepair
- *   A flag that specifies whether the node auto-repair is enabled for the node
- *   pool. If enabled, the nodes in this node pool will be monitored and, if
- *   they fail health checks too many times, an automatic repair action will be
- *   triggered.
+ *   Whether the nodes will be automatically repaired.
  *
  * @property {Object} upgradeOptions
  *   Specifies the Auto Upgrade knobs for the node pool.
  *
- *   This object should have the same structure as [AutoUpgradeOptions]{@link google.container.v1.AutoUpgradeOptions}
+ *   This object should have the same structure as [AutoUpgradeOptions]{@link google.container.v1beta1.AutoUpgradeOptions}
  *
  * @typedef NodeManagement
- * @memberof google.container.v1
- * @see [google.container.v1.NodeManagement definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.NodeManagement definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const NodeManagement = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2016,8 +2337,8 @@ const NodeManagement = {
  *   with the description of the upgrade.
  *
  * @typedef AutoUpgradeOptions
- * @memberof google.container.v1
- * @see [google.container.v1.AutoUpgradeOptions definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.AutoUpgradeOptions definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const AutoUpgradeOptions = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2029,11 +2350,11 @@ const AutoUpgradeOptions = {
  * @property {Object} window
  *   Specifies the maintenance window in which maintenance may be performed.
  *
- *   This object should have the same structure as [MaintenanceWindow]{@link google.container.v1.MaintenanceWindow}
+ *   This object should have the same structure as [MaintenanceWindow]{@link google.container.v1beta1.MaintenanceWindow}
  *
  * @typedef MaintenancePolicy
- * @memberof google.container.v1
- * @see [google.container.v1.MaintenancePolicy definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.MaintenancePolicy definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const MaintenancePolicy = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2045,11 +2366,11 @@ const MaintenancePolicy = {
  * @property {Object} dailyMaintenanceWindow
  *   DailyMaintenanceWindow specifies a daily maintenance operation window.
  *
- *   This object should have the same structure as [DailyMaintenanceWindow]{@link google.container.v1.DailyMaintenanceWindow}
+ *   This object should have the same structure as [DailyMaintenanceWindow]{@link google.container.v1beta1.DailyMaintenanceWindow}
  *
  * @typedef MaintenanceWindow
- * @memberof google.container.v1
- * @see [google.container.v1.MaintenanceWindow definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.MaintenanceWindow definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const MaintenanceWindow = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2060,18 +2381,15 @@ const MaintenanceWindow = {
  *
  * @property {string} startTime
  *   Time within the maintenance window to start the maintenance operations.
- *   Time format should be in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt)
- *   format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT.
+ *   It must be in format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT.
  *
  * @property {string} duration
  *   [Output only] Duration of the time window, automatically chosen to be
  *   smallest possible in the given scenario.
- *   Duration will be in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt)
- *   format "PTnHnMnS".
  *
  * @typedef DailyMaintenanceWindow
- * @memberof google.container.v1
- * @see [google.container.v1.DailyMaintenanceWindow definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.DailyMaintenanceWindow definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const DailyMaintenanceWindow = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2103,7 +2421,7 @@ const DailyMaintenanceWindow = {
  * @property {Object} management
  *   NodeManagement configuration for the node pool.
  *
- *   This object should have the same structure as [NodeManagement]{@link google.container.v1.NodeManagement}
+ *   This object should have the same structure as [NodeManagement]{@link google.container.v1beta1.NodeManagement}
  *
  * @property {string} name
  *   The name (project, location, cluster, node pool id) of the node pool to set
@@ -2111,8 +2429,8 @@ const DailyMaintenanceWindow = {
  *   'projects/* /locations/* /clusters/* /nodePools/*'.
  *
  * @typedef SetNodePoolManagementRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetNodePoolManagementRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetNodePoolManagementRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetNodePoolManagementRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2150,8 +2468,8 @@ const SetNodePoolManagementRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/* /nodePools/*'.
  *
  * @typedef SetNodePoolSizeRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetNodePoolSizeRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetNodePoolSizeRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetNodePoolSizeRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2187,8 +2505,8 @@ const SetNodePoolSizeRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/* /nodePools/*'.
  *
  * @typedef RollbackNodePoolUpgradeRequest
- * @memberof google.container.v1
- * @see [google.container.v1.RollbackNodePoolUpgradeRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.RollbackNodePoolUpgradeRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const RollbackNodePoolUpgradeRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2200,13 +2518,57 @@ const RollbackNodePoolUpgradeRequest = {
  * @property {Object[]} nodePools
  *   A list of node pools for a cluster.
  *
- *   This object should have the same structure as [NodePool]{@link google.container.v1.NodePool}
+ *   This object should have the same structure as [NodePool]{@link google.container.v1beta1.NodePool}
  *
  * @typedef ListNodePoolsResponse
- * @memberof google.container.v1
- * @see [google.container.v1.ListNodePoolsResponse definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListNodePoolsResponse definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const ListNodePoolsResponse = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * ClusterAutoscaling contains global, per-cluster information
+ * required by Cluster Autoscaler to automatically adjust
+ * the size of the cluster and create/delete
+ * node pools based on the current needs.
+ *
+ * @property {boolean} enableNodeAutoprovisioning
+ *   Enables automatic node pool creation and deletion.
+ *
+ * @property {Object[]} resourceLimits
+ *   Contains global constraints regarding minimum and maximum
+ *   amount of resources in the cluster.
+ *
+ *   This object should have the same structure as [ResourceLimit]{@link google.container.v1beta1.ResourceLimit}
+ *
+ * @typedef ClusterAutoscaling
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ClusterAutoscaling definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const ClusterAutoscaling = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * Contains information about amount of some resource in the cluster.
+ * For memory, value should be in GB.
+ *
+ * @property {string} resourceType
+ *   Resource name "cpu", "memory" or gpu-specific string.
+ *
+ * @property {number} minimum
+ *   Minimum amount of the resource in the cluster.
+ *
+ * @property {number} maximum
+ *   Maximum amount of the resource in the cluster.
+ *
+ * @typedef ResourceLimit
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ResourceLimit definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const ResourceLimit = {
   // This is for documentation. Actual contents will be loaded by gRPC.
 };
 
@@ -2225,9 +2587,12 @@ const ListNodePoolsResponse = {
  *   Maximum number of nodes in the NodePool. Must be >= min_node_count. There
  *   has to enough quota to scale up the cluster.
  *
+ * @property {boolean} autoprovisioned
+ *   Can this node pool be deleted automatically.
+ *
  * @typedef NodePoolAutoscaling
- * @memberof google.container.v1
- * @see [google.container.v1.NodePoolAutoscaling definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.NodePoolAutoscaling definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const NodePoolAutoscaling = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2269,8 +2634,8 @@ const NodePoolAutoscaling = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetLabelsRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetLabelsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetLabelsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetLabelsRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2303,8 +2668,8 @@ const SetLabelsRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetLegacyAbacRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetLegacyAbacRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetLegacyAbacRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetLegacyAbacRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2337,8 +2702,8 @@ const SetLegacyAbacRequest = {
  *   Whether to rotate credentials during IP rotation.
  *
  * @typedef StartIPRotationRequest
- * @memberof google.container.v1
- * @see [google.container.v1.StartIPRotationRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.StartIPRotationRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const StartIPRotationRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2367,8 +2732,8 @@ const StartIPRotationRequest = {
  *   rotation. Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef CompleteIPRotationRequest
- * @memberof google.container.v1
- * @see [google.container.v1.CompleteIPRotationRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.CompleteIPRotationRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const CompleteIPRotationRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2385,11 +2750,61 @@ const CompleteIPRotationRequest = {
  *   [here](https://cloud.google.com/compute/docs/gpus/#Introduction)
  *
  * @typedef AcceleratorConfig
- * @memberof google.container.v1
- * @see [google.container.v1.AcceleratorConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.AcceleratorConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const AcceleratorConfig = {
   // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * WorkloadMetadataConfig defines the metadata configuration to expose to
+ * workloads on the node pool.
+ *
+ * @property {number} nodeMetadata
+ *   NodeMetadata is the configuration for how to expose the node metadata to
+ *   the workload running on the node.
+ *
+ *   The number should be among the values of [NodeMetadata]{@link google.container.v1beta1.NodeMetadata}
+ *
+ * @typedef WorkloadMetadataConfig
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.WorkloadMetadataConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const WorkloadMetadataConfig = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+
+  /**
+   * NodeMetadata is the configuration for if and how to expose the node
+   * metadata to the workload running on the node.
+   *
+   * @enum {number}
+   * @memberof google.container.v1beta1
+   */
+  NodeMetadata: {
+
+    /**
+     * Not set.
+     */
+    UNSPECIFIED: 0,
+
+    /**
+     * Prevent workloads not in hostNetwork from accessing certain VM metadata,
+     * specifically kube-env, which contains Kubelet credentials, and the
+     * instance identity token.
+     *
+     * Metadata concealment is a temporary security solution available while the
+     * bootstrapping process for cluster nodes is being redesigned with
+     * significant security improvements.  This feature is scheduled to be
+     * deprecated in the future and later removed.
+     */
+    SECURE: 1,
+
+    /**
+     * Expose all VM metadata to pods.
+     */
+    EXPOSE: 2
+  }
 };
 
 /**
@@ -2413,15 +2828,15 @@ const AcceleratorConfig = {
  * @property {Object} networkPolicy
  *   Configuration options for the NetworkPolicy feature.
  *
- *   This object should have the same structure as [NetworkPolicy]{@link google.container.v1.NetworkPolicy}
+ *   This object should have the same structure as [NetworkPolicy]{@link google.container.v1beta1.NetworkPolicy}
  *
  * @property {string} name
  *   The name (project, location, cluster id) of the cluster to set networking
  *   policy. Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetNetworkPolicyRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetNetworkPolicyRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetNetworkPolicyRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetNetworkPolicyRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
@@ -2446,7 +2861,7 @@ const SetNetworkPolicyRequest = {
  *   The maintenance policy to be set for the cluster. An empty field
  *   clears the existing maintenance policy.
  *
- *   This object should have the same structure as [MaintenancePolicy]{@link google.container.v1.MaintenancePolicy}
+ *   This object should have the same structure as [MaintenancePolicy]{@link google.container.v1beta1.MaintenancePolicy}
  *
  * @property {string} name
  *   The name (project, location, cluster id) of the cluster to set maintenance
@@ -2454,11 +2869,144 @@ const SetNetworkPolicyRequest = {
  *   Specified in the format 'projects/* /locations/* /clusters/*'.
  *
  * @typedef SetMaintenancePolicyRequest
- * @memberof google.container.v1
- * @see [google.container.v1.SetMaintenancePolicyRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.SetMaintenancePolicyRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const SetMaintenancePolicyRequest = {
   // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * ListLocationsRequest is used to request the locations that offer GKE.
+ *
+ * @property {string} parent
+ *   Contains the name of the resource requested.
+ *   Specified in the format 'projects/*'.
+ *
+ * @typedef ListLocationsRequest
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListLocationsRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const ListLocationsRequest = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * ListLocationsResponse returns the list of all GKE locations and their
+ * recommendation state.
+ *
+ * @property {Object[]} locations
+ *   A full list of GKE locations.
+ *
+ *   This object should have the same structure as [Location]{@link google.container.v1beta1.Location}
+ *
+ * @property {string} nextPageToken
+ *   Only return ListLocationsResponse that occur after the page_token. This
+ *   value should be populated from the ListLocationsResponse.next_page_token if
+ *   that response token was set (which happens when listing more Locations than
+ *   fit in a single ListLocationsResponse).
+ *
+ * @typedef ListLocationsResponse
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListLocationsResponse definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const ListLocationsResponse = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * Location returns the location name, and if the location is recommended
+ * for GKE cluster scheduling.
+ *
+ * @property {number} type
+ *   Contains the type of location this Location is for.
+ *   Regional or Zonal.
+ *
+ *   The number should be among the values of [LocationType]{@link google.container.v1beta1.LocationType}
+ *
+ * @property {string} name
+ *   Contains the name of the resource requested.
+ *   Specified in the format 'projects/* /locations/*'.
+ *
+ * @property {boolean} recommended
+ *   Whether the location is recomended for GKE cluster scheduling.
+ *
+ * @typedef Location
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.Location definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const Location = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+
+  /**
+   * LocationType is the type of GKE location, regional or zonal.
+   *
+   * @enum {number}
+   * @memberof google.container.v1beta1
+   */
+  LocationType: {
+
+    /**
+     * LOCATION_TYPE_UNSPECIFIED means the location type was not determined.
+     */
+    LOCATION_TYPE_UNSPECIFIED: 0,
+
+    /**
+     * A GKE Location where Zonal clusters can be created.
+     */
+    ZONE: 1,
+
+    /**
+     * A GKE Location where Regional clusters can be created.
+     */
+    REGION: 2
+  }
+};
+
+/**
+ * StatusCondition describes why a cluster or a node pool has a certain status
+ * (e.g., ERROR or DEGRADED).
+ *
+ * @property {number} code
+ *   Machine-friendly representation of the condition
+ *
+ *   The number should be among the values of [Code]{@link google.container.v1beta1.Code}
+ *
+ * @property {string} message
+ *   Human-friendly representation of the condition
+ *
+ * @typedef StatusCondition
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.StatusCondition definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const StatusCondition = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+
+  /**
+   * Code for each condition
+   *
+   * @enum {number}
+   * @memberof google.container.v1beta1
+   */
+  Code: {
+
+    /**
+     * UNKNOWN indicates a generic condition.
+     */
+    UNKNOWN: 0,
+
+    /**
+     * GCE_STOCKOUT indicates a GCE stockout.
+     */
+    GCE_STOCKOUT: 1,
+
+    /**
+     * GKE_SERVICE_ACCOUNT_DELETED indicates that the user deleted their robot
+     * service account.
+     * More codes TBA
+     */
+    GKE_SERVICE_ACCOUNT_DELETED: 2
+  }
 };
 
 /**
@@ -2476,9 +3024,173 @@ const SetMaintenancePolicyRequest = {
  *   Example: projects/my-project/regions/us-central1/subnetworks/my-subnet
  *
  * @typedef NetworkConfig
- * @memberof google.container.v1
- * @see [google.container.v1.NetworkConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1/cluster_service.proto}
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.NetworkConfig definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
  */
 const NetworkConfig = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * ListUsableSubnetworksRequest requests the list of usable subnetworks.
+ * available to a user for creating clusters.
+ *
+ * @property {string} parent
+ *   The parent project where subnetworks are usable.
+ *   Specified in the format 'projects/*'.
+ *
+ * @property {string} filter
+ *   Filtering currently only supports equality on the networkProjectId and must
+ *   be in the form: "networkProjectId=[PROJECTID]", where `networkProjectId`
+ *   is the project which owns the listed subnetworks. This defaults to the
+ *   parent project ID.
+ *
+ * @property {number} pageSize
+ *   The max number of results per page that should be returned. If the number
+ *   of available results is larger than `page_size`, a `next_page_token` is
+ *   returned which can be used to get the next page of results in subsequent
+ *   requests. Acceptable values are 0 to 500, inclusive. (Default: 500)
+ *
+ * @property {string} pageToken
+ *   Specifies a page token to use. Set this to the nextPageToken returned by
+ *   previous list requests to get the next page of results.
+ *
+ * @typedef ListUsableSubnetworksRequest
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListUsableSubnetworksRequest definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const ListUsableSubnetworksRequest = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * ListUsableSubnetworksResponse is the response of
+ * ListUsableSubnetworksRequest.
+ *
+ * @property {Object[]} subnetworks
+ *   A list of usable subnetworks in the specified network project.
+ *
+ *   This object should have the same structure as [UsableSubnetwork]{@link google.container.v1beta1.UsableSubnetwork}
+ *
+ * @property {string} nextPageToken
+ *   This token allows you to get the next page of results for list requests.
+ *   If the number of results is larger than `page_size`, use the
+ *   `next_page_token` as a value for the query parameter `page_token` in the
+ *   next request. The value will become empty when there are no more pages.
+ *
+ * @typedef ListUsableSubnetworksResponse
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.ListUsableSubnetworksResponse definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const ListUsableSubnetworksResponse = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * Secondary IP range of a usable subnetwork.
+ *
+ * @property {string} rangeName
+ *   The name associated with this subnetwork secondary range, used when adding
+ *   an alias IP range to a VM instance.
+ *
+ * @property {string} ipCidrRange
+ *   The range of IP addresses belonging to this subnetwork secondary range.
+ *
+ * @property {number} status
+ *   This field is to determine the status of the secondary range programmably.
+ *
+ *   The number should be among the values of [Status]{@link google.container.v1beta1.Status}
+ *
+ * @typedef UsableSubnetworkSecondaryRange
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.UsableSubnetworkSecondaryRange definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const UsableSubnetworkSecondaryRange = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+
+  /**
+   * Status shows the current usage of a secondary IP range.
+   *
+   * @enum {number}
+   * @memberof google.container.v1beta1
+   */
+  Status: {
+
+    /**
+     * UNKNOWN is the zero value of the Status enum. It's not a valid status.
+     */
+    UNKNOWN: 0,
+
+    /**
+     * UNUSED denotes that this range is unclaimed by any cluster.
+     */
+    UNUSED: 1,
+
+    /**
+     * IN_USE_SERVICE denotes that this range is claimed by a cluster for
+     * services. It cannot be used for other clusters.
+     */
+    IN_USE_SERVICE: 2,
+
+    /**
+     * IN_USE_SHAREABLE_POD denotes this range was created by the network admin
+     * and is currently claimed by a cluster for pods. It can only be used by
+     * other clusters as a pod range.
+     */
+    IN_USE_SHAREABLE_POD: 3,
+
+    /**
+     * IN_USE_MANAGED_POD denotes this range was created by GKE and is claimed
+     * for pods. It cannot be used for other clusters.
+     */
+    IN_USE_MANAGED_POD: 4
+  }
+};
+
+/**
+ * UsableSubnetwork resource returns the subnetwork name, its associated network
+ * and the primary CIDR range.
+ *
+ * @property {string} subnetwork
+ *   Subnetwork Name.
+ *   Example: projects/my-project/regions/us-central1/subnetworks/my-subnet
+ *
+ * @property {string} network
+ *   Network Name.
+ *   Example: projects/my-project/global/networks/my-network
+ *
+ * @property {string} ipCidrRange
+ *   The range of internal addresses that are owned by this subnetwork.
+ *
+ * @property {Object[]} secondaryIpRanges
+ *   Secondary IP ranges.
+ *
+ *   This object should have the same structure as [UsableSubnetworkSecondaryRange]{@link google.container.v1beta1.UsableSubnetworkSecondaryRange}
+ *
+ * @property {string} statusMessage
+ *   A human readable status message representing the reasons for cases where
+ *   the caller cannot use the secondary ranges under the subnet. For example if
+ *   the secondary_ip_ranges is empty due to a permission issue, an insufficient
+ *   permission message will be given by status_message.
+ *
+ * @typedef UsableSubnetwork
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.UsableSubnetwork definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const UsableSubnetwork = {
+  // This is for documentation. Actual contents will be loaded by gRPC.
+};
+
+/**
+ * Constraints applied to pods.
+ *
+ * @property {number} maxPodsPerNode
+ *   Constraint enforced on the max num of pods per node.
+ *
+ * @typedef MaxPodsConstraint
+ * @memberof google.container.v1beta1
+ * @see [google.container.v1beta1.MaxPodsConstraint definition in proto format]{@link https://github.com/googleapis/googleapis/blob/master/google/container/v1beta1/cluster_service.proto}
+ */
+const MaxPodsConstraint = {
   // This is for documentation. Actual contents will be loaded by gRPC.
 };
