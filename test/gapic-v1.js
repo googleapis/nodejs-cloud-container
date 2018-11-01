@@ -31,11 +31,9 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
+      const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
       const request = {
-        projectId: projectId,
-        zone: zone,
+        parent: formattedParent,
       };
 
       // Mock response
@@ -61,11 +59,9 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
+      const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
       const request = {
-        projectId: projectId,
-        zone: zone,
+        parent: formattedParent,
       };
 
       // Mock Grpc layer
@@ -92,17 +88,17 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
+      const name2 = 'name2-1052831874';
       const description = 'description-1724546052';
       const initialNodeCount = 1682564205;
       const loggingService = 'loggingService-1700501035';
@@ -113,7 +109,7 @@ describe('ClusterManagerClient', () => {
       const enableKubernetesAlpha = false;
       const labelFingerprint = 'labelFingerprint714995737';
       const selfLink = 'selfLink-1691268851';
-      const zone2 = 'zone2-696322977';
+      const zone = 'zone3744684';
       const endpoint = 'endpoint1741102485';
       const initialClusterVersion = 'initialClusterVersion-276373352';
       const currentMasterVersion = 'currentMasterVersion-920953983';
@@ -124,8 +120,9 @@ describe('ClusterManagerClient', () => {
       const servicesIpv4Cidr = 'servicesIpv4Cidr1966438125';
       const currentNodeCount = 178977560;
       const expireTime = 'expireTime-96179731';
+      const location = 'location1901043637';
       const expectedResponse = {
-        name: name,
+        name: name2,
         description: description,
         initialNodeCount: initialNodeCount,
         loggingService: loggingService,
@@ -136,7 +133,7 @@ describe('ClusterManagerClient', () => {
         enableKubernetesAlpha: enableKubernetesAlpha,
         labelFingerprint: labelFingerprint,
         selfLink: selfLink,
-        zone: zone2,
+        zone: zone,
         endpoint: endpoint,
         initialClusterVersion: initialClusterVersion,
         currentMasterVersion: currentMasterVersion,
@@ -147,6 +144,7 @@ describe('ClusterManagerClient', () => {
         servicesIpv4Cidr: servicesIpv4Cidr,
         currentNodeCount: currentNodeCount,
         expireTime: expireTime,
+        location: location,
       };
 
       // Mock Grpc layer
@@ -169,13 +167,13 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -202,31 +200,31 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
       const cluster = {};
+      const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
       const request = {
-        projectId: projectId,
-        zone: zone,
         cluster: cluster,
+        parent: formattedParent,
       };
 
       // Mock response
       const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
         name: name,
-        zone: zone2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -251,13 +249,11 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
       const cluster = {};
+      const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
       const request = {
-        projectId: projectId,
-        zone: zone,
         cluster: cluster,
+        parent: formattedParent,
       };
 
       // Mock Grpc layer
@@ -284,33 +280,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const update = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         update: update,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -335,15 +333,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const update = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         update: update,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -370,37 +368,38 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
       const nodeVersion = 'nodeVersion1790136219';
       const imageType = 'imageType-1442758754';
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
         nodeVersion: nodeVersion,
         imageType: imageType,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -425,19 +424,18 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
       const nodeVersion = 'nodeVersion1790136219';
       const imageType = 'imageType-1442758754';
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
         nodeVersion: nodeVersion,
         imageType: imageType,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -464,35 +462,36 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
       const autoscaling = {};
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
         autoscaling: autoscaling,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -517,17 +516,16 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
       const autoscaling = {};
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
         autoscaling: autoscaling,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -554,33 +552,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const loggingService = 'loggingService-1700501035';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         loggingService: loggingService,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -605,15 +605,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const loggingService = 'loggingService-1700501035';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         loggingService: loggingService,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -640,33 +640,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const monitoringService = 'monitoringService1469270462';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         monitoringService: monitoringService,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -691,15 +693,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const monitoringService = 'monitoringService1469270462';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         monitoringService: monitoringService,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -726,33 +728,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const addonsConfig = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         addonsConfig: addonsConfig,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -777,15 +781,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const addonsConfig = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         addonsConfig: addonsConfig,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -812,33 +816,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const locations = [];
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         locations: locations,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -863,15 +869,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const locations = [];
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         locations: locations,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -898,33 +904,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const masterVersion = 'masterVersion-2139460613';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         masterVersion: masterVersion,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -949,15 +957,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const masterVersion = 'masterVersion-2139460613';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         masterVersion: masterVersion,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -984,35 +992,37 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const action = 'UNKNOWN';
       const update = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         action: action,
         update: update,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -1037,17 +1047,17 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const action = 'UNKNOWN';
       const update = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         action: action,
         update: update,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1074,31 +1084,33 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -1123,13 +1135,13 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1156,11 +1168,9 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
+      const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
       const request = {
-        projectId: projectId,
-        zone: zone,
+        parent: formattedParent,
       };
 
       // Mock response
@@ -1186,11 +1196,9 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
+      const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
       const request = {
-        projectId: projectId,
-        zone: zone,
+        parent: formattedParent,
       };
 
       // Mock Grpc layer
@@ -1217,31 +1225,33 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const operationId = 'operationId-274116877';
+      const formattedName = client.operationPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[OPERATION]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        operationId: operationId,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -1266,13 +1276,13 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const operationId = 'operationId-274116877';
+      const formattedName = client.operationPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[OPERATION]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        operationId: operationId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1299,13 +1309,13 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const operationId = 'operationId-274116877';
+      const formattedName = client.operationPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[OPERATION]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        operationId: operationId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1324,13 +1334,13 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const operationId = 'operationId-274116877';
+      const formattedName = client.operationPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[OPERATION]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        operationId: operationId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1356,11 +1366,9 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
+      const formattedName = client.locationPath('[PROJECT]', '[LOCATION]');
       const request = {
-        projectId: projectId,
-        zone: zone,
+        name: formattedName,
       };
 
       // Mock response
@@ -1391,11 +1399,9 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
+      const formattedName = client.locationPath('[PROJECT]', '[LOCATION]');
       const request = {
-        projectId: projectId,
-        zone: zone,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1422,13 +1428,13 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedParent = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        parent: formattedParent,
       };
 
       // Mock response
@@ -1454,13 +1460,13 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedParent = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        parent: formattedParent,
       };
 
       // Mock Grpc layer
@@ -1487,25 +1493,24 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
+      const name2 = 'name2-1052831874';
       const initialNodeCount = 1682564205;
       const selfLink = 'selfLink-1691268851';
       const version = 'version351608024';
       const statusMessage = 'statusMessage-239442758';
       const expectedResponse = {
-        name: name,
+        name: name2,
         initialNodeCount: initialNodeCount,
         selfLink: selfLink,
         version: version,
@@ -1532,15 +1537,14 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1567,33 +1571,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const nodePool = {};
+      const formattedParent = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         nodePool: nodePool,
+        parent: formattedParent,
       };
 
       // Mock response
       const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
         name: name,
-        zone: zone2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -1618,15 +1624,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const nodePool = {};
+      const formattedParent = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         nodePool: nodePool,
+        parent: formattedParent,
       };
 
       // Mock Grpc layer
@@ -1653,33 +1659,34 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -1704,15 +1711,14 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1739,33 +1745,34 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -1790,15 +1797,14 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1825,35 +1831,36 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
       const management = {};
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
         management: management,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -1878,17 +1885,16 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
       const management = {};
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
         management: management,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -1915,35 +1921,37 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const resourceLabels = {};
       const labelFingerprint = 'labelFingerprint714995737';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         resourceLabels: resourceLabels,
         labelFingerprint: labelFingerprint,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -1968,17 +1976,17 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const resourceLabels = {};
       const labelFingerprint = 'labelFingerprint714995737';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         resourceLabels: resourceLabels,
         labelFingerprint: labelFingerprint,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -2005,33 +2013,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const enabled = false;
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         enabled: enabled,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -2056,15 +2066,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const enabled = false;
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         enabled: enabled,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -2091,31 +2101,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
+      const rotateCredentials = true;
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        name: formattedName,
+        rotateCredentials: rotateCredentials,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -2140,13 +2154,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
+      const rotateCredentials = true;
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        name: formattedName,
+        rotateCredentials: rotateCredentials,
       };
 
       // Mock Grpc layer
@@ -2173,31 +2189,33 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -2222,13 +2240,13 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -2255,35 +2273,36 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
       const nodeCount = 1539922066;
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
         nodeCount: nodeCount,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -2308,17 +2327,16 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
-      const nodePoolId = 'nodePoolId1043384033';
       const nodeCount = 1539922066;
+      const formattedName = client.nodePoolPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]',
+        '[NODE_POOL]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
-        nodePoolId: nodePoolId,
         nodeCount: nodeCount,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -2345,33 +2363,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const networkPolicy = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         networkPolicy: networkPolicy,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -2396,15 +2416,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const networkPolicy = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         networkPolicy: networkPolicy,
+        name: formattedName,
       };
 
       // Mock Grpc layer
@@ -2431,33 +2451,35 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const maintenancePolicy = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         maintenancePolicy: maintenancePolicy,
+        name: formattedName,
       };
 
       // Mock response
-      const name = 'name3373707';
-      const zone2 = 'zone2-696322977';
+      const name2 = 'name2-1052831874';
+      const zone = 'zone3744684';
       const detail = 'detail-1335224239';
       const statusMessage = 'statusMessage-239442758';
       const selfLink = 'selfLink-1691268851';
       const targetLink = 'targetLink-2084812312';
+      const location = 'location1901043637';
       const startTime = 'startTime-1573145462';
       const endTime = 'endTime1725551537';
       const expectedResponse = {
-        name: name,
-        zone: zone2,
+        name: name2,
+        zone: zone,
         detail: detail,
         statusMessage: statusMessage,
         selfLink: selfLink,
         targetLink: targetLink,
+        location: location,
         startTime: startTime,
         endTime: endTime,
       };
@@ -2482,15 +2504,15 @@ describe('ClusterManagerClient', () => {
       });
 
       // Mock request
-      const projectId = 'projectId-1969970175';
-      const zone = 'zone3744684';
-      const clusterId = 'clusterId240280960';
       const maintenancePolicy = {};
+      const formattedName = client.clusterPath(
+        '[PROJECT]',
+        '[LOCATION]',
+        '[CLUSTER]'
+      );
       const request = {
-        projectId: projectId,
-        zone: zone,
-        clusterId: clusterId,
         maintenancePolicy: maintenancePolicy,
+        name: formattedName,
       };
 
       // Mock Grpc layer
