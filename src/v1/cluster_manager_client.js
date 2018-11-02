@@ -22,7 +22,7 @@ const path = require('path');
 const VERSION = require('../../package.json').version;
 
 /**
- * Google Container Engine Cluster Manager v1
+ * Google Kubernetes Engine Cluster Manager v1
  *
  * @class
  * @memberof v1
@@ -95,6 +95,24 @@ class ClusterManagerClient {
         'google/container/v1/cluster_service.proto'
       )
     );
+
+    // This API contains "path templates"; forward-slash-separated
+    // identifiers to uniquely identify resources within the API.
+    // Create useful helper objects for these.
+    this._pathTemplates = {
+      locationPathTemplate: new gax.PathTemplate(
+        'projects/{project}/locations/{location}'
+      ),
+      clusterPathTemplate: new gax.PathTemplate(
+        'projects/{project}/locations/{location}/clusters/{cluster}'
+      ),
+      nodePoolPathTemplate: new gax.PathTemplate(
+        'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
+      ),
+      operationPathTemplate: new gax.PathTemplate(
+        'projects/{project}/locations/{location}/operations/{operation}'
+      ),
+    };
 
     // Put together the default options sent with requests.
     const defaults = gaxGrpc.constructSettings(
@@ -206,13 +224,19 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.parent
+   *   The parent (project and location) where the clusters will be listed.
+   *   Specified in the format 'projects/* /locations/*'.
+   *   Location "-" matches all zones and all regions.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the parent field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides, or "-" for all zones.
+   *   This field has been deprecated and replaced by the parent field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -232,13 +256,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   * };
-   * client.listClusters(request)
+   * const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
+   * client.listClusters({parent: formattedParent})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -262,15 +281,21 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to retrieve.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to retrieve.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to retrieve.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -290,15 +315,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   * };
-   * client.getCluster(request)
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
+   * client.getCluster({name: formattedName})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -334,18 +352,23 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
    * @param {Object} request.cluster
    *   A [cluster
    *   resource](https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters)
    *
    *   This object should have the same structure as [Cluster]{@link google.container.v1.Cluster}
+   * @param {string} request.parent
+   *   The parent (project and location) where the cluster will be created.
+   *   Specified in the format 'projects/* /locations/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the parent field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the parent field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -365,13 +388,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
    * const cluster = {};
+   * const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
    *   cluster: cluster,
+   *   parent: formattedParent,
    * };
    * client.createCluster(request)
    *   .then(responses => {
@@ -397,19 +418,25 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
    * @param {Object} request.update
    *   A description of the update.
    *
    *   This object should have the same structure as [ClusterUpdate]{@link google.container.v1.ClusterUpdate}
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to update.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -429,15 +456,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const update = {};
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   update: update,
+   *   name: formattedName,
    * };
    * client.updateCluster(request)
    *   .then(responses => {
@@ -459,27 +482,43 @@ class ClusterManagerClient {
   }
 
   /**
-   * Updates the version and/or image type of a specific node pool.
+   * Updates the version and/or image type for a specific node pool.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
-   * @param {string} request.nodePoolId
-   *   The name of the node pool to upgrade.
    * @param {string} request.nodeVersion
    *   The Kubernetes version to change the nodes to (typically an
-   *   upgrade). Use `-` to upgrade to the latest version supported by
-   *   the server.
+   *   upgrade).
+   *
+   *   Users may specify either explicit versions offered by Kubernetes Engine or
+   *   version aliases, which have the following behavior:
+   *
+   *   - "latest": picks the highest valid Kubernetes version
+   *   - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
+   *   - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
+   *   - "1.X.Y-gke.N": picks an explicit Kubernetes version
+   *   - "-": picks the Kubernetes master version
    * @param {string} request.imageType
    *   The desired image type for the node pool.
+   * @param {string} request.name
+   *   The name (project, location, cluster, node pool) of the node pool to
+   *   update. Specified in the format
+   *   'projects/* /locations/* /clusters/* /nodePools/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.nodePoolId]
+   *   Deprecated. The name of the node pool to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -499,19 +538,13 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const nodePoolId = '';
    * const nodeVersion = '';
    * const imageType = '';
+   * const formattedName = client.nodePoolPath('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   *   nodePoolId: nodePoolId,
    *   nodeVersion: nodeVersion,
    *   imageType: imageType,
+   *   name: formattedName,
    * };
    * client.updateNodePool(request)
    *   .then(responses => {
@@ -533,25 +566,33 @@ class ClusterManagerClient {
   }
 
   /**
-   * Sets the autoscaling settings of a specific node pool.
+   * Sets the autoscaling settings for a specific node pool.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
-   * @param {string} request.nodePoolId
-   *   The name of the node pool to upgrade.
    * @param {Object} request.autoscaling
    *   Autoscaling configuration for the node pool.
    *
    *   This object should have the same structure as [NodePoolAutoscaling]{@link google.container.v1.NodePoolAutoscaling}
+   * @param {string} request.name
+   *   The name (project, location, cluster, node pool) of the node pool to set
+   *   autoscaler settings. Specified in the format
+   *   'projects/* /locations/* /clusters/* /nodePools/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.nodePoolId]
+   *   Deprecated. The name of the node pool to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -571,17 +612,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const nodePoolId = '';
    * const autoscaling = {};
+   * const formattedName = client.nodePoolPath('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   *   nodePoolId: nodePoolId,
    *   autoscaling: autoscaling,
+   *   name: formattedName,
    * };
    * client.setNodePoolAutoscaling(request)
    *   .then(responses => {
@@ -607,25 +642,31 @@ class ClusterManagerClient {
   }
 
   /**
-   * Sets the logging service of a specific cluster.
+   * Sets the logging service for a specific cluster.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
    * @param {string} request.loggingService
    *   The logging service the cluster should use to write metrics.
    *   Currently available options:
    *
    *   * "logging.googleapis.com" - the Google Cloud Logging service
    *   * "none" - no metrics will be exported from the cluster
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to set logging.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -645,15 +686,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const loggingService = '';
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   loggingService: loggingService,
+   *   name: formattedName,
    * };
    * client.setLoggingService(request)
    *   .then(responses => {
@@ -675,25 +712,31 @@ class ClusterManagerClient {
   }
 
   /**
-   * Sets the monitoring service of a specific cluster.
+   * Sets the monitoring service for a specific cluster.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
    * @param {string} request.monitoringService
    *   The monitoring service the cluster should use to write metrics.
    *   Currently available options:
    *
    *   * "monitoring.googleapis.com" - the Google Cloud Monitoring service
    *   * "none" - no metrics will be exported from the cluster
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to set monitoring.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -713,15 +756,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const monitoringService = '';
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   monitoringService: monitoringService,
+   *   name: formattedName,
    * };
    * client.setMonitoringService(request)
    *   .then(responses => {
@@ -743,24 +782,30 @@ class ClusterManagerClient {
   }
 
   /**
-   * Sets the addons of a specific cluster.
+   * Sets the addons for a specific cluster.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
    * @param {Object} request.addonsConfig
    *   The desired configurations for the various addons available to run in the
    *   cluster.
    *
    *   This object should have the same structure as [AddonsConfig]{@link google.container.v1.AddonsConfig}
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to set addons.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -780,15 +825,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const addonsConfig = {};
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   addonsConfig: addonsConfig,
+   *   name: formattedName,
    * };
    * client.setAddonsConfig(request)
    *   .then(responses => {
@@ -810,19 +851,10 @@ class ClusterManagerClient {
   }
 
   /**
-   * Sets the locations of a specific cluster.
+   * Sets the locations for a specific cluster.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
    * @param {string[]} request.locations
    *   The desired list of Google Compute Engine
    *   [locations](https://cloud.google.com/compute/docs/zones#available) in which the cluster's nodes
@@ -831,6 +863,21 @@ class ClusterManagerClient {
    *   whether locations are being added or removed.
    *
    *   This list must always include the cluster's primary zone.
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to set locations.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -850,15 +897,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const locations = [];
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   locations: locations,
+   *   name: formattedName,
    * };
    * client.setLocations(request)
    *   .then(responses => {
@@ -880,23 +923,36 @@ class ClusterManagerClient {
   }
 
   /**
-   * Updates the master of a specific cluster.
+   * Updates the master for a specific cluster.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.masterVersion
+   *   The Kubernetes version to change the master to.
+   *
+   *   Users may specify either explicit versions offered by Kubernetes Engine or
+   *   version aliases, which have the following behavior:
+   *
+   *   - "latest": picks the highest valid Kubernetes version
+   *   - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
+   *   - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
+   *   - "1.X.Y-gke.N": picks an explicit Kubernetes version
+   *   - "-": picks the default Kubernetes version
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to update.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
-   * @param {string} request.masterVersion
-   *   The Kubernetes version to change the master to. The only valid value is the
-   *   latest supported version. Use "-" to have the server automatically select
-   *   the latest version.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -916,15 +972,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const masterVersion = '';
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   masterVersion: masterVersion,
+   *   name: formattedName,
    * };
    * client.updateMaster(request)
    *   .then(responses => {
@@ -947,20 +999,11 @@ class ClusterManagerClient {
 
   /**
    * Used to set master auth materials. Currently supports :-
-   * Changing the admin password of a specific cluster.
+   * Changing the admin password for a specific cluster.
    * This can be either via password generation or explicitly set the password.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to upgrade.
    * @param {number} request.action
    *   The exact form of action to be taken on the master auth.
    *
@@ -969,6 +1012,21 @@ class ClusterManagerClient {
    *   A description of the update.
    *
    *   This object should have the same structure as [MasterAuth]{@link google.container.v1.MasterAuth}
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to set auth.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to upgrade.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -988,17 +1046,13 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const action = 'UNKNOWN';
    * const update = {};
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   action: action,
    *   update: update,
+   *   name: formattedName,
    * };
    * client.setMasterAuth(request)
    *   .then(responses => {
@@ -1032,15 +1086,21 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, cluster) of the cluster to delete.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to delete.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to delete.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1060,15 +1120,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   * };
-   * client.deleteCluster(request)
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
+   * client.deleteCluster({name: formattedName})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1092,12 +1145,18 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.parent
+   *   The parent (project and location) where the operations will be listed.
+   *   Specified in the format 'projects/* /locations/*'.
+   *   Location "-" matches all zones and all regions.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available)
-   *   to return operations for, or `-` for all zones.
+   *   This field has been deprecated and replaced by the parent field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) to return operations for, or `-` for
+   *   all zones. This field has been deprecated and replaced by the parent field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1117,13 +1176,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   * };
-   * client.listOperations(request)
+   * const formattedParent = client.locationPath('[PROJECT]', '[LOCATION]');
+   * client.listOperations({parent: formattedParent})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1147,15 +1201,21 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, operation id) of the operation to get.
+   *   Specified in the format 'projects/* /locations/* /operations/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.operationId
-   *   The server-assigned `name` of the operation.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.operationId]
+   *   Deprecated. The server-assigned `name` of the operation.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1175,15 +1235,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const operationId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   operationId: operationId,
-   * };
-   * client.getOperation(request)
+   * const formattedName = client.operationPath('[PROJECT]', '[LOCATION]', '[OPERATION]');
+   * client.getOperation({name: formattedName})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1207,14 +1260,20 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, operation id) of the operation to cancel.
+   *   Specified in the format 'projects/* /locations/* /operations/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation resides.
-   * @param {string} request.operationId
-   *   The server-assigned `name` of the operation.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.operationId]
+   *   Deprecated. The server-assigned `name` of the operation.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1231,15 +1290,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const operationId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   operationId: operationId,
-   * };
-   * client.cancelOperation(request).catch(err => {
+   * const formattedName = client.operationPath('[PROJECT]', '[LOCATION]', '[OPERATION]');
+   * client.cancelOperation({name: formattedName}).catch(err => {
    *   console.error(err);
    * });
    */
@@ -1254,16 +1306,21 @@ class ClusterManagerClient {
   }
 
   /**
-   * Returns configuration info about the Container Engine service.
+   * Returns configuration info about the Kubernetes Engine service.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project and location) of the server config to get
+   *   Specified in the format 'projects/* /locations/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available)
-   *   to return operations for.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) to return operations for.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1283,13 +1340,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   * };
-   * client.getServerConfig(request)
+   * const formattedName = client.locationPath('[PROJECT]', '[LOCATION]');
+   * client.getServerConfig({name: formattedName})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1313,15 +1365,21 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.parent
+   *   The parent (project, location, cluster id) where the node pools will be
+   *   listed. Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://developers.google.com/console/help/new/#projectnumber).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the parent field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster.
+   *   This field has been deprecated and replaced by the parent field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster.
+   *   This field has been deprecated and replaced by the parent field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1341,15 +1399,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   * };
-   * client.listNodePools(request)
+   * const formattedParent = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
+   * client.listNodePools({parent: formattedParent})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1373,17 +1424,25 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, cluster, node pool id) of the node pool to
+   *   get. Specified in the format
+   *   'projects/* /locations/* /clusters/* /nodePools/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://developers.google.com/console/help/new/#projectnumber).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster.
-   * @param {string} request.nodePoolId
-   *   The name of the node pool.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.nodePoolId]
+   *   Deprecated. The name of the node pool.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1403,17 +1462,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const nodePoolId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   *   nodePoolId: nodePoolId,
-   * };
-   * client.getNodePool(request)
+   * const formattedName = client.nodePoolPath('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]');
+   * client.getNodePool({name: formattedName})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1437,19 +1487,26 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster.
    * @param {Object} request.nodePool
    *   The node pool to create.
    *
    *   This object should have the same structure as [NodePool]{@link google.container.v1.NodePool}
+   * @param {string} request.parent
+   *   The parent (project, location, cluster id) where the node pool will be
+   *   created. Specified in the format
+   *   'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://developers.google.com/console/help/new/#projectnumber).
+   *   This field has been deprecated and replaced by the parent field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the parent field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster.
+   *   This field has been deprecated and replaced by the parent field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1469,15 +1526,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const nodePool = {};
+   * const formattedParent = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   nodePool: nodePool,
+   *   parent: formattedParent,
    * };
    * client.createNodePool(request)
    *   .then(responses => {
@@ -1503,17 +1556,25 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, cluster, node pool id) of the node pool to
+   *   delete. Specified in the format
+   *   'projects/* /locations/* /clusters/* /nodePools/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://developers.google.com/console/help/new/#projectnumber).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster.
-   * @param {string} request.nodePoolId
-   *   The name of the node pool to delete.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.nodePoolId]
+   *   Deprecated. The name of the node pool to delete.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1533,17 +1594,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const nodePoolId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   *   nodePoolId: nodePoolId,
-   * };
-   * client.deleteNodePool(request)
+   * const formattedName = client.nodePoolPath('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]');
+   * client.deleteNodePool({name: formattedName})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1568,17 +1620,25 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, cluster, node pool id) of the node poll to
+   *   rollback upgrade.
+   *   Specified in the format 'projects/* /locations/* /clusters/* /nodePools/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to rollback.
-   * @param {string} request.nodePoolId
-   *   The name of the node pool to rollback.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to rollback.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.nodePoolId]
+   *   Deprecated. The name of the node pool to rollback.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1598,17 +1658,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const nodePoolId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   *   nodePoolId: nodePoolId,
-   * };
-   * client.rollbackNodePoolUpgrade(request)
+   * const formattedName = client.nodePoolPath('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]');
+   * client.rollbackNodePoolUpgrade({name: formattedName})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1636,21 +1687,29 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to update.
-   * @param {string} request.nodePoolId
-   *   The name of the node pool to update.
    * @param {Object} request.management
    *   NodeManagement configuration for the node pool.
    *
    *   This object should have the same structure as [NodeManagement]{@link google.container.v1.NodeManagement}
+   * @param {string} request.name
+   *   The name (project, location, cluster, node pool id) of the node pool to set
+   *   management properties. Specified in the format
+   *   'projects/* /locations/* /clusters/* /nodePools/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to update.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.nodePoolId]
+   *   Deprecated. The name of the node pool to update.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1670,17 +1729,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const nodePoolId = '';
    * const management = {};
+   * const formattedName = client.nodePoolPath('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   *   nodePoolId: nodePoolId,
    *   management: management,
+   *   name: formattedName,
    * };
    * client.setNodePoolManagement(request)
    *   .then(responses => {
@@ -1710,24 +1763,30 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster.
    * @param {Object.<string, string>} request.resourceLabels
    *   The labels to set for that cluster.
    * @param {string} request.labelFingerprint
    *   The fingerprint of the previous set of labels for this resource,
    *   used to detect conflicts. The fingerprint is initially generated by
-   *   Container Engine and changes after every request to modify or update
+   *   Kubernetes Engine and changes after every request to modify or update
    *   labels. You must always provide an up-to-date fingerprint hash when
    *   updating or changing labels. Make a <code>get()</code> request to the
    *   resource to get the latest fingerprint.
+   * @param {string} request.name
+   *   The name (project, location, cluster id) of the cluster to set labels.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://developers.google.com/console/help/new/#projectnumber).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1747,17 +1806,13 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const resourceLabels = {};
    * const labelFingerprint = '';
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   resourceLabels: resourceLabels,
    *   labelFingerprint: labelFingerprint,
+   *   name: formattedName,
    * };
    * client.setLabels(request)
    *   .then(responses => {
@@ -1783,17 +1838,23 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to update.
    * @param {boolean} request.enabled
    *   Whether ABAC authorization will be enabled in the cluster.
+   * @param {string} request.name
+   *   The name (project, location, cluster id) of the cluster to set legacy abac.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to update.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1813,15 +1874,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const enabled = false;
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   enabled: enabled,
+   *   name: formattedName,
    * };
    * client.setLegacyAbac(request)
    *   .then(responses => {
@@ -1847,15 +1904,23 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, cluster id) of the cluster to start IP
+   *   rotation. Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {boolean} request.rotateCredentials
+   *   Whether to rotate credentials during IP rotation.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://developers.google.com/console/help/new/#projectnumber).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1875,13 +1940,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
+   * const rotateCredentials = false;
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
+   *   name: formattedName,
+   *   rotateCredentials: rotateCredentials,
    * };
    * client.startIPRotation(request)
    *   .then(responses => {
@@ -1907,15 +1970,21 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
+   * @param {string} request.name
+   *   The name (project, location, cluster id) of the cluster to complete IP
+   *   rotation. Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
    *   number](https://developers.google.com/console/help/new/#projectnumber).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
    *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1935,15 +2004,8 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   * };
-   * client.completeIPRotation(request)
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
+   * client.completeIPRotation({name: formattedName})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -1963,23 +2025,31 @@ class ClusterManagerClient {
   }
 
   /**
-   * Sets the size of a specific node pool.
+   * Sets the size for a specific node pool.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to update.
-   * @param {string} request.nodePoolId
-   *   The name of the node pool to update.
    * @param {number} request.nodeCount
    *   The desired node count for the pool.
+   * @param {string} request.name
+   *   The name (project, location, cluster, node pool id) of the node pool to set
+   *   size.
+   *   Specified in the format 'projects/* /locations/* /clusters/* /nodePools/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster to update.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.nodePoolId]
+   *   Deprecated. The name of the node pool to update.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -1999,17 +2069,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
-   * const nodePoolId = '';
    * const nodeCount = 0;
+   * const formattedName = client.nodePoolPath('[PROJECT]', '[LOCATION]', '[CLUSTER]', '[NODE_POOL]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
-   *   nodePoolId: nodePoolId,
    *   nodeCount: nodeCount,
+   *   name: formattedName,
    * };
    * client.setNodePoolSize(request)
    *   .then(responses => {
@@ -2035,19 +2099,25 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster.
    * @param {Object} request.networkPolicy
    *   Configuration options for the NetworkPolicy feature.
    *
    *   This object should have the same structure as [NetworkPolicy]{@link google.container.v1.NetworkPolicy}
+   * @param {string} request.name
+   *   The name (project, location, cluster id) of the cluster to set networking
+   *   policy. Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   Deprecated. The Google Developers Console [project ID or project
+   *   number](https://developers.google.com/console/help/new/#projectnumber).
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.zone]
+   *   Deprecated. The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   *   This field has been deprecated and replaced by the name field.
+   * @param {string} [request.clusterId]
+   *   Deprecated. The name of the cluster.
+   *   This field has been deprecated and replaced by the name field.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -2067,15 +2137,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const networkPolicy = {};
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   networkPolicy: networkPolicy,
+   *   name: formattedName,
    * };
    * client.setNetworkPolicy(request)
    *   .then(responses => {
@@ -2101,20 +2167,24 @@ class ClusterManagerClient {
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   The name of the cluster to update.
    * @param {Object} request.maintenancePolicy
    *   The maintenance policy to be set for the cluster. An empty field
    *   clears the existing maintenance policy.
    *
    *   This object should have the same structure as [MaintenancePolicy]{@link google.container.v1.MaintenancePolicy}
+   * @param {string} request.name
+   *   The name (project, location, cluster id) of the cluster to set maintenance
+   *   policy.
+   *   Specified in the format 'projects/* /locations/* /clusters/*'.
+   * @param {string} [request.projectId]
+   *   The Google Developers Console [project ID or project
+   *   number](https://support.google.com/cloud/answer/6158840).
+   * @param {string} [request.zone]
+   *   The name of the Google Compute Engine
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
+   *   resides.
+   * @param {string} [request.clusterId]
+   *   The name of the cluster to update.
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the details.
@@ -2134,15 +2204,11 @@ class ClusterManagerClient {
    *   // optional auth parameters.
    * });
    *
-   * const projectId = '';
-   * const zone = '';
-   * const clusterId = '';
    * const maintenancePolicy = {};
+   * const formattedName = client.clusterPath('[PROJECT]', '[LOCATION]', '[CLUSTER]');
    * const request = {
-   *   projectId: projectId,
-   *   zone: zone,
-   *   clusterId: clusterId,
    *   maintenancePolicy: maintenancePolicy,
+   *   name: formattedName,
    * };
    * client.setMaintenancePolicy(request)
    *   .then(responses => {
@@ -2161,6 +2227,212 @@ class ClusterManagerClient {
     options = options || {};
 
     return this._innerApiCalls.setMaintenancePolicy(request, options, callback);
+  }
+
+  // --------------------
+  // -- Path templates --
+  // --------------------
+
+  /**
+   * Return a fully-qualified location resource name string.
+   *
+   * @param {String} project
+   * @param {String} location
+   * @returns {String}
+   */
+  locationPath(project, location) {
+    return this._pathTemplates.locationPathTemplate.render({
+      project: project,
+      location: location,
+    });
+  }
+
+  /**
+   * Return a fully-qualified cluster resource name string.
+   *
+   * @param {String} project
+   * @param {String} location
+   * @param {String} cluster
+   * @returns {String}
+   */
+  clusterPath(project, location, cluster) {
+    return this._pathTemplates.clusterPathTemplate.render({
+      project: project,
+      location: location,
+      cluster: cluster,
+    });
+  }
+
+  /**
+   * Return a fully-qualified node_pool resource name string.
+   *
+   * @param {String} project
+   * @param {String} location
+   * @param {String} cluster
+   * @param {String} nodePool
+   * @returns {String}
+   */
+  nodePoolPath(project, location, cluster, nodePool) {
+    return this._pathTemplates.nodePoolPathTemplate.render({
+      project: project,
+      location: location,
+      cluster: cluster,
+      node_pool: nodePool,
+    });
+  }
+
+  /**
+   * Return a fully-qualified operation resource name string.
+   *
+   * @param {String} project
+   * @param {String} location
+   * @param {String} operation
+   * @returns {String}
+   */
+  operationPath(project, location, operation) {
+    return this._pathTemplates.operationPathTemplate.render({
+      project: project,
+      location: location,
+      operation: operation,
+    });
+  }
+
+  /**
+   * Parse the locationName from a location resource.
+   *
+   * @param {String} locationName
+   *   A fully-qualified path representing a location resources.
+   * @returns {String} - A string representing the project.
+   */
+  matchProjectFromLocationName(locationName) {
+    return this._pathTemplates.locationPathTemplate.match(locationName).project;
+  }
+
+  /**
+   * Parse the locationName from a location resource.
+   *
+   * @param {String} locationName
+   *   A fully-qualified path representing a location resources.
+   * @returns {String} - A string representing the location.
+   */
+  matchLocationFromLocationName(locationName) {
+    return this._pathTemplates.locationPathTemplate.match(locationName)
+      .location;
+  }
+
+  /**
+   * Parse the clusterName from a cluster resource.
+   *
+   * @param {String} clusterName
+   *   A fully-qualified path representing a cluster resources.
+   * @returns {String} - A string representing the project.
+   */
+  matchProjectFromClusterName(clusterName) {
+    return this._pathTemplates.clusterPathTemplate.match(clusterName).project;
+  }
+
+  /**
+   * Parse the clusterName from a cluster resource.
+   *
+   * @param {String} clusterName
+   *   A fully-qualified path representing a cluster resources.
+   * @returns {String} - A string representing the location.
+   */
+  matchLocationFromClusterName(clusterName) {
+    return this._pathTemplates.clusterPathTemplate.match(clusterName).location;
+  }
+
+  /**
+   * Parse the clusterName from a cluster resource.
+   *
+   * @param {String} clusterName
+   *   A fully-qualified path representing a cluster resources.
+   * @returns {String} - A string representing the cluster.
+   */
+  matchClusterFromClusterName(clusterName) {
+    return this._pathTemplates.clusterPathTemplate.match(clusterName).cluster;
+  }
+
+  /**
+   * Parse the nodePoolName from a node_pool resource.
+   *
+   * @param {String} nodePoolName
+   *   A fully-qualified path representing a node_pool resources.
+   * @returns {String} - A string representing the project.
+   */
+  matchProjectFromNodePoolName(nodePoolName) {
+    return this._pathTemplates.nodePoolPathTemplate.match(nodePoolName).project;
+  }
+
+  /**
+   * Parse the nodePoolName from a node_pool resource.
+   *
+   * @param {String} nodePoolName
+   *   A fully-qualified path representing a node_pool resources.
+   * @returns {String} - A string representing the location.
+   */
+  matchLocationFromNodePoolName(nodePoolName) {
+    return this._pathTemplates.nodePoolPathTemplate.match(nodePoolName)
+      .location;
+  }
+
+  /**
+   * Parse the nodePoolName from a node_pool resource.
+   *
+   * @param {String} nodePoolName
+   *   A fully-qualified path representing a node_pool resources.
+   * @returns {String} - A string representing the cluster.
+   */
+  matchClusterFromNodePoolName(nodePoolName) {
+    return this._pathTemplates.nodePoolPathTemplate.match(nodePoolName).cluster;
+  }
+
+  /**
+   * Parse the nodePoolName from a node_pool resource.
+   *
+   * @param {String} nodePoolName
+   *   A fully-qualified path representing a node_pool resources.
+   * @returns {String} - A string representing the node_pool.
+   */
+  matchNodePoolFromNodePoolName(nodePoolName) {
+    return this._pathTemplates.nodePoolPathTemplate.match(nodePoolName)
+      .node_pool;
+  }
+
+  /**
+   * Parse the operationName from a operation resource.
+   *
+   * @param {String} operationName
+   *   A fully-qualified path representing a operation resources.
+   * @returns {String} - A string representing the project.
+   */
+  matchProjectFromOperationName(operationName) {
+    return this._pathTemplates.operationPathTemplate.match(operationName)
+      .project;
+  }
+
+  /**
+   * Parse the operationName from a operation resource.
+   *
+   * @param {String} operationName
+   *   A fully-qualified path representing a operation resources.
+   * @returns {String} - A string representing the location.
+   */
+  matchLocationFromOperationName(operationName) {
+    return this._pathTemplates.operationPathTemplate.match(operationName)
+      .location;
+  }
+
+  /**
+   * Parse the operationName from a operation resource.
+   *
+   * @param {String} operationName
+   *   A fully-qualified path representing a operation resources.
+   * @returns {String} - A string representing the operation.
+   */
+  matchOperationFromOperationName(operationName) {
+    return this._pathTemplates.operationPathTemplate.match(operationName)
+      .operation;
   }
 }
 
