@@ -14,7 +14,7 @@
  */
 
 'use strict';
-
+async function main(){
 // [START container_quickstart]
 const container = require('@google-cloud/container');
 
@@ -38,13 +38,9 @@ const request = {
   zone: zone,
 };
 
-client
-  .listClusters(request)
-  .then(responses => {
-    const response = responses[0];
-    console.log(response);
-  })
-  .catch(err => {
-    console.error('ERROR:', err);
-  });
+const [response] = await client.listClusters(request);
+  console.log(response);
 // [END container_quickstart]
+}
+
+main().catch(console.error);
