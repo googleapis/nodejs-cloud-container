@@ -22,6 +22,10 @@ common_templates = gcp.CommonTemplates()
 templates = common_templates.node_library()
 s.copy(templates)
 
+s.replace("src/v1/doc/google/container/v1/doc_cluster_service.js",
+        "<a href=\"\/compute\/docs\/resource-quotas\">resource quota<\/a>",
+        r"[resource quota](https://cloud.google.com/compute/docs/resource-quotas)")
+
 # Node.js specific cleanup
 subprocess.run(['npm', 'install'])
 subprocess.run(['npm', 'run', 'fix'])
