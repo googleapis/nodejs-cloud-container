@@ -78,6 +78,9 @@ npm install @google-cloud/container
   quickstart();
 
 ```
+
+## Relationship to Kubernetes
+
 `@google-cloud/container` provides a high level API for creating and managing
 [Google Kubernetes Engine](https://cloud.google.com/gke) clusters on Google Cloud.
 
