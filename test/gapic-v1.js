@@ -45,9 +45,7 @@ describe('ClusterManagerClient', () => {
   });
 
   it('should create a client with gRPC fallback', () => {
-    const client = new containerModule.v1.ClusterManagerClient({
-      fallback: true,
-    });
+    const client = new containerModule.v1.ClusterManagerClient({fallback: true});
     assert(client);
   });
 
@@ -2584,6 +2582,7 @@ describe('ClusterManagerClient', () => {
       });
     });
   });
+
 });
 
 function mockSimpleGrpcMethod(expectedRequest, response, error) {
