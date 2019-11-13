@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/@google-cloud/container?activeTab=versions
 
+### [1.3.2](https://www.github.com/googleapis/nodejs-cloud-container/compare/v1.3.1...v1.3.2) (2019-11-13)
+
+
+### Bug Fixes
+
+* **docs:** snippets are now replaced in jsdoc comments ([#245](https://www.github.com/googleapis/nodejs-cloud-container/issues/245)) ([31fcb61](https://www.github.com/googleapis/nodejs-cloud-container/commit/31fcb616761b9f23f380be6fbe20f7a0d290a5a1))
+
 ### [1.3.1](https://www.github.com/googleapis/nodejs-cloud-container/compare/v1.3.0...v1.3.1) (2019-10-22)
 
 
