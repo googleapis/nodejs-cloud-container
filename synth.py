@@ -6,22 +6,27 @@ import subprocess
 logging.basicConfig(level=logging.DEBUG)
 
 # Run the gapic generator
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICMicrogenerator()
 version = 'v1'
-library = gapic.node_library(
-    'container', version,
-    config_path="/google/container/"
-                "artman_container_v1.yaml")
+library = gapic.typescript_library(
+    'container',
+    generator_args={
+            "grpc-service-config": f"google/container/{version}/container_grpc_service_config.json",
+            "package-name": f"@google-cloud/container"
+            },
+            proto_path=f'/google/container/{version}',
+            version=version)
 s.copy(
     library,
-    excludes=['package.json', 'README.md', 'src/index.js'],
+    excludes=['package.json', 'README.md', 'src/index.ts'],
 )
 
 # Copy templated files
 common_templates = gcp.CommonTemplates()
-templates = common_templates.node_library()
+templates = common_templates.node_library(source_location='build/src')
 s.copy(templates)
 
+# fix broken doc links
 s.replace("src/v1/doc/google/container/v1/doc_cluster_service.js",
         "<a href=\"\/compute\/docs\/resource-quotas\">resource quota<\/a>",
         r"[resource quota](https://cloud.google.com/compute/docs/resource-quotas)")
@@ -33,3 +38,4 @@ s.replace("src/v1/doc/google/container/v1/doc_cluster_service.js",
 # Node.js specific cleanup
 subprocess.run(['npm', 'install'])
 subprocess.run(['npm', 'run', 'fix'])
+subprocess.run(['npm', 'compileProtos', 'src'])
