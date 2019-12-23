@@ -932,7 +932,7 @@ const IPAllocationPolicy = {
  *
  * @property {string} currentNodeVersion
  *   [Output only] Deprecated, use
- *   [NodePools.version](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters.nodePools#resource-nodepools#resource-nodepools#resource-nodepools)
+ *   [NodePools.version](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters.nodePools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools#resource-nodepools)
  *   instead. The current version of the node software components. If they are
  *   currently at multiple versions because they're in the process of being
  *   upgraded, this reflects the minimum version of all nodes.

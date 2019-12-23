@@ -27,13 +27,26 @@ templates = common_templates.node_library(source_location='build/src')
 s.copy(templates)
 
 # fix broken doc links
-s.replace("src/v1/doc/google/container/v1/doc_cluster_service.js",
-        "<a href=\"\/compute\/docs\/resource-quotas\">resource quota<\/a>",
-        r"[resource quota](https://cloud.google.com/compute/docs/resource-quotas)")
 
 s.replace("src/v1/doc/google/container/v1/doc_cluster_service.js",
         "https:\/\/cloud\.google\.com\/kubernetes-engine\/docs\/reference\/rest\/v1\/projects\.zones\.clusters\.nodePool",
         "https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters.nodePools#resource-nodepool")
+
+s.replace('docs/*.html',
+        '\/compute\/docs\/zones\#available',
+        'https://cloud.google.com/compute/docs/regions-zones/')
+
+s.replace('docs/*.html',
+        '\/compute\/docs\/zones',
+        'https://cloud.google.com/compute/docs/regions-zones/')
+
+s.replace('docs/*.html',
+        '\/compute\/docs\/networks-and-firewalls',
+        'https://cloud.google.com/vpc/docs/firewalls')
+
+s.replace("docs/*.html",
+        "\/container-engine\/reference\/rest\/v1\/projects\.zones\.clusters",
+        "https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters")
 
 # Node.js specific cleanup
 subprocess.run(['npm', 'install'])

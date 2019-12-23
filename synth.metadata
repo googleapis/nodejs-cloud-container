@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-12-23T19:31:15.353384Z",
+  "updateTime": "2019-12-23T21:11:01.753900Z",
   "sources": [
     {
       "git": {
@@ -97,6 +97,12 @@
     },
     {
       "path": "__pycache__/synth.cpython-36.pyc"
+    },
+    {
+      "path": "docs/cluster_manager_client.js.html"
+    },
+    {
+      "path": "docs/v1.ClusterManagerClient.html"
     },
     {
       "path": "samples/README.md"
