@@ -32,20 +32,20 @@ s.replace("src/v1/doc/google/container/v1/doc_cluster_service.js",
         "https:\/\/cloud\.google\.com\/kubernetes-engine\/docs\/reference\/rest\/v1\/projects\.zones\.clusters\.nodePool",
         "https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters.nodePools#resource-nodepool")
 
-s.replace('docs/*.html',
-        '\/compute\/docs\/zones\#available',
+s.replace('src/v1/*.ts',
+        '/compute/docs/zones#available',
         'https://cloud.google.com/compute/docs/regions-zones/')
 
-s.replace('docs/*.html',
-        '\/compute\/docs\/zones',
+s.replace('src/v1/*.ts',
+        '/compute/docs/zones',
         'https://cloud.google.com/compute/docs/regions-zones/')
 
-s.replace('docs/*.html',
-        '\/compute\/docs\/networks-and-firewalls',
+s.replace('src/v1/*.ts',
+        '/compute/docs/networks-and-firewalls',
         'https://cloud.google.com/vpc/docs/firewalls')
 
-s.replace("docs/*.html",
-        "\/container-engine\/reference\/rest\/v1\/projects\.zones\.clusters",
+s.replace('src/v1/*.ts',
+        "/container-engine/reference/rest/v1/projects.zones.clusters",
         "https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters")
 
 # Node.js specific cleanup
