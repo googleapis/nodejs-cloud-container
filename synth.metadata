@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-12-23T21:18:45.537529Z",
+  "updateTime": "2019-12-23T21:40:36.613784Z",
   "sources": [
     {
       "git": {
@@ -99,115 +99,10 @@
       "path": "__pycache__/synth.cpython-36.pyc"
     },
     {
-      "path": "docs/index.html"
-    },
-    {
       "path": "docs/cluster_manager_client.js.html"
     },
     {
       "path": "docs/v1.ClusterManagerClient.html"
-    },
-    {
-      "path": "docs/styles/jsdoc-default.css"
-    },
-    {
-      "path": "docs/styles/collapse.css"
-    },
-    {
-      "path": "docs/styles/prettify-tomorrow.css"
-    },
-    {
-      "path": "docs/styles/prettify-jsdoc.css"
-    },
-    {
-      "path": "docs/icons/search.svg"
-    },
-    {
-      "path": "docs/icons/home.svg"
-    },
-    {
-      "path": "docs/scripts/linenumber.js"
-    },
-    {
-      "path": "docs/scripts/pagelocation.js"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Semibold-webfont.svg"
-    },
-    {
-      "path": "docs/fonts/OpenSans-SemiboldItalic-webfont.ttf"
-    },
-    {
-      "path": "docs/fonts/OpenSans-BoldItalic-webfont.eot"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Light-webfont.svg"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Regular-webfont.woff"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Bold-webfont.svg"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Bold-webfont.woff"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Regular-webfont.svg"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Italic-webfont.woff"
-    },
-    {
-      "path": "docs/fonts/OpenSans-SemiboldItalic-webfont.eot"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Italic-webfont.svg"
-    },
-    {
-      "path": "docs/fonts/OpenSans-LightItalic-webfont.eot"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Italic-webfont.eot"
-    },
-    {
-      "path": "docs/fonts/OpenSans-LightItalic-webfont.svg"
-    },
-    {
-      "path": "docs/fonts/OpenSans-SemiboldItalic-webfont.woff"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Semibold-webfont.ttf"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Regular-webfont.eot"
-    },
-    {
-      "path": "docs/fonts/OpenSans-SemiboldItalic-webfont.svg"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Light-webfont.woff"
-    },
-    {
-      "path": "docs/fonts/OpenSans-LightItalic-webfont.woff"
-    },
-    {
-      "path": "docs/fonts/OpenSans-BoldItalic-webfont.svg"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Light-webfont.eot"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Bold-webfont.eot"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Semibold-webfont.eot"
-    },
-    {
-      "path": "docs/fonts/OpenSans-BoldItalic-webfont.woff"
-    },
-    {
-      "path": "docs/fonts/OpenSans-Semibold-webfont.woff"
     },
     {
       "path": "samples/README.md"
