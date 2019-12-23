@@ -37,6 +37,7 @@
     "clean": "gts clean",
     "compile": "tsc -p . && cp -r protos build/",
     "compile-protos": "compileProtos src",
+    "predocs-test": "npm run docs && python3 -m synthtool",
     "prepare": "npm run compile"
   },
   "dependencies": {
