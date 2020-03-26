@@ -17,18 +17,10 @@
 // ** All changes to this file may be overwritten. **
 
 import * as gax from 'google-gax';
-import {
-  APICallback,
-  Callback,
-  CallOptions,
-  Descriptors,
-  ClientOptions,
-  PaginationCallback,
-  PaginationResponse,
-} from 'google-gax';
+import {APICallback, Callback, CallOptions, Descriptors, ClientOptions, PaginationCallback} from 'google-gax';
 import * as path from 'path';
 
-import {Transform} from 'stream';
+import { Transform } from 'stream';
 import * as protosTypes from '../../protos/protos';
 import * as gapicConfig from './cluster_manager_client_config.json';
 
@@ -40,12 +32,7 @@ const version = require('../../../package.json').version;
  * @memberof v1
  */
 export class ClusterManagerClient {
-  private _descriptors: Descriptors = {
-    page: {},
-    stream: {},
-    longrunning: {},
-    batching: {},
-  };
+  private _descriptors: Descriptors = {page: {}, stream: {}, longrunning: {}, batching: {}};
   private _innerApiCalls: {[name: string]: Function};
   private _terminated = false;
   private _opts: ClientOptions;
@@ -85,12 +72,10 @@ export class ClusterManagerClient {
   constructor(opts?: ClientOptions) {
     // Ensure that options include the service address and port.
     const staticMembers = this.constructor as typeof ClusterManagerClient;
-    const servicePath =
-      opts && opts.servicePath
-        ? opts.servicePath
-        : opts && opts.apiEndpoint
-        ? opts.apiEndpoint
-        : staticMembers.servicePath;
+    const servicePath = opts && opts.servicePath ?
+        opts.servicePath :
+        ((opts && opts.apiEndpoint) ? opts.apiEndpoint :
+                                      staticMembers.servicePath);
     const port = opts && opts.port ? opts.port : staticMembers.port;
 
     if (!opts) {
@@ -100,8 +85,8 @@ export class ClusterManagerClient {
     opts.port = opts.port || port;
     opts.clientConfig = opts.clientConfig || {};
 
-    const isBrowser = typeof window !== 'undefined';
-    if (isBrowser) {
+    const isBrowser = (typeof window !== 'undefined');
+    if (isBrowser){
       opts.fallback = true;
     }
     // If we are in browser, we are already using fallback because of the
@@ -118,10 +103,13 @@ export class ClusterManagerClient {
     this._opts = opts;
 
     // Save the auth object to the client, for use by other methods.
-    this.auth = this._gaxGrpc.auth as gax.GoogleAuth;
+    this.auth = (this._gaxGrpc.auth as gax.GoogleAuth);
 
     // Determine the client header string.
-    const clientHeader = [`gax/${this._gaxModule.version}`, `gapic/${version}`];
+    const clientHeader = [
+      `gax/${this._gaxModule.version}`,
+      `gapic/${version}`,
+    ];
     if (typeof process !== 'undefined' && 'versions' in process) {
       clientHeader.push(`gl-node/${process.versions.node}`);
     } else {
@@ -137,35 +125,25 @@ export class ClusterManagerClient {
     // For Node.js, pass the path to JSON proto file.
     // For browsers, pass the JSON content.
 
-    const nodejsProtoPath = path.join(
-      __dirname,
-      '..',
-      '..',
-      'protos',
-      'protos.json'
-    );
+    const nodejsProtoPath = path.join(__dirname, '..', '..', 'protos', 'protos.json');
     this._protos = this._gaxGrpc.loadProto(
-      opts.fallback ? require('../../protos/protos.json') : nodejsProtoPath
+      opts.fallback ?
+        require("../../protos/protos.json") :
+        nodejsProtoPath
     );
 
     // Some of the methods on this service return "paged" results,
     // (e.g. 50 results at a time, with tokens to get subsequent
     // pages). Denote the keys used for pagination and results.
     this._descriptors.page = {
-      listUsableSubnetworks: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'subnetworks'
-      ),
+      listUsableSubnetworks:
+          new this._gaxModule.PageDescriptor('pageToken', 'nextPageToken', 'subnetworks')
     };
 
     // Put together the default options sent with requests.
     this._defaults = this._gaxGrpc.constructSettings(
-      'google.container.v1.ClusterManager',
-      gapicConfig as gax.ClientConfig,
-      opts.clientConfig || {},
-      {'x-goog-api-client': clientHeader.join(' ')}
-    );
+        'google.container.v1.ClusterManager', gapicConfig as gax.ClientConfig,
+        opts.clientConfig || {}, {'x-goog-api-client': clientHeader.join(' ')});
 
     // Set up a dictionary of "inner API calls"; the core implementation
     // of calling the API is handled in `google-gax`, with this code
@@ -193,50 +171,16 @@ export class ClusterManagerClient {
     // Put together the "service stub" for
     // google.container.v1.ClusterManager.
     this.clusterManagerStub = this._gaxGrpc.createStub(
-      this._opts.fallback
-        ? (this._protos as protobuf.Root).lookupService(
-            'google.container.v1.ClusterManager'
-          )
-        : // tslint:disable-next-line no-any
+        this._opts.fallback ?
+          (this._protos as protobuf.Root).lookupService('google.container.v1.ClusterManager') :
+          /* eslint-disable @typescript-eslint/no-explicit-any */
           (this._protos as any).google.container.v1.ClusterManager,
-      this._opts
-    ) as Promise<{[method: string]: Function}>;
+        this._opts) as Promise<{[method: string]: Function}>;
 
     // Iterate over each of the methods that the service provides
     // and create an API call method for each.
-    const clusterManagerStubMethods = [
-      'listClusters',
-      'getCluster',
-      'createCluster',
-      'updateCluster',
-      'updateNodePool',
-      'setNodePoolAutoscaling',
-      'setLoggingService',
-      'setMonitoringService',
-      'setAddonsConfig',
-      'setLocations',
-      'updateMaster',
-      'setMasterAuth',
-      'deleteCluster',
-      'listOperations',
-      'getOperation',
-      'cancelOperation',
-      'getServerConfig',
-      'listNodePools',
-      'getNodePool',
-      'createNodePool',
-      'deleteNodePool',
-      'rollbackNodePoolUpgrade',
-      'setNodePoolManagement',
-      'setLabels',
-      'setLegacyAbac',
-      'startIPRotation',
-      'completeIPRotation',
-      'setNodePoolSize',
-      'setNetworkPolicy',
-      'setMaintenancePolicy',
-      'listUsableSubnetworks',
-    ];
+    const clusterManagerStubMethods =
+        ['listClusters', 'getCluster', 'createCluster', 'updateCluster', 'updateNodePool', 'setNodePoolAutoscaling', 'setLoggingService', 'setMonitoringService', 'setAddonsConfig', 'setLocations', 'updateMaster', 'setMasterAuth', 'deleteCluster', 'listOperations', 'getOperation', 'cancelOperation', 'getServerConfig', 'listNodePools', 'getNodePool', 'createNodePool', 'deleteNodePool', 'rollbackNodePoolUpgrade', 'setNodePoolManagement', 'setLabels', 'setLegacyAbac', 'startIPRotation', 'completeIPRotation', 'setNodePoolSize', 'setNetworkPolicy', 'setMaintenancePolicy', 'listUsableSubnetworks'];
 
     for (const methodName of clusterManagerStubMethods) {
       const innerCallPromise = this.clusterManagerStub.then(
@@ -247,17 +191,16 @@ export class ClusterManagerClient {
           const func = stub[methodName];
           return func.apply(stub, args);
         },
-        (err: Error | null | undefined) => () => {
+        (err: Error|null|undefined) => () => {
           throw err;
-        }
-      );
+        });
 
       const apiCall = this._gaxModule.createApiCall(
         innerCallPromise,
         this._defaults[methodName],
         this._descriptors.page[methodName] ||
-          this._descriptors.stream[methodName] ||
-          this._descriptors.longrunning[methodName]
+            this._descriptors.stream[methodName] ||
+            this._descriptors.longrunning[methodName]
       );
 
       this._innerApiCalls[methodName] = (
@@ -299,7 +242,9 @@ export class ClusterManagerClient {
    * in this service.
    */
   static get scopes() {
-    return ['https://www.googleapis.com/auth/cloud-platform'];
+    return [
+      'https://www.googleapis.com/auth/cloud-platform'
+    ];
   }
 
   getProjectId(): Promise<string>;
@@ -309,9 +254,8 @@ export class ClusterManagerClient {
    * @param {function(Error, string)} callback - the callback to
    *   be called with the current project Id.
    */
-  getProjectId(
-    callback?: Callback<string, undefined, undefined>
-  ): Promise<string> | void {
+  getProjectId(callback?: Callback<string, undefined, undefined>):
+      Promise<string>|void {
     if (callback) {
       this.auth.getProjectId(callback);
       return;
@@ -323,76 +267,64 @@ export class ClusterManagerClient {
   // -- Service calls --
   // -------------------
   listClusters(
-    request: protosTypes.google.container.v1.IListClustersRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IListClustersResponse,
-      protosTypes.google.container.v1.IListClustersRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IListClustersRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IListClustersResponse,
+        protosTypes.google.container.v1.IListClustersRequest|undefined, {}|undefined
+      ]>;
   listClusters(
-    request: protosTypes.google.container.v1.IListClustersRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IListClustersResponse,
-      protosTypes.google.container.v1.IListClustersRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Lists all clusters owned by a project in either the specified zone or all
-   * zones.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides, or "-" for all zones.
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.parent
-   *   The parent (project and location) where the clusters will be listed.
-   *   Specified in the format 'projects/* /locations/*'.
-   *   Location "-" matches all zones and all regions.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ListClustersResponse]{@link google.container.v1.ListClustersResponse}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  listClusters(
-    request: protosTypes.google.container.v1.IListClustersRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IListClustersRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IListClustersResponse,
-          protosTypes.google.container.v1.IListClustersRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IListClustersResponse,
-      protosTypes.google.container.v1.IListClustersRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IListClustersResponse,
-      protosTypes.google.container.v1.IListClustersRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IListClustersRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Lists all clusters owned by a project in either the specified zone or all
+ * zones.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides, or "-" for all zones.
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.parent
+ *   The parent (project and location) where the clusters will be listed.
+ *   Specified in the format 'projects/* /locations/*'.
+ *   Location "-" matches all zones and all regions.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ListClustersResponse]{@link google.container.v1.ListClustersResponse}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  listClusters(
+      request: protosTypes.google.container.v1.IListClustersRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IListClustersResponse,
+          protosTypes.google.container.v1.IListClustersRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IListClustersResponse,
+          protosTypes.google.container.v1.IListClustersRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IListClustersResponse,
+        protosTypes.google.container.v1.IListClustersRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -401,83 +333,71 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
     return this._innerApiCalls.listClusters(request, options, callback);
   }
   getCluster(
-    request: protosTypes.google.container.v1.IGetClusterRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.ICluster,
-      protosTypes.google.container.v1.IGetClusterRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IGetClusterRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.ICluster,
+        protosTypes.google.container.v1.IGetClusterRequest|undefined, {}|undefined
+      ]>;
   getCluster(
-    request: protosTypes.google.container.v1.IGetClusterRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.ICluster,
-      protosTypes.google.container.v1.IGetClusterRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Gets the details of a specific cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to retrieve.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to retrieve.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Cluster]{@link google.container.v1.Cluster}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  getCluster(
-    request: protosTypes.google.container.v1.IGetClusterRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IGetClusterRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.ICluster,
-          protosTypes.google.container.v1.IGetClusterRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.ICluster,
-      protosTypes.google.container.v1.IGetClusterRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.ICluster,
-      protosTypes.google.container.v1.IGetClusterRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IGetClusterRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Gets the details of a specific cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to retrieve.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to retrieve.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Cluster]{@link google.container.v1.Cluster}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  getCluster(
+      request: protosTypes.google.container.v1.IGetClusterRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.ICluster,
+          protosTypes.google.container.v1.IGetClusterRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.ICluster,
+          protosTypes.google.container.v1.IGetClusterRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.ICluster,
+        protosTypes.google.container.v1.IGetClusterRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -486,95 +406,83 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.getCluster(request, options, callback);
   }
   createCluster(
-    request: protosTypes.google.container.v1.ICreateClusterRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICreateClusterRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ICreateClusterRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ICreateClusterRequest|undefined, {}|undefined
+      ]>;
   createCluster(
-    request: protosTypes.google.container.v1.ICreateClusterRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICreateClusterRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Creates a cluster, consisting of the specified number and type of Google
-   * Compute Engine instances.
-   *
-   * By default, the cluster is created in the project's
-   * [default network](https://cloud.google.com/vpc/docs/firewalls#networks).
-   *
-   * One firewall is added for the cluster. After cluster creation,
-   * the Kubelet creates routes for each node to allow the containers
-   * on that node to communicate with all other instances in the
-   * cluster.
-   *
-   * Finally, an entry is added to the project's global metadata indicating
-   * which CIDR range the cluster is using.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {google.container.v1.Cluster} request.cluster
-   *   Required. A [cluster
-   *   resource](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters)
-   * @param {string} request.parent
-   *   The parent (project and location) where the cluster will be created.
-   *   Specified in the format 'projects/* /locations/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  createCluster(
-    request: protosTypes.google.container.v1.ICreateClusterRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ICreateClusterRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ICreateClusterRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICreateClusterRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICreateClusterRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ICreateClusterRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Creates a cluster, consisting of the specified number and type of Google
+ * Compute Engine instances.
+ *
+ * By default, the cluster is created in the project's
+ * [default network](https://cloud.google.com/vpc/docs/firewalls#networks).
+ *
+ * One firewall is added for the cluster. After cluster creation,
+ * the Kubelet creates routes for each node to allow the containers
+ * on that node to communicate with all other instances in the
+ * cluster.
+ *
+ * Finally, an entry is added to the project's global metadata indicating
+ * which CIDR range the cluster is using.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {google.container.v1.Cluster} request.cluster
+ *   Required. A [cluster
+ *   resource](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters)
+ * @param {string} request.parent
+ *   The parent (project and location) where the cluster will be created.
+ *   Specified in the format 'projects/* /locations/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  createCluster(
+      request: protosTypes.google.container.v1.ICreateClusterRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ICreateClusterRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ICreateClusterRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ICreateClusterRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -583,85 +491,73 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
     return this._innerApiCalls.createCluster(request, options, callback);
   }
   updateCluster(
-    request: protosTypes.google.container.v1.IUpdateClusterRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateClusterRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IUpdateClusterRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IUpdateClusterRequest|undefined, {}|undefined
+      ]>;
   updateCluster(
-    request: protosTypes.google.container.v1.IUpdateClusterRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateClusterRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Updates the settings of a specific cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {google.container.v1.ClusterUpdate} request.update
-   *   Required. A description of the update.
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to update.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  updateCluster(
-    request: protosTypes.google.container.v1.IUpdateClusterRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IUpdateClusterRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.IUpdateClusterRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateClusterRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateClusterRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IUpdateClusterRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Updates the settings of a specific cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {google.container.v1.ClusterUpdate} request.update
+ *   Required. A description of the update.
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to update.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  updateCluster(
+      request: protosTypes.google.container.v1.IUpdateClusterRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IUpdateClusterRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IUpdateClusterRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IUpdateClusterRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -670,101 +566,89 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.updateCluster(request, options, callback);
   }
   updateNodePool(
-    request: protosTypes.google.container.v1.IUpdateNodePoolRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateNodePoolRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IUpdateNodePoolRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IUpdateNodePoolRequest|undefined, {}|undefined
+      ]>;
   updateNodePool(
-    request: protosTypes.google.container.v1.IUpdateNodePoolRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateNodePoolRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Updates the version and/or image type for the specified node pool.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.nodePoolId
-   *   Deprecated. The name of the node pool to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.nodeVersion
-   *   Required. The Kubernetes version to change the nodes to (typically an
-   *   upgrade).
-   *
-   *   Users may specify either explicit versions offered by Kubernetes Engine or
-   *   version aliases, which have the following behavior:
-   *
-   *   - "latest": picks the highest valid Kubernetes version
-   *   - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
-   *   - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
-   *   - "1.X.Y-gke.N": picks an explicit Kubernetes version
-   *   - "-": picks the Kubernetes master version
-   * @param {string} request.imageType
-   *   Required. The desired image type for the node pool.
-   * @param {string} request.name
-   *   The name (project, location, cluster, node pool) of the node pool to
-   *   update. Specified in the format
-   *   'projects/* /locations/* /clusters/* /nodePools/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  updateNodePool(
-    request: protosTypes.google.container.v1.IUpdateNodePoolRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IUpdateNodePoolRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.IUpdateNodePoolRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateNodePoolRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateNodePoolRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IUpdateNodePoolRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Updates the version and/or image type for the specified node pool.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.nodePoolId
+ *   Deprecated. The name of the node pool to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.nodeVersion
+ *   Required. The Kubernetes version to change the nodes to (typically an
+ *   upgrade).
+ *
+ *   Users may specify either explicit versions offered by Kubernetes Engine or
+ *   version aliases, which have the following behavior:
+ *
+ *   - "latest": picks the highest valid Kubernetes version
+ *   - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
+ *   - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
+ *   - "1.X.Y-gke.N": picks an explicit Kubernetes version
+ *   - "-": picks the Kubernetes master version
+ * @param {string} request.imageType
+ *   Required. The desired image type for the node pool.
+ * @param {string} request.name
+ *   The name (project, location, cluster, node pool) of the node pool to
+ *   update. Specified in the format
+ *   'projects/* /locations/* /clusters/* /nodePools/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  updateNodePool(
+      request: protosTypes.google.container.v1.IUpdateNodePoolRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IUpdateNodePoolRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IUpdateNodePoolRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IUpdateNodePoolRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -773,98 +657,77 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.updateNodePool(request, options, callback);
   }
   setNodePoolAutoscaling(
-    request: protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      (
-        | protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest|undefined, {}|undefined
+      ]>;
   setNodePoolAutoscaling(
-    request: protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      | protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest
-      | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets the autoscaling settings for the specified node pool.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.nodePoolId
-   *   Deprecated. The name of the node pool to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {google.container.v1.NodePoolAutoscaling} request.autoscaling
-   *   Required. Autoscaling configuration for the node pool.
-   * @param {string} request.name
-   *   The name (project, location, cluster, node pool) of the node pool to set
-   *   autoscaler settings. Specified in the format
-   *   'projects/* /locations/* /clusters/* /nodePools/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setNodePoolAutoscaling(
-    request: protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          | protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      | protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest
-      | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      (
-        | protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets the autoscaling settings for the specified node pool.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.nodePoolId
+ *   Deprecated. The name of the node pool to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {google.container.v1.NodePoolAutoscaling} request.autoscaling
+ *   Required. Autoscaling configuration for the node pool.
+ * @param {string} request.name
+ *   The name (project, location, cluster, node pool) of the node pool to set
+ *   autoscaler settings. Specified in the format
+ *   'projects/* /locations/* /clusters/* /nodePools/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setNodePoolAutoscaling(
+      request: protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetNodePoolAutoscalingRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -873,93 +736,77 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.setNodePoolAutoscaling(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.setNodePoolAutoscaling(request, options, callback);
   }
   setLoggingService(
-    request: protosTypes.google.container.v1.ISetLoggingServiceRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLoggingServiceRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetLoggingServiceRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetLoggingServiceRequest|undefined, {}|undefined
+      ]>;
   setLoggingService(
-    request: protosTypes.google.container.v1.ISetLoggingServiceRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLoggingServiceRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets the logging service for a specific cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.loggingService
-   *   Required. The logging service the cluster should use to write metrics.
-   *   Currently available options:
-   *
-   *   * "logging.googleapis.com" - the Google Cloud Logging service
-   *   * "none" - no metrics will be exported from the cluster
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to set logging.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setLoggingService(
-    request: protosTypes.google.container.v1.ISetLoggingServiceRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetLoggingServiceRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ISetLoggingServiceRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLoggingServiceRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLoggingServiceRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetLoggingServiceRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets the logging service for a specific cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.loggingService
+ *   Required. The logging service the cluster should use to write metrics.
+ *   Currently available options:
+ *
+ *   * "logging.googleapis.com" - the Google Cloud Logging service
+ *   * "none" - no metrics will be exported from the cluster
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to set logging.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setLoggingService(
+      request: protosTypes.google.container.v1.ISetLoggingServiceRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetLoggingServiceRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetLoggingServiceRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetLoggingServiceRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -968,92 +815,79 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setLoggingService(request, options, callback);
   }
   setMonitoringService(
-    request: protosTypes.google.container.v1.ISetMonitoringServiceRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMonitoringServiceRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetMonitoringServiceRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetMonitoringServiceRequest|undefined, {}|undefined
+      ]>;
   setMonitoringService(
-    request: protosTypes.google.container.v1.ISetMonitoringServiceRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMonitoringServiceRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets the monitoring service for a specific cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.monitoringService
-   *   Required. The monitoring service the cluster should use to write metrics.
-   *   Currently available options:
-   *
-   *   * "monitoring.googleapis.com/kubernetes" - the Google Cloud Monitoring
-   *   service with Kubernetes-native resource model
-   *   * "monitoring.googleapis.com" - the Google Cloud Monitoring service
-   *   * "none" - no metrics will be exported from the cluster
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to set monitoring.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setMonitoringService(
-    request: protosTypes.google.container.v1.ISetMonitoringServiceRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetMonitoringServiceRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          | protosTypes.google.container.v1.ISetMonitoringServiceRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMonitoringServiceRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMonitoringServiceRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetMonitoringServiceRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets the monitoring service for a specific cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.monitoringService
+ *   Required. The monitoring service the cluster should use to write metrics.
+ *   Currently available options:
+ *
+ *   * "monitoring.googleapis.com/kubernetes" - the Google Cloud Monitoring
+ *   service with Kubernetes-native resource model
+ *   * "monitoring.googleapis.com" - the Google Cloud Monitoring service
+ *   * "none" - no metrics will be exported from the cluster
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to set monitoring.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setMonitoringService(
+      request: protosTypes.google.container.v1.ISetMonitoringServiceRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetMonitoringServiceRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetMonitoringServiceRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetMonitoringServiceRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1062,86 +896,74 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setMonitoringService(request, options, callback);
   }
   setAddonsConfig(
-    request: protosTypes.google.container.v1.ISetAddonsConfigRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetAddonsConfigRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetAddonsConfigRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetAddonsConfigRequest|undefined, {}|undefined
+      ]>;
   setAddonsConfig(
-    request: protosTypes.google.container.v1.ISetAddonsConfigRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetAddonsConfigRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets the addons for a specific cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {google.container.v1.AddonsConfig} request.addonsConfig
-   *   Required. The desired configurations for the various addons available to run in the
-   *   cluster.
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to set addons.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setAddonsConfig(
-    request: protosTypes.google.container.v1.ISetAddonsConfigRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetAddonsConfigRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ISetAddonsConfigRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetAddonsConfigRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetAddonsConfigRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetAddonsConfigRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets the addons for a specific cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {google.container.v1.AddonsConfig} request.addonsConfig
+ *   Required. The desired configurations for the various addons available to run in the
+ *   cluster.
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to set addons.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setAddonsConfig(
+      request: protosTypes.google.container.v1.ISetAddonsConfigRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetAddonsConfigRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetAddonsConfigRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetAddonsConfigRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1150,91 +972,79 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setAddonsConfig(request, options, callback);
   }
   setLocations(
-    request: protosTypes.google.container.v1.ISetLocationsRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLocationsRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetLocationsRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetLocationsRequest|undefined, {}|undefined
+      ]>;
   setLocations(
-    request: protosTypes.google.container.v1.ISetLocationsRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLocationsRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets the locations for a specific cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string[]} request.locations
-   *   Required. The desired list of Google Compute Engine
-   *   [zones](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster's nodes
-   *   should be located. Changing the locations a cluster is in will result
-   *   in nodes being either created or removed from the cluster, depending on
-   *   whether locations are being added or removed.
-   *
-   *   This list must always include the cluster's primary zone.
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to set locations.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setLocations(
-    request: protosTypes.google.container.v1.ISetLocationsRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetLocationsRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ISetLocationsRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLocationsRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLocationsRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetLocationsRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets the locations for a specific cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string[]} request.locations
+ *   Required. The desired list of Google Compute Engine
+ *   [zones](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster's nodes
+ *   should be located. Changing the locations a cluster is in will result
+ *   in nodes being either created or removed from the cluster, depending on
+ *   whether locations are being added or removed.
+ *
+ *   This list must always include the cluster's primary zone.
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to set locations.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setLocations(
+      request: protosTypes.google.container.v1.ISetLocationsRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetLocationsRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetLocationsRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetLocationsRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1243,94 +1053,82 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setLocations(request, options, callback);
   }
   updateMaster(
-    request: protosTypes.google.container.v1.IUpdateMasterRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateMasterRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IUpdateMasterRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IUpdateMasterRequest|undefined, {}|undefined
+      ]>;
   updateMaster(
-    request: protosTypes.google.container.v1.IUpdateMasterRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateMasterRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Updates the master for a specific cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.masterVersion
-   *   Required. The Kubernetes version to change the master to.
-   *
-   *   Users may specify either explicit versions offered by Kubernetes Engine or
-   *   version aliases, which have the following behavior:
-   *
-   *   - "latest": picks the highest valid Kubernetes version
-   *   - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
-   *   - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
-   *   - "1.X.Y-gke.N": picks an explicit Kubernetes version
-   *   - "-": picks the default Kubernetes version
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to update.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  updateMaster(
-    request: protosTypes.google.container.v1.IUpdateMasterRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IUpdateMasterRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.IUpdateMasterRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateMasterRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IUpdateMasterRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IUpdateMasterRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Updates the master for a specific cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.masterVersion
+ *   Required. The Kubernetes version to change the master to.
+ *
+ *   Users may specify either explicit versions offered by Kubernetes Engine or
+ *   version aliases, which have the following behavior:
+ *
+ *   - "latest": picks the highest valid Kubernetes version
+ *   - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
+ *   - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
+ *   - "1.X.Y-gke.N": picks an explicit Kubernetes version
+ *   - "-": picks the default Kubernetes version
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to update.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  updateMaster(
+      request: protosTypes.google.container.v1.IUpdateMasterRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IUpdateMasterRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IUpdateMasterRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IUpdateMasterRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1339,89 +1137,77 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.updateMaster(request, options, callback);
   }
   setMasterAuth(
-    request: protosTypes.google.container.v1.ISetMasterAuthRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMasterAuthRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetMasterAuthRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetMasterAuthRequest|undefined, {}|undefined
+      ]>;
   setMasterAuth(
-    request: protosTypes.google.container.v1.ISetMasterAuthRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMasterAuthRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets master auth materials. Currently supports changing the admin password
-   * or a specific cluster, either via password generation or explicitly setting
-   * the password.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to upgrade.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {google.container.v1.SetMasterAuthRequest.Action} request.action
-   *   Required. The exact form of action to be taken on the master auth.
-   * @param {google.container.v1.MasterAuth} request.update
-   *   Required. A description of the update.
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to set auth.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setMasterAuth(
-    request: protosTypes.google.container.v1.ISetMasterAuthRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetMasterAuthRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ISetMasterAuthRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMasterAuthRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMasterAuthRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetMasterAuthRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets master auth materials. Currently supports changing the admin password
+ * or a specific cluster, either via password generation or explicitly setting
+ * the password.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to upgrade.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {google.container.v1.SetMasterAuthRequest.Action} request.action
+ *   Required. The exact form of action to be taken on the master auth.
+ * @param {google.container.v1.MasterAuth} request.update
+ *   Required. A description of the update.
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to set auth.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setMasterAuth(
+      request: protosTypes.google.container.v1.ISetMasterAuthRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetMasterAuthRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetMasterAuthRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetMasterAuthRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1430,91 +1216,79 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setMasterAuth(request, options, callback);
   }
   deleteCluster(
-    request: protosTypes.google.container.v1.IDeleteClusterRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IDeleteClusterRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IDeleteClusterRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IDeleteClusterRequest|undefined, {}|undefined
+      ]>;
   deleteCluster(
-    request: protosTypes.google.container.v1.IDeleteClusterRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IDeleteClusterRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Deletes the cluster, including the Kubernetes endpoint and all worker
-   * nodes.
-   *
-   * Firewalls and routes that were configured during cluster creation
-   * are also deleted.
-   *
-   * Other Google Compute Engine resources that might be in use by the cluster,
-   * such as load balancer resources, are not deleted if they weren't present
-   * when the cluster was initially created.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to delete.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, cluster) of the cluster to delete.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  deleteCluster(
-    request: protosTypes.google.container.v1.IDeleteClusterRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IDeleteClusterRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.IDeleteClusterRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IDeleteClusterRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IDeleteClusterRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IDeleteClusterRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Deletes the cluster, including the Kubernetes endpoint and all worker
+ * nodes.
+ *
+ * Firewalls and routes that were configured during cluster creation
+ * are also deleted.
+ *
+ * Other Google Compute Engine resources that might be in use by the cluster,
+ * such as load balancer resources, are not deleted if they weren't present
+ * when the cluster was initially created.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to delete.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, cluster) of the cluster to delete.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  deleteCluster(
+      request: protosTypes.google.container.v1.IDeleteClusterRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IDeleteClusterRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IDeleteClusterRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IDeleteClusterRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1523,80 +1297,68 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.deleteCluster(request, options, callback);
   }
   listOperations(
-    request: protosTypes.google.container.v1.IListOperationsRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IListOperationsResponse,
-      protosTypes.google.container.v1.IListOperationsRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IListOperationsRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IListOperationsResponse,
+        protosTypes.google.container.v1.IListOperationsRequest|undefined, {}|undefined
+      ]>;
   listOperations(
-    request: protosTypes.google.container.v1.IListOperationsRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IListOperationsResponse,
-      protosTypes.google.container.v1.IListOperationsRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Lists all operations in a project in a specific zone or all zones.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) to return operations for, or `-` for
-   *   all zones. This field has been deprecated and replaced by the parent field.
-   * @param {string} request.parent
-   *   The parent (project and location) where the operations will be listed.
-   *   Specified in the format 'projects/* /locations/*'.
-   *   Location "-" matches all zones and all regions.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ListOperationsResponse]{@link google.container.v1.ListOperationsResponse}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  listOperations(
-    request: protosTypes.google.container.v1.IListOperationsRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IListOperationsRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IListOperationsResponse,
-          protosTypes.google.container.v1.IListOperationsRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IListOperationsResponse,
-      protosTypes.google.container.v1.IListOperationsRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IListOperationsResponse,
-      protosTypes.google.container.v1.IListOperationsRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IListOperationsRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Lists all operations in a project in a specific zone or all zones.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) to return operations for, or `-` for
+ *   all zones. This field has been deprecated and replaced by the parent field.
+ * @param {string} request.parent
+ *   The parent (project and location) where the operations will be listed.
+ *   Specified in the format 'projects/* /locations/*'.
+ *   Location "-" matches all zones and all regions.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ListOperationsResponse]{@link google.container.v1.ListOperationsResponse}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  listOperations(
+      request: protosTypes.google.container.v1.IListOperationsRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IListOperationsResponse,
+          protosTypes.google.container.v1.IListOperationsRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IListOperationsResponse,
+          protosTypes.google.container.v1.IListOperationsRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IListOperationsResponse,
+        protosTypes.google.container.v1.IListOperationsRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1605,83 +1367,71 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
     return this._innerApiCalls.listOperations(request, options, callback);
   }
   getOperation(
-    request: protosTypes.google.container.v1.IGetOperationRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IGetOperationRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IGetOperationRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IGetOperationRequest|undefined, {}|undefined
+      ]>;
   getOperation(
-    request: protosTypes.google.container.v1.IGetOperationRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IGetOperationRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Gets the specified operation.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.operationId
-   *   Deprecated. The server-assigned `name` of the operation.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, operation id) of the operation to get.
-   *   Specified in the format 'projects/* /locations/* /operations/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  getOperation(
-    request: protosTypes.google.container.v1.IGetOperationRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IGetOperationRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.IGetOperationRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IGetOperationRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IGetOperationRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IGetOperationRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Gets the specified operation.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.operationId
+ *   Deprecated. The server-assigned `name` of the operation.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, operation id) of the operation to get.
+ *   Specified in the format 'projects/* /locations/* /operations/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  getOperation(
+      request: protosTypes.google.container.v1.IGetOperationRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IGetOperationRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IGetOperationRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IGetOperationRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1690,82 +1440,70 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.getOperation(request, options, callback);
   }
   cancelOperation(
-    request: protosTypes.google.container.v1.ICancelOperationRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.container.v1.ICancelOperationRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ICancelOperationRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.protobuf.IEmpty,
+        protosTypes.google.container.v1.ICancelOperationRequest|undefined, {}|undefined
+      ]>;
   cancelOperation(
-    request: protosTypes.google.container.v1.ICancelOperationRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.container.v1.ICancelOperationRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Cancels the specified operation.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the operation resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.operationId
-   *   Deprecated. The server-assigned `name` of the operation.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, operation id) of the operation to cancel.
-   *   Specified in the format 'projects/* /locations/* /operations/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  cancelOperation(
-    request: protosTypes.google.container.v1.ICancelOperationRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ICancelOperationRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.protobuf.IEmpty,
-          protosTypes.google.container.v1.ICancelOperationRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.container.v1.ICancelOperationRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.container.v1.ICancelOperationRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ICancelOperationRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Cancels the specified operation.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the operation resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.operationId
+ *   Deprecated. The server-assigned `name` of the operation.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, operation id) of the operation to cancel.
+ *   Specified in the format 'projects/* /locations/* /operations/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  cancelOperation(
+      request: protosTypes.google.container.v1.ICancelOperationRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.protobuf.IEmpty,
+          protosTypes.google.container.v1.ICancelOperationRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.protobuf.IEmpty,
+          protosTypes.google.container.v1.ICancelOperationRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.protobuf.IEmpty,
+        protosTypes.google.container.v1.ICancelOperationRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1774,79 +1512,67 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.cancelOperation(request, options, callback);
   }
   getServerConfig(
-    request: protosTypes.google.container.v1.IGetServerConfigRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IServerConfig,
-      protosTypes.google.container.v1.IGetServerConfigRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IGetServerConfigRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IServerConfig,
+        protosTypes.google.container.v1.IGetServerConfigRequest|undefined, {}|undefined
+      ]>;
   getServerConfig(
-    request: protosTypes.google.container.v1.IGetServerConfigRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IServerConfig,
-      protosTypes.google.container.v1.IGetServerConfigRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Returns configuration info about the Google Kubernetes Engine service.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) to return operations for.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project and location) of the server config to get,
-   *   specified in the format 'projects/* /locations/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ServerConfig]{@link google.container.v1.ServerConfig}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  getServerConfig(
-    request: protosTypes.google.container.v1.IGetServerConfigRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IGetServerConfigRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IServerConfig,
-          protosTypes.google.container.v1.IGetServerConfigRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IServerConfig,
-      protosTypes.google.container.v1.IGetServerConfigRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IServerConfig,
-      protosTypes.google.container.v1.IGetServerConfigRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IGetServerConfigRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Returns configuration info about the Google Kubernetes Engine service.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) to return operations for.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project and location) of the server config to get,
+ *   specified in the format 'projects/* /locations/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ServerConfig]{@link google.container.v1.ServerConfig}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  getServerConfig(
+      request: protosTypes.google.container.v1.IGetServerConfigRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IServerConfig,
+          protosTypes.google.container.v1.IGetServerConfigRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IServerConfig,
+          protosTypes.google.container.v1.IGetServerConfigRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IServerConfig,
+        protosTypes.google.container.v1.IGetServerConfigRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1855,83 +1581,71 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.getServerConfig(request, options, callback);
   }
   listNodePools(
-    request: protosTypes.google.container.v1.IListNodePoolsRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IListNodePoolsResponse,
-      protosTypes.google.container.v1.IListNodePoolsRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IListNodePoolsRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IListNodePoolsResponse,
+        protosTypes.google.container.v1.IListNodePoolsRequest|undefined, {}|undefined
+      ]>;
   listNodePools(
-    request: protosTypes.google.container.v1.IListNodePoolsRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IListNodePoolsResponse,
-      protosTypes.google.container.v1.IListNodePoolsRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Lists the node pools for a cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster.
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.parent
-   *   The parent (project, location, cluster id) where the node pools will be
-   *   listed. Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ListNodePoolsResponse]{@link google.container.v1.ListNodePoolsResponse}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  listNodePools(
-    request: protosTypes.google.container.v1.IListNodePoolsRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IListNodePoolsRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IListNodePoolsResponse,
-          protosTypes.google.container.v1.IListNodePoolsRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IListNodePoolsResponse,
-      protosTypes.google.container.v1.IListNodePoolsRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IListNodePoolsResponse,
-      protosTypes.google.container.v1.IListNodePoolsRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IListNodePoolsRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Lists the node pools for a cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://developers.google.com/console/help/new/#projectnumber).
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster.
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.parent
+ *   The parent (project, location, cluster id) where the node pools will be
+ *   listed. Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ListNodePoolsResponse]{@link google.container.v1.ListNodePoolsResponse}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  listNodePools(
+      request: protosTypes.google.container.v1.IListNodePoolsRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IListNodePoolsResponse,
+          protosTypes.google.container.v1.IListNodePoolsRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IListNodePoolsResponse,
+          protosTypes.google.container.v1.IListNodePoolsRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IListNodePoolsResponse,
+        protosTypes.google.container.v1.IListNodePoolsRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1940,87 +1654,75 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
     return this._innerApiCalls.listNodePools(request, options, callback);
   }
   getNodePool(
-    request: protosTypes.google.container.v1.IGetNodePoolRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.INodePool,
-      protosTypes.google.container.v1.IGetNodePoolRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IGetNodePoolRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.INodePool,
+        protosTypes.google.container.v1.IGetNodePoolRequest|undefined, {}|undefined
+      ]>;
   getNodePool(
-    request: protosTypes.google.container.v1.IGetNodePoolRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.INodePool,
-      protosTypes.google.container.v1.IGetNodePoolRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Retrieves the requested node pool.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.nodePoolId
-   *   Deprecated. The name of the node pool.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, cluster, node pool id) of the node pool to
-   *   get. Specified in the format
-   *   'projects/* /locations/* /clusters/* /nodePools/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [NodePool]{@link google.container.v1.NodePool}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  getNodePool(
-    request: protosTypes.google.container.v1.IGetNodePoolRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IGetNodePoolRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.INodePool,
-          protosTypes.google.container.v1.IGetNodePoolRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.INodePool,
-      protosTypes.google.container.v1.IGetNodePoolRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.INodePool,
-      protosTypes.google.container.v1.IGetNodePoolRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IGetNodePoolRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Retrieves the requested node pool.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://developers.google.com/console/help/new/#projectnumber).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.nodePoolId
+ *   Deprecated. The name of the node pool.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, cluster, node pool id) of the node pool to
+ *   get. Specified in the format
+ *   'projects/* /locations/* /clusters/* /nodePools/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [NodePool]{@link google.container.v1.NodePool}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  getNodePool(
+      request: protosTypes.google.container.v1.IGetNodePoolRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.INodePool,
+          protosTypes.google.container.v1.IGetNodePoolRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.INodePool,
+          protosTypes.google.container.v1.IGetNodePoolRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.INodePool,
+        protosTypes.google.container.v1.IGetNodePoolRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2029,86 +1731,74 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.getNodePool(request, options, callback);
   }
   createNodePool(
-    request: protosTypes.google.container.v1.ICreateNodePoolRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICreateNodePoolRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ICreateNodePoolRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ICreateNodePoolRequest|undefined, {}|undefined
+      ]>;
   createNodePool(
-    request: protosTypes.google.container.v1.ICreateNodePoolRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICreateNodePoolRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Creates a node pool for a cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster.
-   *   This field has been deprecated and replaced by the parent field.
-   * @param {google.container.v1.NodePool} request.nodePool
-   *   Required. The node pool to create.
-   * @param {string} request.parent
-   *   The parent (project, location, cluster id) where the node pool will be
-   *   created. Specified in the format
-   *   'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  createNodePool(
-    request: protosTypes.google.container.v1.ICreateNodePoolRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ICreateNodePoolRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ICreateNodePoolRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICreateNodePoolRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICreateNodePoolRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ICreateNodePoolRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Creates a node pool for a cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://developers.google.com/console/help/new/#projectnumber).
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster.
+ *   This field has been deprecated and replaced by the parent field.
+ * @param {google.container.v1.NodePool} request.nodePool
+ *   Required. The node pool to create.
+ * @param {string} request.parent
+ *   The parent (project, location, cluster id) where the node pool will be
+ *   created. Specified in the format
+ *   'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  createNodePool(
+      request: protosTypes.google.container.v1.ICreateNodePoolRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ICreateNodePoolRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ICreateNodePoolRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ICreateNodePoolRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2117,87 +1807,75 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
     return this._innerApiCalls.createNodePool(request, options, callback);
   }
   deleteNodePool(
-    request: protosTypes.google.container.v1.IDeleteNodePoolRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IDeleteNodePoolRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IDeleteNodePoolRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IDeleteNodePoolRequest|undefined, {}|undefined
+      ]>;
   deleteNodePool(
-    request: protosTypes.google.container.v1.IDeleteNodePoolRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IDeleteNodePoolRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Deletes a node pool from a cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.nodePoolId
-   *   Deprecated. The name of the node pool to delete.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, cluster, node pool id) of the node pool to
-   *   delete. Specified in the format
-   *   'projects/* /locations/* /clusters/* /nodePools/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  deleteNodePool(
-    request: protosTypes.google.container.v1.IDeleteNodePoolRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IDeleteNodePoolRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.IDeleteNodePoolRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IDeleteNodePoolRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IDeleteNodePoolRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IDeleteNodePoolRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Deletes a node pool from a cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://developers.google.com/console/help/new/#projectnumber).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.nodePoolId
+ *   Deprecated. The name of the node pool to delete.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, cluster, node pool id) of the node pool to
+ *   delete. Specified in the format
+ *   'projects/* /locations/* /clusters/* /nodePools/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  deleteNodePool(
+      request: protosTypes.google.container.v1.IDeleteNodePoolRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IDeleteNodePoolRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IDeleteNodePoolRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IDeleteNodePoolRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2206,97 +1884,76 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.deleteNodePool(request, options, callback);
   }
   rollbackNodePoolUpgrade(
-    request: protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      (
-        | protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest|undefined, {}|undefined
+      ]>;
   rollbackNodePoolUpgrade(
-    request: protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      | protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest
-      | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Rolls back a previously Aborted or Failed NodePool upgrade.
-   * This makes no changes if the last upgrade successfully completed.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to rollback.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.nodePoolId
-   *   Deprecated. The name of the node pool to rollback.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, cluster, node pool id) of the node poll to
-   *   rollback upgrade.
-   *   Specified in the format 'projects/* /locations/* /clusters/* /nodePools/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  rollbackNodePoolUpgrade(
-    request: protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          | protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      | protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest
-      | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      (
-        | protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Rolls back a previously Aborted or Failed NodePool upgrade.
+ * This makes no changes if the last upgrade successfully completed.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to rollback.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.nodePoolId
+ *   Deprecated. The name of the node pool to rollback.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, cluster, node pool id) of the node poll to
+ *   rollback upgrade.
+ *   Specified in the format 'projects/* /locations/* /clusters/* /nodePools/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  rollbackNodePoolUpgrade(
+      request: protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IRollbackNodePoolUpgradeRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2305,94 +1962,77 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.rollbackNodePoolUpgrade(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.rollbackNodePoolUpgrade(request, options, callback);
   }
   setNodePoolManagement(
-    request: protosTypes.google.container.v1.ISetNodePoolManagementRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNodePoolManagementRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetNodePoolManagementRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetNodePoolManagementRequest|undefined, {}|undefined
+      ]>;
   setNodePoolManagement(
-    request: protosTypes.google.container.v1.ISetNodePoolManagementRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNodePoolManagementRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets the NodeManagement options for a node pool.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to update.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.nodePoolId
-   *   Deprecated. The name of the node pool to update.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {google.container.v1.NodeManagement} request.management
-   *   Required. NodeManagement configuration for the node pool.
-   * @param {string} request.name
-   *   The name (project, location, cluster, node pool id) of the node pool to set
-   *   management properties. Specified in the format
-   *   'projects/* /locations/* /clusters/* /nodePools/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setNodePoolManagement(
-    request: protosTypes.google.container.v1.ISetNodePoolManagementRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetNodePoolManagementRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          | protosTypes.google.container.v1.ISetNodePoolManagementRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNodePoolManagementRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNodePoolManagementRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetNodePoolManagementRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets the NodeManagement options for a node pool.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to update.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.nodePoolId
+ *   Deprecated. The name of the node pool to update.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {google.container.v1.NodeManagement} request.management
+ *   Required. NodeManagement configuration for the node pool.
+ * @param {string} request.name
+ *   The name (project, location, cluster, node pool id) of the node pool to set
+ *   management properties. Specified in the format
+ *   'projects/* /locations/* /clusters/* /nodePools/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setNodePoolManagement(
+      request: protosTypes.google.container.v1.ISetNodePoolManagementRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetNodePoolManagementRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetNodePoolManagementRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetNodePoolManagementRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2401,96 +2041,80 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.setNodePoolManagement(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.setNodePoolManagement(request, options, callback);
   }
   setLabels(
-    request: protosTypes.google.container.v1.ISetLabelsRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLabelsRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetLabelsRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetLabelsRequest|undefined, {}|undefined
+      ]>;
   setLabels(
-    request: protosTypes.google.container.v1.ISetLabelsRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLabelsRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets labels on a cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {number[]} request.resourceLabels
-   *   Required. The labels to set for that cluster.
-   * @param {string} request.labelFingerprint
-   *   Required. The fingerprint of the previous set of labels for this resource,
-   *   used to detect conflicts. The fingerprint is initially generated by
-   *   Kubernetes Engine and changes after every request to modify or update
-   *   labels. You must always provide an up-to-date fingerprint hash when
-   *   updating or changing labels. Make a <code>get()</code> request to the
-   *   resource to get the latest fingerprint.
-   * @param {string} request.name
-   *   The name (project, location, cluster id) of the cluster to set labels.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setLabels(
-    request: protosTypes.google.container.v1.ISetLabelsRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetLabelsRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ISetLabelsRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLabelsRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLabelsRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetLabelsRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets labels on a cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://developers.google.com/console/help/new/#projectnumber).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {number[]} request.resourceLabels
+ *   Required. The labels to set for that cluster.
+ * @param {string} request.labelFingerprint
+ *   Required. The fingerprint of the previous set of labels for this resource,
+ *   used to detect conflicts. The fingerprint is initially generated by
+ *   Kubernetes Engine and changes after every request to modify or update
+ *   labels. You must always provide an up-to-date fingerprint hash when
+ *   updating or changing labels. Make a <code>get()</code> request to the
+ *   resource to get the latest fingerprint.
+ * @param {string} request.name
+ *   The name (project, location, cluster id) of the cluster to set labels.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setLabels(
+      request: protosTypes.google.container.v1.ISetLabelsRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetLabelsRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetLabelsRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetLabelsRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2499,85 +2123,73 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setLabels(request, options, callback);
   }
   setLegacyAbac(
-    request: protosTypes.google.container.v1.ISetLegacyAbacRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLegacyAbacRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetLegacyAbacRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetLegacyAbacRequest|undefined, {}|undefined
+      ]>;
   setLegacyAbac(
-    request: protosTypes.google.container.v1.ISetLegacyAbacRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLegacyAbacRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Enables or disables the ABAC authorization mechanism on a cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to update.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {boolean} request.enabled
-   *   Required. Whether ABAC authorization will be enabled in the cluster.
-   * @param {string} request.name
-   *   The name (project, location, cluster id) of the cluster to set legacy abac.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setLegacyAbac(
-    request: protosTypes.google.container.v1.ISetLegacyAbacRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetLegacyAbacRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ISetLegacyAbacRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLegacyAbacRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetLegacyAbacRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetLegacyAbacRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Enables or disables the ABAC authorization mechanism on a cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to update.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {boolean} request.enabled
+ *   Required. Whether ABAC authorization will be enabled in the cluster.
+ * @param {string} request.name
+ *   The name (project, location, cluster id) of the cluster to set legacy abac.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setLegacyAbac(
+      request: protosTypes.google.container.v1.ISetLegacyAbacRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetLegacyAbacRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetLegacyAbacRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetLegacyAbacRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2586,85 +2198,73 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setLegacyAbac(request, options, callback);
   }
   startIPRotation(
-    request: protosTypes.google.container.v1.IStartIPRotationRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IStartIPRotationRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.IStartIPRotationRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IStartIPRotationRequest|undefined, {}|undefined
+      ]>;
   startIPRotation(
-    request: protosTypes.google.container.v1.IStartIPRotationRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IStartIPRotationRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Starts master IP rotation.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, cluster id) of the cluster to start IP
-   *   rotation. Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {boolean} request.rotateCredentials
-   *   Whether to rotate credentials during IP rotation.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  startIPRotation(
-    request: protosTypes.google.container.v1.IStartIPRotationRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IStartIPRotationRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.IStartIPRotationRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IStartIPRotationRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.IStartIPRotationRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.IStartIPRotationRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Starts master IP rotation.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://developers.google.com/console/help/new/#projectnumber).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, cluster id) of the cluster to start IP
+ *   rotation. Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {boolean} request.rotateCredentials
+ *   Whether to rotate credentials during IP rotation.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  startIPRotation(
+      request: protosTypes.google.container.v1.IStartIPRotationRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IStartIPRotationRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.IStartIPRotationRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.IStartIPRotationRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2673,84 +2273,71 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.startIPRotation(request, options, callback);
   }
   completeIPRotation(
-    request: protosTypes.google.container.v1.ICompleteIPRotationRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICompleteIPRotationRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ICompleteIPRotationRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ICompleteIPRotationRequest|undefined, {}|undefined
+      ]>;
   completeIPRotation(
-    request: protosTypes.google.container.v1.ICompleteIPRotationRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICompleteIPRotationRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Completes master IP rotation.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.name
-   *   The name (project, location, cluster id) of the cluster to complete IP
-   *   rotation. Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  completeIPRotation(
-    request: protosTypes.google.container.v1.ICompleteIPRotationRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ICompleteIPRotationRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          | protosTypes.google.container.v1.ICompleteIPRotationRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICompleteIPRotationRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ICompleteIPRotationRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ICompleteIPRotationRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Completes master IP rotation.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://developers.google.com/console/help/new/#projectnumber).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.name
+ *   The name (project, location, cluster id) of the cluster to complete IP
+ *   rotation. Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  completeIPRotation(
+      request: protosTypes.google.container.v1.ICompleteIPRotationRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ICompleteIPRotationRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ICompleteIPRotationRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ICompleteIPRotationRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2759,89 +2346,77 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.completeIPRotation(request, options, callback);
   }
   setNodePoolSize(
-    request: protosTypes.google.container.v1.ISetNodePoolSizeRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNodePoolSizeRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetNodePoolSizeRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetNodePoolSizeRequest|undefined, {}|undefined
+      ]>;
   setNodePoolSize(
-    request: protosTypes.google.container.v1.ISetNodePoolSizeRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNodePoolSizeRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets the size for a specific node pool.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster to update.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.nodePoolId
-   *   Deprecated. The name of the node pool to update.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {number} request.nodeCount
-   *   Required. The desired node count for the pool.
-   * @param {string} request.name
-   *   The name (project, location, cluster, node pool id) of the node pool to set
-   *   size.
-   *   Specified in the format 'projects/* /locations/* /clusters/* /nodePools/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setNodePoolSize(
-    request: protosTypes.google.container.v1.ISetNodePoolSizeRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetNodePoolSizeRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ISetNodePoolSizeRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNodePoolSizeRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNodePoolSizeRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetNodePoolSizeRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets the size for a specific node pool.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster to update.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.nodePoolId
+ *   Deprecated. The name of the node pool to update.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {number} request.nodeCount
+ *   Required. The desired node count for the pool.
+ * @param {string} request.name
+ *   The name (project, location, cluster, node pool id) of the node pool to set
+ *   size.
+ *   Specified in the format 'projects/* /locations/* /clusters/* /nodePools/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setNodePoolSize(
+      request: protosTypes.google.container.v1.ISetNodePoolSizeRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetNodePoolSizeRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetNodePoolSizeRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetNodePoolSizeRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2850,85 +2425,73 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setNodePoolSize(request, options, callback);
   }
   setNetworkPolicy(
-    request: protosTypes.google.container.v1.ISetNetworkPolicyRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNetworkPolicyRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetNetworkPolicyRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetNetworkPolicyRequest|undefined, {}|undefined
+      ]>;
   setNetworkPolicy(
-    request: protosTypes.google.container.v1.ISetNetworkPolicyRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNetworkPolicyRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Enables or disables Network Policy for a cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Deprecated. The Google Developers Console [project ID or project
-   *   number](https://developers.google.com/console/help/new/#projectnumber).
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.zone
-   *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {string} request.clusterId
-   *   Deprecated. The name of the cluster.
-   *   This field has been deprecated and replaced by the name field.
-   * @param {google.container.v1.NetworkPolicy} request.networkPolicy
-   *   Required. Configuration options for the NetworkPolicy feature.
-   * @param {string} request.name
-   *   The name (project, location, cluster id) of the cluster to set networking
-   *   policy. Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setNetworkPolicy(
-    request: protosTypes.google.container.v1.ISetNetworkPolicyRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetNetworkPolicyRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          protosTypes.google.container.v1.ISetNetworkPolicyRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNetworkPolicyRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetNetworkPolicyRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetNetworkPolicyRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Enables or disables Network Policy for a cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Deprecated. The Google Developers Console [project ID or project
+ *   number](https://developers.google.com/console/help/new/#projectnumber).
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.zone
+ *   Deprecated. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {string} request.clusterId
+ *   Deprecated. The name of the cluster.
+ *   This field has been deprecated and replaced by the name field.
+ * @param {google.container.v1.NetworkPolicy} request.networkPolicy
+ *   Required. Configuration options for the NetworkPolicy feature.
+ * @param {string} request.name
+ *   The name (project, location, cluster id) of the cluster to set networking
+ *   policy. Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setNetworkPolicy(
+      request: protosTypes.google.container.v1.ISetNetworkPolicyRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetNetworkPolicyRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetNetworkPolicyRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetNetworkPolicyRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2937,85 +2500,72 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setNetworkPolicy(request, options, callback);
   }
   setMaintenancePolicy(
-    request: protosTypes.google.container.v1.ISetMaintenancePolicyRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMaintenancePolicyRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protosTypes.google.container.v1.ISetMaintenancePolicyRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetMaintenancePolicyRequest|undefined, {}|undefined
+      ]>;
   setMaintenancePolicy(
-    request: protosTypes.google.container.v1.ISetMaintenancePolicyRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMaintenancePolicyRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Sets the maintenance policy for a cluster.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.projectId
-   *   Required. The Google Developers Console [project ID or project
-   *   number](https://support.google.com/cloud/answer/6158840).
-   * @param {string} request.zone
-   *   Required. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
-   *   resides.
-   * @param {string} request.clusterId
-   *   Required. The name of the cluster to update.
-   * @param {google.container.v1.MaintenancePolicy} request.maintenancePolicy
-   *   Required. The maintenance policy to be set for the cluster. An empty field
-   *   clears the existing maintenance policy.
-   * @param {string} request.name
-   *   The name (project, location, cluster id) of the cluster to set maintenance
-   *   policy.
-   *   Specified in the format 'projects/* /locations/* /clusters/*'.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  setMaintenancePolicy(
-    request: protosTypes.google.container.v1.ISetMaintenancePolicyRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.ISetMaintenancePolicyRequest,
+      options: gax.CallOptions,
+      callback: Callback<
           protosTypes.google.container.v1.IOperation,
-          | protosTypes.google.container.v1.ISetMaintenancePolicyRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMaintenancePolicyRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IOperation,
-      protosTypes.google.container.v1.ISetMaintenancePolicyRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+          protosTypes.google.container.v1.ISetMaintenancePolicyRequest|undefined,
+          {}|undefined>): void;
+/**
+ * Sets the maintenance policy for a cluster.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.projectId
+ *   Required. The Google Developers Console [project ID or project
+ *   number](https://support.google.com/cloud/answer/6158840).
+ * @param {string} request.zone
+ *   Required. The name of the Google Compute Engine
+ *   [zone](https://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+ *   resides.
+ * @param {string} request.clusterId
+ *   Required. The name of the cluster to update.
+ * @param {google.container.v1.MaintenancePolicy} request.maintenancePolicy
+ *   Required. The maintenance policy to be set for the cluster. An empty field
+ *   clears the existing maintenance policy.
+ * @param {string} request.name
+ *   The name (project, location, cluster id) of the cluster to set maintenance
+ *   policy.
+ *   Specified in the format 'projects/* /locations/* /clusters/*'.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.container.v1.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  setMaintenancePolicy(
+      request: protosTypes.google.container.v1.ISetMaintenancePolicyRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetMaintenancePolicyRequest|undefined, {}|undefined>,
+      callback?: Callback<
+          protosTypes.google.container.v1.IOperation,
+          protosTypes.google.container.v1.ISetMaintenancePolicyRequest|undefined,
+          {}|undefined>):
+      Promise<[
+        protosTypes.google.container.v1.IOperation,
+        protosTypes.google.container.v1.ISetMaintenancePolicyRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -3024,97 +2574,88 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
     return this._innerApiCalls.setMaintenancePolicy(request, options, callback);
   }
 
   listUsableSubnetworks(
-    request: protosTypes.google.container.v1.IListUsableSubnetworksRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IUsableSubnetwork[],
-      protosTypes.google.container.v1.IListUsableSubnetworksRequest | null,
-      protosTypes.google.container.v1.IListUsableSubnetworksResponse
-    ]
-  >;
+      request: protosTypes.google.container.v1.IListUsableSubnetworksRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protosTypes.google.container.v1.IUsableSubnetwork[],
+        protosTypes.google.container.v1.IListUsableSubnetworksRequest|null,
+        protosTypes.google.container.v1.IListUsableSubnetworksResponse
+      ]>;
   listUsableSubnetworks(
-    request: protosTypes.google.container.v1.IListUsableSubnetworksRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.container.v1.IUsableSubnetwork[],
-      protosTypes.google.container.v1.IListUsableSubnetworksRequest | null,
-      protosTypes.google.container.v1.IListUsableSubnetworksResponse
-    >
-  ): void;
-  /**
-   * Lists subnetworks that are usable for creating clusters in a project.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   The parent project where subnetworks are usable.
-   *   Specified in the format 'projects/*'.
-   * @param {string} request.filter
-   *   Filtering currently only supports equality on the networkProjectId and must
-   *   be in the form: "networkProjectId=[PROJECTID]", where `networkProjectId`
-   *   is the project which owns the listed subnetworks. This defaults to the
-   *   parent project ID.
-   * @param {number} request.pageSize
-   *   The max number of results per page that should be returned. If the number
-   *   of available results is larger than `page_size`, a `next_page_token` is
-   *   returned which can be used to get the next page of results in subsequent
-   *   requests. Acceptable values are 0 to 500, inclusive. (Default: 500)
-   * @param {string} request.pageToken
-   *   Specifies a page token to use. Set this to the nextPageToken returned by
-   *   previous list requests to get the next page of results.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of [UsableSubnetwork]{@link google.container.v1.UsableSubnetwork}.
-   *   The client library support auto-pagination by default: it will call the API as many
-   *   times as needed and will merge results from all the pages into this array.
-   *
-   *   When autoPaginate: false is specified through options, the array has three elements.
-   *   The first element is Array of [UsableSubnetwork]{@link google.container.v1.UsableSubnetwork} that corresponds to
-   *   the one page received from the API server.
-   *   If the second element is not null it contains the request object of type [ListUsableSubnetworksRequest]{@link google.container.v1.ListUsableSubnetworksRequest}
-   *   that can be used to obtain the next page of the results.
-   *   If it is null, the next page does not exist.
-   *   The third element contains the raw response received from the API server. Its type is
-   *   [ListUsableSubnetworksResponse]{@link google.container.v1.ListUsableSubnetworksResponse}.
-   *
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
-  listUsableSubnetworks(
-    request: protosTypes.google.container.v1.IListUsableSubnetworksRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
+      request: protosTypes.google.container.v1.IListUsableSubnetworksRequest,
+      options: gax.CallOptions,
+      callback: PaginationCallback<
           protosTypes.google.container.v1.IUsableSubnetwork[],
-          protosTypes.google.container.v1.IListUsableSubnetworksRequest | null,
-          protosTypes.google.container.v1.IListUsableSubnetworksResponse
-        >,
-    callback?: Callback<
-      protosTypes.google.container.v1.IUsableSubnetwork[],
-      protosTypes.google.container.v1.IListUsableSubnetworksRequest | null,
-      protosTypes.google.container.v1.IListUsableSubnetworksResponse
-    >
-  ): Promise<
-    [
-      protosTypes.google.container.v1.IUsableSubnetwork[],
-      protosTypes.google.container.v1.IListUsableSubnetworksRequest | null,
-      protosTypes.google.container.v1.IListUsableSubnetworksResponse
-    ]
-  > | void {
+          protosTypes.google.container.v1.IListUsableSubnetworksRequest|null,
+          protosTypes.google.container.v1.IListUsableSubnetworksResponse>): void;
+/**
+ * Lists subnetworks that are usable for creating clusters in a project.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   The parent project where subnetworks are usable.
+ *   Specified in the format 'projects/*'.
+ * @param {string} request.filter
+ *   Filtering currently only supports equality on the networkProjectId and must
+ *   be in the form: "networkProjectId=[PROJECTID]", where `networkProjectId`
+ *   is the project which owns the listed subnetworks. This defaults to the
+ *   parent project ID.
+ * @param {number} request.pageSize
+ *   The max number of results per page that should be returned. If the number
+ *   of available results is larger than `page_size`, a `next_page_token` is
+ *   returned which can be used to get the next page of results in subsequent
+ *   requests. Acceptable values are 0 to 500, inclusive. (Default: 500)
+ * @param {string} request.pageToken
+ *   Specifies a page token to use. Set this to the nextPageToken returned by
+ *   previous list requests to get the next page of results.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is Array of [UsableSubnetwork]{@link google.container.v1.UsableSubnetwork}.
+ *   The client library support auto-pagination by default: it will call the API as many
+ *   times as needed and will merge results from all the pages into this array.
+ *
+ *   When autoPaginate: false is specified through options, the array has three elements.
+ *   The first element is Array of [UsableSubnetwork]{@link google.container.v1.UsableSubnetwork} that corresponds to
+ *   the one page received from the API server.
+ *   If the second element is not null it contains the request object of type [ListUsableSubnetworksRequest]{@link google.container.v1.ListUsableSubnetworksRequest}
+ *   that can be used to obtain the next page of the results.
+ *   If it is null, the next page does not exist.
+ *   The third element contains the raw response received from the API server. Its type is
+ *   [ListUsableSubnetworksResponse]{@link google.container.v1.ListUsableSubnetworksResponse}.
+ *
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  listUsableSubnetworks(
+      request: protosTypes.google.container.v1.IListUsableSubnetworksRequest,
+      optionsOrCallback?: gax.CallOptions|PaginationCallback<
+          protosTypes.google.container.v1.IUsableSubnetwork[],
+          protosTypes.google.container.v1.IListUsableSubnetworksRequest|null,
+          protosTypes.google.container.v1.IListUsableSubnetworksResponse>,
+      callback?: PaginationCallback<
+          protosTypes.google.container.v1.IUsableSubnetwork[],
+          protosTypes.google.container.v1.IListUsableSubnetworksRequest|null,
+          protosTypes.google.container.v1.IListUsableSubnetworksResponse>):
+      Promise<[
+        protosTypes.google.container.v1.IUsableSubnetwork[],
+        protosTypes.google.container.v1.IListUsableSubnetworksRequest|null,
+        protosTypes.google.container.v1.IListUsableSubnetworksResponse
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -3123,56 +2664,52 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.listUsableSubnetworks(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.listUsableSubnetworks(request, options, callback);
   }
 
-  /**
-   * Equivalent to {@link listUsableSubnetworks}, but returns a NodeJS Stream object.
-   *
-   * This fetches the paged responses for {@link listUsableSubnetworks} continuously
-   * and invokes the callback registered for 'data' event for each element in the
-   * responses.
-   *
-   * The returned object has 'end' method when no more elements are required.
-   *
-   * autoPaginate option will be ignored.
-   *
-   * @see {@link https://nodejs.org/api/stream.html}
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   The parent project where subnetworks are usable.
-   *   Specified in the format 'projects/*'.
-   * @param {string} request.filter
-   *   Filtering currently only supports equality on the networkProjectId and must
-   *   be in the form: "networkProjectId=[PROJECTID]", where `networkProjectId`
-   *   is the project which owns the listed subnetworks. This defaults to the
-   *   parent project ID.
-   * @param {number} request.pageSize
-   *   The max number of results per page that should be returned. If the number
-   *   of available results is larger than `page_size`, a `next_page_token` is
-   *   returned which can be used to get the next page of results in subsequent
-   *   requests. Acceptable values are 0 to 500, inclusive. (Default: 500)
-   * @param {string} request.pageToken
-   *   Specifies a page token to use. Set this to the nextPageToken returned by
-   *   previous list requests to get the next page of results.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits an object representing [UsableSubnetwork]{@link google.container.v1.UsableSubnetwork} on 'data' event.
-   */
+/**
+ * Equivalent to {@link listUsableSubnetworks}, but returns a NodeJS Stream object.
+ *
+ * This fetches the paged responses for {@link listUsableSubnetworks} continuously
+ * and invokes the callback registered for 'data' event for each element in the
+ * responses.
+ *
+ * The returned object has 'end' method when no more elements are required.
+ *
+ * autoPaginate option will be ignored.
+ *
+ * @see {@link https://nodejs.org/api/stream.html}
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   The parent project where subnetworks are usable.
+ *   Specified in the format 'projects/*'.
+ * @param {string} request.filter
+ *   Filtering currently only supports equality on the networkProjectId and must
+ *   be in the form: "networkProjectId=[PROJECTID]", where `networkProjectId`
+ *   is the project which owns the listed subnetworks. This defaults to the
+ *   parent project ID.
+ * @param {number} request.pageSize
+ *   The max number of results per page that should be returned. If the number
+ *   of available results is larger than `page_size`, a `next_page_token` is
+ *   returned which can be used to get the next page of results in subsequent
+ *   requests. Acceptable values are 0 to 500, inclusive. (Default: 500)
+ * @param {string} request.pageToken
+ *   Specifies a page token to use. Set this to the nextPageToken returned by
+ *   previous list requests to get the next page of results.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Stream}
+ *   An object stream which emits an object representing [UsableSubnetwork]{@link google.container.v1.UsableSubnetwork} on 'data' event.
+ */
   listUsableSubnetworksStream(
-    request?: protosTypes.google.container.v1.IListUsableSubnetworksRequest,
-    options?: gax.CallOptions
-  ): Transform {
+      request?: protosTypes.google.container.v1.IListUsableSubnetworksRequest,
+      options?: gax.CallOptions):
+    Transform{
     request = request || {};
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -3180,7 +2717,7 @@ export class ClusterManagerClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     const callSettings = new gax.CallSettings(options);
     this.initialize();
