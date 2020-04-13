@@ -357,7 +357,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the parent field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides, or "-" for all zones.
    *   This field has been deprecated and replaced by the parent field.
    * @param {string} request.parent
@@ -448,7 +448,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -535,7 +535,7 @@ export class ClusterManagerClient {
    * Compute Engine instances.
    *
    * By default, the cluster is created in the project's
-   * [default network](https://cloud.google.comhttps://cloud.google.com/vpc/docs/firewalls#networks).
+   * [default network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks).
    *
    * One firewall is added for the cluster. After cluster creation,
    * the Kubelet creates routes for each node to allow the containers
@@ -553,12 +553,12 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the parent field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the parent field.
    * @param {google.container.v1.Cluster} request.cluster
    *   Required. A [cluster
-   *   resource](https://cloud.google.comhttps://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters)
+   *   resource](https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters)
    * @param {string} request.parent
    *   The parent (project and location) where the cluster will be created.
    *   Specified in the format `projects/* /locations/*`.
@@ -646,7 +646,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -741,7 +741,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -856,7 +856,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -963,7 +963,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -1068,7 +1068,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -1173,7 +1173,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -1269,7 +1269,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -1277,7 +1277,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string[]} request.locations
    *   Required. The desired list of Google Compute Engine
-   *   [zones](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster's nodes
+   *   [zones](https://cloud.google.com/compute/docs/zones#available) in which the cluster's nodes
    *   should be located. Changing the locations a cluster is in will result
    *   in nodes being either created or removed from the cluster, depending on
    *   whether locations are being added or removed.
@@ -1370,7 +1370,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -1476,7 +1476,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -1581,7 +1581,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -1674,7 +1674,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the parent field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) to return operations for, or `-` for
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) to return operations for, or `-` for
    *   all zones. This field has been deprecated and replaced by the parent field.
    * @param {string} request.parent
    *   The parent (project and location) where the operations will be listed.
@@ -1764,7 +1764,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.operationId
@@ -1857,7 +1857,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the operation resides.
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.operationId
    *   Deprecated. The server-assigned `name` of the operation.
@@ -1949,7 +1949,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) to return operations for.
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) to return operations for.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.name
    *   The name (project and location) of the server config to get,
@@ -2038,7 +2038,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the parent field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the parent field.
    * @param {string} request.clusterId
@@ -2131,7 +2131,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -2228,7 +2228,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the parent field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the parent field.
    * @param {string} request.clusterId
@@ -2324,7 +2324,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -2426,7 +2426,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -2535,7 +2535,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -2638,7 +2638,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -2740,7 +2740,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -2835,7 +2835,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -2930,7 +2930,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -3025,7 +3025,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -3124,7 +3124,7 @@ export class ClusterManagerClient {
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.zone
    *   Deprecated. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    *   This field has been deprecated and replaced by the name field.
    * @param {string} request.clusterId
@@ -3224,7 +3224,7 @@ export class ClusterManagerClient {
    *   number](https://support.google.com/cloud/answer/6158840).
    * @param {string} request.zone
    *   Required. The name of the Google Compute Engine
-   *   [zone](https://cloud.google.comhttps://cloud.google.com/compute/docs/regions-zones/#available) in which the cluster
+   *   [zone](https://cloud.google.com/compute/docs/zones#available) in which the cluster
    *   resides.
    * @param {string} request.clusterId
    *   Required. The name of the cluster to update.
