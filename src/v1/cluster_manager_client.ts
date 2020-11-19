@@ -30,6 +30,11 @@ import * as path from 'path';
 import {Transform} from 'stream';
 import {RequestType} from 'google-gax/build/src/apitypes';
 import * as protos from '../../protos/protos';
+/**
+ * Client JSON configuration object, loaded from
+ * `src/v1/cluster_manager_client_config.json`.
+ * This file defines retry strategy and timeouts for all API methods in this library.
+ */
 import * as gapicConfig from './cluster_manager_client_config.json';
 
 const version = require('../../../package.json').version;
@@ -82,9 +87,9 @@ export class ClusterManagerClient {
    *     your project ID will be detected automatically.
    * @param {string} [options.apiEndpoint] - The domain name of the
    *     API remote host.
-   * @param {gax.ClientConfig} [options.clientConfig] - client configuration override.
-   *     Follows the structure of `cluster_manager_client_config.json`.
-   * @param {boolean} fallback - Use HTTP fallback mode.
+   * @param {gax.ClientConfig} [options.clientConfig] - Client configuration override.
+   *     Follows the structure of {@link gapicConfig}.
+   * @param {boolean} [options.fallback] - Use HTTP fallback mode.
    *     In fallback mode, a special browser-compatible transport implementation is used
    *     instead of gRPC transport. In browser context (if the `window` object is defined)
    *     the fallback mode is enabled automatically; set `options.fallback` to `false`
@@ -97,6 +102,7 @@ export class ClusterManagerClient {
       opts?.servicePath || opts?.apiEndpoint || staticMembers.servicePath;
     const port = opts?.port || staticMembers.port;
     const clientConfig = opts?.clientConfig ?? {};
+    // eslint-disable-next-line no-undef
     const fallback =
       opts?.fallback ??
       (typeof window !== 'undefined' && typeof window.fetch !== 'undefined');
@@ -327,7 +333,7 @@ export class ClusterManagerClient {
   // -------------------
   listClusters(
     request: protos.google.container.v1.IListClustersRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IListClustersResponse,
@@ -337,7 +343,7 @@ export class ClusterManagerClient {
   >;
   listClusters(
     request: protos.google.container.v1.IListClustersRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IListClustersResponse,
       protos.google.container.v1.IListClustersRequest | null | undefined,
@@ -384,7 +390,7 @@ export class ClusterManagerClient {
   listClusters(
     request: protos.google.container.v1.IListClustersRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IListClustersResponse,
           protos.google.container.v1.IListClustersRequest | null | undefined,
@@ -403,12 +409,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -424,7 +430,7 @@ export class ClusterManagerClient {
   }
   getCluster(
     request: protos.google.container.v1.IGetClusterRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.ICluster,
@@ -434,7 +440,7 @@ export class ClusterManagerClient {
   >;
   getCluster(
     request: protos.google.container.v1.IGetClusterRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.ICluster,
       protos.google.container.v1.IGetClusterRequest | null | undefined,
@@ -482,7 +488,7 @@ export class ClusterManagerClient {
   getCluster(
     request: protos.google.container.v1.IGetClusterRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.ICluster,
           protos.google.container.v1.IGetClusterRequest | null | undefined,
@@ -501,12 +507,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -522,7 +528,7 @@ export class ClusterManagerClient {
   }
   createCluster(
     request: protos.google.container.v1.ICreateClusterRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -532,7 +538,7 @@ export class ClusterManagerClient {
   >;
   createCluster(
     request: protos.google.container.v1.ICreateClusterRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ICreateClusterRequest | null | undefined,
@@ -593,7 +599,7 @@ export class ClusterManagerClient {
   createCluster(
     request: protos.google.container.v1.ICreateClusterRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.ICreateClusterRequest | null | undefined,
@@ -612,12 +618,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -633,7 +639,7 @@ export class ClusterManagerClient {
   }
   updateCluster(
     request: protos.google.container.v1.IUpdateClusterRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -643,7 +649,7 @@ export class ClusterManagerClient {
   >;
   updateCluster(
     request: protos.google.container.v1.IUpdateClusterRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.IUpdateClusterRequest | null | undefined,
@@ -693,7 +699,7 @@ export class ClusterManagerClient {
   updateCluster(
     request: protos.google.container.v1.IUpdateClusterRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.IUpdateClusterRequest | null | undefined,
@@ -712,12 +718,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -733,7 +739,7 @@ export class ClusterManagerClient {
   }
   updateNodePool(
     request: protos.google.container.v1.IUpdateNodePoolRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -743,7 +749,7 @@ export class ClusterManagerClient {
   >;
   updateNodePool(
     request: protos.google.container.v1.IUpdateNodePoolRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.IUpdateNodePoolRequest | null | undefined,
@@ -819,7 +825,7 @@ export class ClusterManagerClient {
   updateNodePool(
     request: protos.google.container.v1.IUpdateNodePoolRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.IUpdateNodePoolRequest | null | undefined,
@@ -838,12 +844,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -859,7 +865,7 @@ export class ClusterManagerClient {
   }
   setNodePoolAutoscaling(
     request: protos.google.container.v1.ISetNodePoolAutoscalingRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -869,7 +875,7 @@ export class ClusterManagerClient {
   >;
   setNodePoolAutoscaling(
     request: protos.google.container.v1.ISetNodePoolAutoscalingRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       | protos.google.container.v1.ISetNodePoolAutoscalingRequest
@@ -927,7 +933,7 @@ export class ClusterManagerClient {
   setNodePoolAutoscaling(
     request: protos.google.container.v1.ISetNodePoolAutoscalingRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           | protos.google.container.v1.ISetNodePoolAutoscalingRequest
@@ -950,12 +956,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -975,7 +981,7 @@ export class ClusterManagerClient {
   }
   setLoggingService(
     request: protos.google.container.v1.ISetLoggingServiceRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -985,7 +991,7 @@ export class ClusterManagerClient {
   >;
   setLoggingService(
     request: protos.google.container.v1.ISetLoggingServiceRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ISetLoggingServiceRequest | null | undefined,
@@ -1045,7 +1051,7 @@ export class ClusterManagerClient {
   setLoggingService(
     request: protos.google.container.v1.ISetLoggingServiceRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           | protos.google.container.v1.ISetLoggingServiceRequest
@@ -1066,12 +1072,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1087,7 +1093,7 @@ export class ClusterManagerClient {
   }
   setMonitoringService(
     request: protos.google.container.v1.ISetMonitoringServiceRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -1097,7 +1103,7 @@ export class ClusterManagerClient {
   >;
   setMonitoringService(
     request: protos.google.container.v1.ISetMonitoringServiceRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       | protos.google.container.v1.ISetMonitoringServiceRequest
@@ -1161,7 +1167,7 @@ export class ClusterManagerClient {
   setMonitoringService(
     request: protos.google.container.v1.ISetMonitoringServiceRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           | protos.google.container.v1.ISetMonitoringServiceRequest
@@ -1184,12 +1190,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1205,7 +1211,7 @@ export class ClusterManagerClient {
   }
   setAddonsConfig(
     request: protos.google.container.v1.ISetAddonsConfigRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -1215,7 +1221,7 @@ export class ClusterManagerClient {
   >;
   setAddonsConfig(
     request: protos.google.container.v1.ISetAddonsConfigRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ISetAddonsConfigRequest | null | undefined,
@@ -1266,7 +1272,7 @@ export class ClusterManagerClient {
   setAddonsConfig(
     request: protos.google.container.v1.ISetAddonsConfigRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.ISetAddonsConfigRequest | null | undefined,
@@ -1285,12 +1291,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1306,7 +1312,7 @@ export class ClusterManagerClient {
   }
   setLocations(
     request: protos.google.container.v1.ISetLocationsRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -1316,7 +1322,7 @@ export class ClusterManagerClient {
   >;
   setLocations(
     request: protos.google.container.v1.ISetLocationsRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ISetLocationsRequest | null | undefined,
@@ -1375,7 +1381,7 @@ export class ClusterManagerClient {
   setLocations(
     request: protos.google.container.v1.ISetLocationsRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.ISetLocationsRequest | null | undefined,
@@ -1394,12 +1400,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1415,7 +1421,7 @@ export class ClusterManagerClient {
   }
   updateMaster(
     request: protos.google.container.v1.IUpdateMasterRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -1425,7 +1431,7 @@ export class ClusterManagerClient {
   >;
   updateMaster(
     request: protos.google.container.v1.IUpdateMasterRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.IUpdateMasterRequest | null | undefined,
@@ -1484,7 +1490,7 @@ export class ClusterManagerClient {
   updateMaster(
     request: protos.google.container.v1.IUpdateMasterRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.IUpdateMasterRequest | null | undefined,
@@ -1503,12 +1509,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1524,7 +1530,7 @@ export class ClusterManagerClient {
   }
   setMasterAuth(
     request: protos.google.container.v1.ISetMasterAuthRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -1534,7 +1540,7 @@ export class ClusterManagerClient {
   >;
   setMasterAuth(
     request: protos.google.container.v1.ISetMasterAuthRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ISetMasterAuthRequest | null | undefined,
@@ -1588,7 +1594,7 @@ export class ClusterManagerClient {
   setMasterAuth(
     request: protos.google.container.v1.ISetMasterAuthRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.ISetMasterAuthRequest | null | undefined,
@@ -1607,12 +1613,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1628,7 +1634,7 @@ export class ClusterManagerClient {
   }
   deleteCluster(
     request: protos.google.container.v1.IDeleteClusterRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -1638,7 +1644,7 @@ export class ClusterManagerClient {
   >;
   deleteCluster(
     request: protos.google.container.v1.IDeleteClusterRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.IDeleteClusterRequest | null | undefined,
@@ -1694,7 +1700,7 @@ export class ClusterManagerClient {
   deleteCluster(
     request: protos.google.container.v1.IDeleteClusterRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.IDeleteClusterRequest | null | undefined,
@@ -1713,12 +1719,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1734,7 +1740,7 @@ export class ClusterManagerClient {
   }
   listOperations(
     request: protos.google.container.v1.IListOperationsRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IListOperationsResponse,
@@ -1744,7 +1750,7 @@ export class ClusterManagerClient {
   >;
   listOperations(
     request: protos.google.container.v1.IListOperationsRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IListOperationsResponse,
       protos.google.container.v1.IListOperationsRequest | null | undefined,
@@ -1790,7 +1796,7 @@ export class ClusterManagerClient {
   listOperations(
     request: protos.google.container.v1.IListOperationsRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IListOperationsResponse,
           protos.google.container.v1.IListOperationsRequest | null | undefined,
@@ -1809,12 +1815,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1830,7 +1836,7 @@ export class ClusterManagerClient {
   }
   getOperation(
     request: protos.google.container.v1.IGetOperationRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -1840,7 +1846,7 @@ export class ClusterManagerClient {
   >;
   getOperation(
     request: protos.google.container.v1.IGetOperationRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.IGetOperationRequest | null | undefined,
@@ -1888,7 +1894,7 @@ export class ClusterManagerClient {
   getOperation(
     request: protos.google.container.v1.IGetOperationRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.IGetOperationRequest | null | undefined,
@@ -1907,12 +1913,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1928,7 +1934,7 @@ export class ClusterManagerClient {
   }
   cancelOperation(
     request: protos.google.container.v1.ICancelOperationRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.protobuf.IEmpty,
@@ -1938,7 +1944,7 @@ export class ClusterManagerClient {
   >;
   cancelOperation(
     request: protos.google.container.v1.ICancelOperationRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.protobuf.IEmpty,
       protos.google.container.v1.ICancelOperationRequest | null | undefined,
@@ -1986,7 +1992,7 @@ export class ClusterManagerClient {
   cancelOperation(
     request: protos.google.container.v1.ICancelOperationRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.protobuf.IEmpty,
           protos.google.container.v1.ICancelOperationRequest | null | undefined,
@@ -2005,12 +2011,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2026,7 +2032,7 @@ export class ClusterManagerClient {
   }
   getServerConfig(
     request: protos.google.container.v1.IGetServerConfigRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IServerConfig,
@@ -2036,7 +2042,7 @@ export class ClusterManagerClient {
   >;
   getServerConfig(
     request: protos.google.container.v1.IGetServerConfigRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IServerConfig,
       protos.google.container.v1.IGetServerConfigRequest | null | undefined,
@@ -2081,7 +2087,7 @@ export class ClusterManagerClient {
   getServerConfig(
     request: protos.google.container.v1.IGetServerConfigRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IServerConfig,
           protos.google.container.v1.IGetServerConfigRequest | null | undefined,
@@ -2100,12 +2106,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2121,7 +2127,7 @@ export class ClusterManagerClient {
   }
   getJSONWebKeys(
     request: protos.google.container.v1.IGetJSONWebKeysRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IGetJSONWebKeysResponse,
@@ -2131,7 +2137,7 @@ export class ClusterManagerClient {
   >;
   getJSONWebKeys(
     request: protos.google.container.v1.IGetJSONWebKeysRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IGetJSONWebKeysResponse,
       protos.google.container.v1.IGetJSONWebKeysRequest | null | undefined,
@@ -2170,7 +2176,7 @@ export class ClusterManagerClient {
   getJSONWebKeys(
     request: protos.google.container.v1.IGetJSONWebKeysRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IGetJSONWebKeysResponse,
           protos.google.container.v1.IGetJSONWebKeysRequest | null | undefined,
@@ -2189,12 +2195,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2209,7 +2215,7 @@ export class ClusterManagerClient {
   }
   listNodePools(
     request: protos.google.container.v1.IListNodePoolsRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IListNodePoolsResponse,
@@ -2219,7 +2225,7 @@ export class ClusterManagerClient {
   >;
   listNodePools(
     request: protos.google.container.v1.IListNodePoolsRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IListNodePoolsResponse,
       protos.google.container.v1.IListNodePoolsRequest | null | undefined,
@@ -2267,7 +2273,7 @@ export class ClusterManagerClient {
   listNodePools(
     request: protos.google.container.v1.IListNodePoolsRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IListNodePoolsResponse,
           protos.google.container.v1.IListNodePoolsRequest | null | undefined,
@@ -2286,12 +2292,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2307,7 +2313,7 @@ export class ClusterManagerClient {
   }
   getNodePool(
     request: protos.google.container.v1.IGetNodePoolRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.INodePool,
@@ -2317,7 +2323,7 @@ export class ClusterManagerClient {
   >;
   getNodePool(
     request: protos.google.container.v1.IGetNodePoolRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.INodePool,
       protos.google.container.v1.IGetNodePoolRequest | null | undefined,
@@ -2369,7 +2375,7 @@ export class ClusterManagerClient {
   getNodePool(
     request: protos.google.container.v1.IGetNodePoolRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.INodePool,
           protos.google.container.v1.IGetNodePoolRequest | null | undefined,
@@ -2388,12 +2394,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2409,7 +2415,7 @@ export class ClusterManagerClient {
   }
   createNodePool(
     request: protos.google.container.v1.ICreateNodePoolRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -2419,7 +2425,7 @@ export class ClusterManagerClient {
   >;
   createNodePool(
     request: protos.google.container.v1.ICreateNodePoolRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ICreateNodePoolRequest | null | undefined,
@@ -2470,7 +2476,7 @@ export class ClusterManagerClient {
   createNodePool(
     request: protos.google.container.v1.ICreateNodePoolRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.ICreateNodePoolRequest | null | undefined,
@@ -2489,12 +2495,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2510,7 +2516,7 @@ export class ClusterManagerClient {
   }
   deleteNodePool(
     request: protos.google.container.v1.IDeleteNodePoolRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -2520,7 +2526,7 @@ export class ClusterManagerClient {
   >;
   deleteNodePool(
     request: protos.google.container.v1.IDeleteNodePoolRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.IDeleteNodePoolRequest | null | undefined,
@@ -2572,7 +2578,7 @@ export class ClusterManagerClient {
   deleteNodePool(
     request: protos.google.container.v1.IDeleteNodePoolRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.IDeleteNodePoolRequest | null | undefined,
@@ -2591,12 +2597,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2612,7 +2618,7 @@ export class ClusterManagerClient {
   }
   rollbackNodePoolUpgrade(
     request: protos.google.container.v1.IRollbackNodePoolUpgradeRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -2622,7 +2628,7 @@ export class ClusterManagerClient {
   >;
   rollbackNodePoolUpgrade(
     request: protos.google.container.v1.IRollbackNodePoolUpgradeRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       | protos.google.container.v1.IRollbackNodePoolUpgradeRequest
@@ -2679,7 +2685,7 @@ export class ClusterManagerClient {
   rollbackNodePoolUpgrade(
     request: protos.google.container.v1.IRollbackNodePoolUpgradeRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           | protos.google.container.v1.IRollbackNodePoolUpgradeRequest
@@ -2702,12 +2708,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2727,7 +2733,7 @@ export class ClusterManagerClient {
   }
   setNodePoolManagement(
     request: protos.google.container.v1.ISetNodePoolManagementRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -2737,7 +2743,7 @@ export class ClusterManagerClient {
   >;
   setNodePoolManagement(
     request: protos.google.container.v1.ISetNodePoolManagementRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       | protos.google.container.v1.ISetNodePoolManagementRequest
@@ -2795,7 +2801,7 @@ export class ClusterManagerClient {
   setNodePoolManagement(
     request: protos.google.container.v1.ISetNodePoolManagementRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           | protos.google.container.v1.ISetNodePoolManagementRequest
@@ -2818,12 +2824,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2839,7 +2845,7 @@ export class ClusterManagerClient {
   }
   setLabels(
     request: protos.google.container.v1.ISetLabelsRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -2849,7 +2855,7 @@ export class ClusterManagerClient {
   >;
   setLabels(
     request: protos.google.container.v1.ISetLabelsRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ISetLabelsRequest | null | undefined,
@@ -2906,7 +2912,7 @@ export class ClusterManagerClient {
   setLabels(
     request: protos.google.container.v1.ISetLabelsRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.ISetLabelsRequest | null | undefined,
@@ -2925,12 +2931,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2946,7 +2952,7 @@ export class ClusterManagerClient {
   }
   setLegacyAbac(
     request: protos.google.container.v1.ISetLegacyAbacRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -2956,7 +2962,7 @@ export class ClusterManagerClient {
   >;
   setLegacyAbac(
     request: protos.google.container.v1.ISetLegacyAbacRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ISetLegacyAbacRequest | null | undefined,
@@ -3006,7 +3012,7 @@ export class ClusterManagerClient {
   setLegacyAbac(
     request: protos.google.container.v1.ISetLegacyAbacRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.ISetLegacyAbacRequest | null | undefined,
@@ -3025,12 +3031,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -3046,7 +3052,7 @@ export class ClusterManagerClient {
   }
   startIPRotation(
     request: protos.google.container.v1.IStartIPRotationRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -3056,7 +3062,7 @@ export class ClusterManagerClient {
   >;
   startIPRotation(
     request: protos.google.container.v1.IStartIPRotationRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.IStartIPRotationRequest | null | undefined,
@@ -3106,7 +3112,7 @@ export class ClusterManagerClient {
   startIPRotation(
     request: protos.google.container.v1.IStartIPRotationRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.IStartIPRotationRequest | null | undefined,
@@ -3125,12 +3131,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -3146,7 +3152,7 @@ export class ClusterManagerClient {
   }
   completeIPRotation(
     request: protos.google.container.v1.ICompleteIPRotationRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -3156,7 +3162,7 @@ export class ClusterManagerClient {
   >;
   completeIPRotation(
     request: protos.google.container.v1.ICompleteIPRotationRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ICompleteIPRotationRequest | null | undefined,
@@ -3204,7 +3210,7 @@ export class ClusterManagerClient {
   completeIPRotation(
     request: protos.google.container.v1.ICompleteIPRotationRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           | protos.google.container.v1.ICompleteIPRotationRequest
@@ -3225,12 +3231,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -3246,7 +3252,7 @@ export class ClusterManagerClient {
   }
   setNodePoolSize(
     request: protos.google.container.v1.ISetNodePoolSizeRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -3256,7 +3262,7 @@ export class ClusterManagerClient {
   >;
   setNodePoolSize(
     request: protos.google.container.v1.ISetNodePoolSizeRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ISetNodePoolSizeRequest | null | undefined,
@@ -3310,7 +3316,7 @@ export class ClusterManagerClient {
   setNodePoolSize(
     request: protos.google.container.v1.ISetNodePoolSizeRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           protos.google.container.v1.ISetNodePoolSizeRequest | null | undefined,
@@ -3329,12 +3335,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -3350,7 +3356,7 @@ export class ClusterManagerClient {
   }
   setNetworkPolicy(
     request: protos.google.container.v1.ISetNetworkPolicyRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -3360,7 +3366,7 @@ export class ClusterManagerClient {
   >;
   setNetworkPolicy(
     request: protos.google.container.v1.ISetNetworkPolicyRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       protos.google.container.v1.ISetNetworkPolicyRequest | null | undefined,
@@ -3410,7 +3416,7 @@ export class ClusterManagerClient {
   setNetworkPolicy(
     request: protos.google.container.v1.ISetNetworkPolicyRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           | protos.google.container.v1.ISetNetworkPolicyRequest
@@ -3431,12 +3437,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -3452,7 +3458,7 @@ export class ClusterManagerClient {
   }
   setMaintenancePolicy(
     request: protos.google.container.v1.ISetMaintenancePolicyRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IOperation,
@@ -3462,7 +3468,7 @@ export class ClusterManagerClient {
   >;
   setMaintenancePolicy(
     request: protos.google.container.v1.ISetMaintenancePolicyRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: Callback<
       protos.google.container.v1.IOperation,
       | protos.google.container.v1.ISetMaintenancePolicyRequest
@@ -3515,7 +3521,7 @@ export class ClusterManagerClient {
   setMaintenancePolicy(
     request: protos.google.container.v1.ISetMaintenancePolicyRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | Callback<
           protos.google.container.v1.IOperation,
           | protos.google.container.v1.ISetMaintenancePolicyRequest
@@ -3538,12 +3544,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -3560,7 +3566,7 @@ export class ClusterManagerClient {
 
   listUsableSubnetworks(
     request: protos.google.container.v1.IListUsableSubnetworksRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Promise<
     [
       protos.google.container.v1.IUsableSubnetwork[],
@@ -3570,7 +3576,7 @@ export class ClusterManagerClient {
   >;
   listUsableSubnetworks(
     request: protos.google.container.v1.IListUsableSubnetworksRequest,
-    options: gax.CallOptions,
+    options: CallOptions,
     callback: PaginationCallback<
       protos.google.container.v1.IListUsableSubnetworksRequest,
       | protos.google.container.v1.IListUsableSubnetworksResponse
@@ -3626,7 +3632,7 @@ export class ClusterManagerClient {
   listUsableSubnetworks(
     request: protos.google.container.v1.IListUsableSubnetworksRequest,
     optionsOrCallback?:
-      | gax.CallOptions
+      | CallOptions
       | PaginationCallback<
           protos.google.container.v1.IListUsableSubnetworksRequest,
           | protos.google.container.v1.IListUsableSubnetworksResponse
@@ -3649,12 +3655,12 @@ export class ClusterManagerClient {
     ]
   > | void {
     request = request || {};
-    let options: gax.CallOptions;
+    let options: CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
     } else {
-      options = optionsOrCallback as gax.CallOptions;
+      options = optionsOrCallback as CallOptions;
     }
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -3702,7 +3708,7 @@ export class ClusterManagerClient {
    */
   listUsableSubnetworksStream(
     request?: protos.google.container.v1.IListUsableSubnetworksRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): Transform {
     request = request || {};
     options = options || {};
@@ -3762,7 +3768,7 @@ export class ClusterManagerClient {
    */
   listUsableSubnetworksAsync(
     request?: protos.google.container.v1.IListUsableSubnetworksRequest,
-    options?: gax.CallOptions
+    options?: CallOptions
   ): AsyncIterable<protos.google.container.v1.IUsableSubnetwork> {
     request = request || {};
     options = options || {};
