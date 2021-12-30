@@ -6,7 +6,6 @@
 
 
 [![npm version](https://img.shields.io/npm/v/@google-cloud/container.svg)](https://www.npmjs.org/package/@google-cloud/container)
-[![codecov](https://img.shields.io/codecov/c/github/googleapis/nodejs-cloud-container/main.svg?style=flat)](https://codecov.io/gh/googleapis/nodejs-cloud-container)
 
 
 
