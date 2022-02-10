@@ -15,7 +15,7 @@
 'use strict';
 
 const {assert, expect} = require('chai');
-const {describe, it} = require('mocha');
+const {describe, it, after, before} = require('mocha');
 const {randomUUID} = require('crypto');
 const container = require('@google-cloud/container');
 const cp = require('child_process');
@@ -40,7 +40,7 @@ describe('container samples - delete cluster long running op', async () => {
   const clusterLocation = `projects/${projectId}/locations/${randomZone}`;
 
   // create a new cluster to test the delete sample on
-  beforeEach(async () => {
+  before(async () => {
     const request = {
       parent: clusterLocation,
       cluster: {
@@ -75,7 +75,7 @@ describe('container samples - delete cluster long running op', async () => {
   });
 
   // clean up the cluster regardless of whether the test passed or not
-  afterEach(async () => {
+  after(async () => {
     const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
     const [deleteOperation] = await client.deleteCluster(request);
     const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
