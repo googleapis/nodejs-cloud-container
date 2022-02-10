@@ -97,6 +97,8 @@ Samples are in the [`samples/`](https://github.com/googleapis/nodejs-cloud-conta
 
 | Sample                      | Source Code                       | Try it |
 | --------------------------- | --------------------------------- | ------ |
+| Create_cluster | [source code](https://github.com/googleapis/nodejs-cloud-container/blob/main/samples/create_cluster.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-cloud-container&page=editor&open_in_editor=samples/create_cluster.js,samples/README.md) |
+| Delete_cluster | [source code](https://github.com/googleapis/nodejs-cloud-container/blob/main/samples/delete_cluster.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-cloud-container&page=editor&open_in_editor=samples/delete_cluster.js,samples/README.md) |
 | Quickstart | [source code](https://github.com/googleapis/nodejs-cloud-container/blob/main/samples/quickstart.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-cloud-container&page=editor&open_in_editor=samples/quickstart.js,samples/README.md) |
 
 

@@ -18,7 +18,7 @@
 // load the google-cloud nodejs library for GKE
 const container = require('@google-cloud/container');
 const args = require('yargs').argv;
-const { exit } = require('process');
+const {exit} = require('process');
 
 // assign the operation status enum to a variable for easy access
 const STATUS_ENUM = container.protos.google.container.v1.Operation.Status;
@@ -39,6 +39,7 @@ let prevFibonacciDelay = 0;
  * @returns a Promise that wraps the status check function
  */
 const checkOpStatus = (client, opId) => {
+<<<<<<< HEAD
     const getOpFn = async (resolve, reject) => {
         const [longRunningOp] = await client.getOperation({ name: opId });
         const DONE = STATUS_ENUM[STATUS_ENUM.DONE];
@@ -49,6 +50,18 @@ const checkOpStatus = (client, opId) => {
         }
     };
     return new Promise(getOpFn);
+=======
+  const getOpFn = async (resolve, reject) => {
+    const [longRunningOp] = await client.getOperation({name: opId});
+    const DONE = STATUS_ENUM[STATUS_ENUM.DONE];
+    if (longRunningOp.status === DONE) {
+      resolve('Cluster creation completed.');
+    } else {
+      reject('Cluster creation not complete.');
+    }
+  };
+  return new Promise(getOpFn);
+>>>>>>> b5cf5a7198f56d8ee400b1c61921372cd1b27cf3
 };
 
 /**
@@ -61,9 +74,9 @@ const checkOpStatus = (client, opId) => {
  * @returns the next delay before retrying
  */
 function getFibonacciDelay(delay) {
-    const newDelay = prevFibonacciDelay + delay;
-    prevFibonacciDelay = delay;
-    return newDelay;
+  const newDelay = prevFibonacciDelay + delay;
+  prevFibonacciDelay = delay;
+  return newDelay;
 }
 
 /**
