@@ -40,16 +40,16 @@ let prevFibonacciDelay = 0;
  * @returns a Promise that wraps the status check function
  */
 const checkOpStatus = (client, opId) => {
-    const getOpFn = async (resolve, reject) => {
-        const [longRunningOp] = await client.getOperation({ name: opId });
-        const DONE = STATUS_ENUM[STATUS_ENUM.DONE];
-        if (longRunningOp.status === DONE) {
-            resolve('Cluster creation completed.');
-        } else {
-            reject('Cluster creation not complete.');
-        }
-    };
-    return new Promise(getOpFn);
+  const getOpFn = async (resolve, reject) => {
+    const [longRunningOp] = await client.getOperation({name: opId});
+    const DONE = STATUS_ENUM[STATUS_ENUM.DONE];
+    if (longRunningOp.status === DONE) {
+      resolve('Cluster creation completed.');
+    } else {
+      reject('Cluster creation not complete.');
+    }
+  };
+  return new Promise(getOpFn);
 };
 
 /**
@@ -79,31 +79,31 @@ function getFibonacciDelay(delay) {
  * @param {number} retryCount the current number of retried attempted
  */
 function checkStatusWithRetry(client, opId, delay, maxtries, retryCount = 1) {
-    checkOpStatus(client, opId)
-        .then(status => {
-            // success scenario
-            console.log(status);
-        })
-        .catch(status => {
-            // fail (not yet complete) scenario
-            if (retryCount < maxtries) {
-                console.log(`${status} will try after ${delay / 1000}s delay...`);
-                const newDelay = getFibonacciDelay(delay);
-                setTimeout(
-                    () =>
-                        checkStatusWithRetry(
-                            client,
-                            opId,
-                            newDelay,
-                            maxtries,
-                            retryCount + 1
-                        ),
-                    delay
-                );
-            } else {
-                console.log(`${status} max retries reached, giving up.`);
-            }
-        });
+  checkOpStatus(client, opId)
+    .then(status => {
+      // success scenario
+      console.log(status);
+    })
+    .catch(status => {
+      // fail (not yet complete) scenario
+      if (retryCount < maxtries) {
+        console.log(`${status} will try after ${delay / 1000}s delay...`);
+        const newDelay = getFibonacciDelay(delay);
+        setTimeout(
+          () =>
+            checkStatusWithRetry(
+              client,
+              opId,
+              newDelay,
+              maxtries,
+              retryCount + 1
+            ),
+          delay
+        );
+      } else {
+        console.log(`${status} max retries reached, giving up.`);
+      }
+    });
 }
 
 /**
@@ -117,26 +117,26 @@ function checkStatusWithRetry(client, opId, delay, maxtries, retryCount = 1) {
  * @param {string} clusterName the name to be given to the new cluster
  */
 async function createCluster(gcpZone, clusterName) {
-    // Create the Cluster Manager Client
-    const client = new container.v1.ClusterManagerClient();
-    const gcpProject = await client.getProjectId();
-    const clusterLocation = `projects/${gcpProject}/locations/${gcpZone}`;
-    const request = {
-        parent: clusterLocation,
-        cluster: {
-            name: clusterName,
-            initialNodeCount: 2,
-            nodeConfig: {
-                machineType: 'e2-standard-2',
-            },
-        },
-    };
-    // invoke the create cluster API using the client
-    const [createOperation] = await client.createCluster(request);
-    // extract the unique identifier of the operation to checkback status
-    const opIdentifier = `${clusterLocation}/operations/${createOperation.name}`;
-    // schedule polling to check if the creation operation is completed
-    checkStatusWithRetry(client, opIdentifier, 1000, 20);
+  // Create the Cluster Manager Client
+  const client = new container.v1.ClusterManagerClient();
+  const gcpProject = await client.getProjectId();
+  const clusterLocation = `projects/${gcpProject}/locations/${gcpZone}`;
+  const request = {
+    parent: clusterLocation,
+    cluster: {
+      name: clusterName,
+      initialNodeCount: 2,
+      nodeConfig: {
+        machineType: 'e2-standard-2',
+      },
+    },
+  };
+  // invoke the create cluster API using the client
+  const [createOperation] = await client.createCluster(request);
+  // extract the unique identifier of the operation to checkback status
+  const opIdentifier = `${clusterLocation}/operations/${createOperation.name}`;
+  // schedule polling to check if the creation operation is completed
+  checkStatusWithRetry(client, opIdentifier, 1000, 20);
 }
 
 /**
@@ -147,16 +147,16 @@ async function createCluster(gcpZone, clusterName) {
  * > node create_cluster.js --zone=<GCP_ZONE> --name=<CLUSTER_NAME>
  */
 async function main() {
-    if (!args.zone) {
-        console.log('Missing zone argument. (e.g. --zone=us-west1-a)');
-        exit(1);
-    }
-    if (!args.name) {
-        console.log('Missing cluster name argument. (e.g. --name=gke_cluster)');
-        exit(1);
-    }
-    // Create a new GKE cluster
-    createCluster(args.zone, args.name);
+  if (!args.zone) {
+    console.log('Missing zone argument. (e.g. --zone=us-west1-a)');
+    exit(1);
+  }
+  if (!args.name) {
+    console.log('Missing cluster name argument. (e.g. --name=gke_cluster)');
+    exit(1);
+  }
+  // Create a new GKE cluster
+  createCluster(args.zone, args.name);
 }
 
 // program starts here
