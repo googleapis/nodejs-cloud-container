@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// [START gke_delete_cluster]
 'use strict';
+
+// [START gke_delete_cluster]
 
 // load the google-cloud nodejs library for GKE
 const container = require('@google-cloud/container');
 const args = require('yargs').argv;
-const {exit} = require('process');
+const { exit } = require('process');
 
 // assign the operation status enum to a variable for easy access
 const STATUS_ENUM = container.protos.google.container.v1.Operation.Status;
@@ -61,9 +62,9 @@ const checkOpStatus = (client, opId) => {
  * @returns the next delay before retrying
  */
 function getFibonacciDelay(delay) {
-  const newDelay = prevFibonacciDelay + delay;
-  prevFibonacciDelay = delay;
-  return newDelay;
+    const newDelay = prevFibonacciDelay + delay;
+    prevFibonacciDelay = delay;
+    return newDelay;
 }
 
 /**
