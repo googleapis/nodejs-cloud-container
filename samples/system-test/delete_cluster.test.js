@@ -1,4 +1,4 @@
-// Copyright 2017 Google LLC
+// Copyright 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -77,9 +77,16 @@ describe('container samples - delete cluster long running op', async () => {
   // clean up the cluster regardless of whether the test passed or not
   after(async () => {
     const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
-    const [deleteOperation] = await client.deleteCluster(request);
-    const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
-
+    let opIdentifier;
+    try {
+      const [deleteOperation] = await client.deleteCluster(request);
+      opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
+    } catch (ex) {
+      // Error code 5 is NOT_FOUND meaning the cluster was deleted
+      if (ex.code === 5) {
+        return;
+      }
+    }
     const maxRetries = 20;
     let retryCount = 0;
     let prevDelay = 0;
