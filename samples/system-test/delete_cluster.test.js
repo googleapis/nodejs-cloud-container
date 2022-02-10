@@ -76,8 +76,8 @@ describe('container samples - delete cluster long running op', async () => {
 
   // clean up the cluster regardless of whether the test passed or not
   after(async () => {
-    const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
     let opIdentifier;
+    const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
     try {
       const [deleteOperation] = await client.deleteCluster(request);
       opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
