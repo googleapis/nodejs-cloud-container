@@ -39,16 +39,16 @@ let prevFibonacciDelay = 0;
  * @returns a Promise that wraps the status check function
  */
 const checkOpStatus = (client, opId) => {
-    const getOpFn = async (resolve, reject) => {
-        const [longRunningOp] = await client.getOperation({ name: opId });
-        const DONE = STATUS_ENUM[STATUS_ENUM.DONE];
-        if (longRunningOp.status === DONE) {
-            resolve('Cluster deletion completed.');
-        } else {
-            reject('Cluster deletion not complete.');
-        }
-    };
-    return new Promise(getOpFn);
+  const getOpFn = async (resolve, reject) => {
+    const [longRunningOp] = await client.getOperation({name: opId});
+    const DONE = STATUS_ENUM[STATUS_ENUM.DONE];
+    if (longRunningOp.status === DONE) {
+      resolve('Cluster deletion completed.');
+    } else {
+      reject('Cluster deletion not complete.');
+    }
+  };
+  return new Promise(getOpFn);
 };
 
 /**
@@ -78,31 +78,31 @@ function getFibonacciDelay(delay) {
  * @param {number} retryCount the current number of retried attempted
  */
 function checkStatusWithRetry(client, opId, delay, maxtries, retryCount = 1) {
-    checkOpStatus(client, opId)
-        .then(status => {
-            // success scenario
-            console.log(status);
-        })
-        .catch(status => {
-            // fail (not yet complete) scenario
-            if (retryCount < maxtries) {
-                console.log(`${status} will try after ${delay / 1000}s delay...`);
-                const newDelay = getFibonacciDelay(delay);
-                setTimeout(
-                    () =>
-                        checkStatusWithRetry(
-                            client,
-                            opId,
-                            newDelay,
-                            maxtries,
-                            retryCount + 1
-                        ),
-                    delay
-                );
-            } else {
-                console.log(`${status} max retries reached, giving up.`);
-            }
-        });
+  checkOpStatus(client, opId)
+    .then(status => {
+      // success scenario
+      console.log(status);
+    })
+    .catch(status => {
+      // fail (not yet complete) scenario
+      if (retryCount < maxtries) {
+        console.log(`${status} will try after ${delay / 1000}s delay...`);
+        const newDelay = getFibonacciDelay(delay);
+        setTimeout(
+          () =>
+            checkStatusWithRetry(
+              client,
+              opId,
+              newDelay,
+              maxtries,
+              retryCount + 1
+            ),
+          delay
+        );
+      } else {
+        console.log(`${status} max retries reached, giving up.`);
+      }
+    });
 }
 
 /**
@@ -116,16 +116,16 @@ function checkStatusWithRetry(client, opId, delay, maxtries, retryCount = 1) {
  * @param {string} clusterName the name to be given to the new cluster
  */
 async function deleteCluster(gcpZone, clusterName) {
-    const client = new container.v1.ClusterManagerClient();
-    const gcpProject = await client.getProjectId();
-    const clusterLocation = `projects/${gcpProject}/locations/${gcpZone}`;
-    const request = { name: `${clusterLocation}/clusters/${clusterName}` };
-    // invoke the delete cluster API using the client
-    const [deleteOperation] = await client.deleteCluster(request);
-    // extract the unique identifier of the operation to checkback status
-    const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
-    // schedule polling to check if the deletion operation is completed
-    checkStatusWithRetry(client, opIdentifier, 1000, 20);
+  const client = new container.v1.ClusterManagerClient();
+  const gcpProject = await client.getProjectId();
+  const clusterLocation = `projects/${gcpProject}/locations/${gcpZone}`;
+  const request = {name: `${clusterLocation}/clusters/${clusterName}`};
+  // invoke the delete cluster API using the client
+  const [deleteOperation] = await client.deleteCluster(request);
+  // extract the unique identifier of the operation to checkback status
+  const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
+  // schedule polling to check if the deletion operation is completed
+  checkStatusWithRetry(client, opIdentifier, 1000, 20);
 }
 
 /**
@@ -136,16 +136,16 @@ async function deleteCluster(gcpZone, clusterName) {
  * > node delete_cluster.js --project=<GCP_PROJECT> --zone=<GCP_ZONE> --name=<CLUSTER_NAME>
  */
 async function main() {
-    if (!args.zone) {
-        console.log('Missing zone argument. (e.g. --zone=us-west1-a)');
-        exit(1);
-    }
-    if (!args.name) {
-        console.log('Missing cluster name argument. (e.g. --name=gke_cluster)');
-        exit(1);
-    }
-    // Delete the GKE cluster
-    deleteCluster(args.zone, args.name);
+  if (!args.zone) {
+    console.log('Missing zone argument. (e.g. --zone=us-west1-a)');
+    exit(1);
+  }
+  if (!args.name) {
+    console.log('Missing cluster name argument. (e.g. --name=gke_cluster)');
+    exit(1);
+  }
+  // Delete the GKE cluster
+  deleteCluster(args.zone, args.name);
 }
 
 // program starts here
