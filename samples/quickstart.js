@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// [START gke_list_cluster]
 'use strict';
 
 async function main() {
@@ -38,3 +39,4 @@ async function main() {
 }
 
 main().catch(console.error);
+// [END gke_list_cluster]
