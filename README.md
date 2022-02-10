@@ -60,8 +60,6 @@ npm install @google-cloud/container
 ### Using the client library
 
 ```javascript
-'use strict';
-
 async function main() {
   const container = require('@google-cloud/container');
 
