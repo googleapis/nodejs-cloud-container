@@ -19,7 +19,7 @@ const {describe, it, after} = require('mocha');
 const {randomUUID} = require('crypto');
 const cp = require('child_process');
 const container = require('@google-cloud/container');
-const waitTillComplete = require('./test_util.js');
+const untilDone = require('./test_util.js');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
@@ -45,7 +45,7 @@ describe('container samples - create cluster long running op', async () => {
     const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
     const [deleteOperation] = await client.deleteCluster(request);
     const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
-    await waitTillComplete(client, opIdentifier);
+    await untilDone(client, opIdentifier);
   });
 
   it('should create cluster and wait for completion', async function () {
