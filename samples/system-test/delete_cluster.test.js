@@ -17,9 +17,9 @@
 const {assert, expect} = require('chai');
 const {describe, it, after, before} = require('mocha');
 const {randomUUID} = require('crypto');
-const container = require('@google-cloud/container');
 const cp = require('child_process');
-const STATUS_ENUM = container.protos.google.container.v1.Operation.Status;
+const container = require('@google-cloud/container');
+const untilDone = require('./test_util.js');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
@@ -40,7 +40,8 @@ describe('container samples - delete cluster long running op', async () => {
   const clusterLocation = `projects/${projectId}/locations/${randomZone}`;
 
   // create a new cluster to test the delete sample on
-  before(async () => {
+  before(async function () {
+    this.timeout(1000000);
     const request = {
       parent: clusterLocation,
       cluster: {
@@ -51,65 +52,27 @@ describe('container samples - delete cluster long running op', async () => {
     };
     const [createOperation] = await client.createCluster(request);
     const opIdentifier = `${clusterLocation}/operations/${createOperation.name}`;
-
-    const maxRetries = 20;
-    let retryCount = 0;
-    let prevDelay = 0;
-    let currDelay = 1000;
-
-    async function timeOutFn() {
-      if (retryCount >= maxRetries) {
-        return;
-      }
-      const [longRunningOp] = await client.getOperation({name: opIdentifier});
-      const status = longRunningOp.status;
-      if (status !== STATUS_ENUM[STATUS_ENUM.DONE]) {
-        const newDelay = prevDelay + currDelay;
-        prevDelay = currDelay;
-        currDelay = newDelay;
-        setTimeout(timeOutFn, currDelay);
-      }
-      retryCount += 1;
-    }
-    timeOutFn();
+    await untilDone(client, opIdentifier);
   });
 
   // clean up the cluster regardless of whether the test passed or not
-  after(async () => {
-    let opIdentifier;
+  after(async function () {
+    this.timeout(1000000);
     const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
     try {
       const [deleteOperation] = await client.deleteCluster(request);
-      opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
+      const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
+      await untilDone(client, opIdentifier);
     } catch (ex) {
       // Error code 5 is NOT_FOUND meaning the cluster was deleted
       if (ex.code === 5) {
         return;
       }
     }
-    const maxRetries = 20;
-    let retryCount = 0;
-    let prevDelay = 0;
-    let currDelay = 1000;
-
-    async function timeOutFn() {
-      if (retryCount >= maxRetries) {
-        return;
-      }
-      const [longRunningOp] = await client.getOperation({name: opIdentifier});
-      const status = longRunningOp.status;
-      if (status !== STATUS_ENUM[STATUS_ENUM.DONE]) {
-        const newDelay = prevDelay + currDelay;
-        prevDelay = currDelay;
-        currDelay = newDelay;
-        setTimeout(timeOutFn, currDelay);
-      }
-      retryCount += 1;
-    }
-    timeOutFn();
   });
 
-  it('should delete cluster and wait for completion', async () => {
+  it('should delete cluster and wait for completion', async function () {
+    this.timeout(1000000);
     const stdout = execSync(
       `node delete_cluster.js --zone=${randomZone} --name=${randomClusterName}`
     );
@@ -128,5 +91,5 @@ describe('container samples - delete cluster long running op', async () => {
       []
     );
     expect(clustersList).to.not.include(randomClusterName);
-  }).timeout(1000000);
+  });
 });

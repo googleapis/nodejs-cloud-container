@@ -17,9 +17,9 @@
 const {assert, expect} = require('chai');
 const {describe, it, after} = require('mocha');
 const {randomUUID} = require('crypto');
-const container = require('@google-cloud/container');
 const cp = require('child_process');
-const STATUS_ENUM = container.protos.google.container.v1.Operation.Status;
+const container = require('@google-cloud/container');
+const waitTillComplete = require('./test_util.js');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
@@ -40,34 +40,16 @@ describe('container samples - create cluster long running op', async () => {
   const clusterLocation = `projects/${projectId}/locations/${randomZone}`;
 
   // clean up the cluster regardless of whether the test passed or not
-  after(async () => {
+  after(async function () {
+    this.timeout(1000000);
     const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
     const [deleteOperation] = await client.deleteCluster(request);
     const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
-
-    const maxRetries = 20;
-    let retryCount = 0;
-    let prevDelay = 0;
-    let currDelay = 1000;
-
-    async function timeOutFn() {
-      if (retryCount >= maxRetries) {
-        return;
-      }
-      const [longRunningOp] = await client.getOperation({name: opIdentifier});
-      const status = longRunningOp.status;
-      if (status !== STATUS_ENUM[STATUS_ENUM.DONE]) {
-        const newDelay = prevDelay + currDelay;
-        prevDelay = currDelay;
-        currDelay = newDelay;
-        setTimeout(timeOutFn, currDelay);
-      }
-      retryCount += 1;
-    }
-    timeOutFn();
+    await waitTillComplete(client, opIdentifier);
   });
 
-  it('should create cluster and wait for completion', async () => {
+  it('should create cluster and wait for completion', async function () {
+    this.timeout(1000000);
     const stdout = execSync(
       `node create_cluster.js --zone=${randomZone} --name=${randomClusterName}`
     );
@@ -86,5 +68,5 @@ describe('container samples - create cluster long running op', async () => {
       []
     );
     expect(clustersList).to.include(randomClusterName);
-  }).timeout(1000000);
+  });
 });
