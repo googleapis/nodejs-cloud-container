@@ -15,41 +15,36 @@
 'use strict';
 
 const {assert, expect} = require('chai');
-const {describe, it, after} = require('mocha');
+const {describe, it, before, after} = require('mocha');
 const {randomUUID} = require('crypto');
 const cp = require('child_process');
 const container = require('@google-cloud/container');
 const untilDone = require('./test_util.js');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
+const zones = [
+  'us-central1-a',
+  'us-central1-b',
+  'us-central1-c',
+  'us-central1-f',
+];
+const randomZone = zones[Math.floor(Math.random() * zones.length)];
+const randomClusterName = `nodejs-container-test-${randomUUID().substring(
+  0,
+  8
+)}`;
+const client = new container.v1.ClusterManagerClient();
+let projectId;
+let clusterLocation;
 
-describe('container samples - create cluster long running op', async () => {
-  const zones = [
-    'us-central1-a',
-    'us-central1-b',
-    'us-central1-c',
-    'us-central1-f',
-  ];
-  const randomZone = zones[Math.floor(Math.random() * zones.length)];
-  const randomClusterName = `nodejs-container-test-${randomUUID().substring(
-    0,
-    8
-  )}`;
-  const client = new container.v1.ClusterManagerClient();
-  const projectId = await client.getProjectId();
-  const clusterLocation = `projects/${projectId}/locations/${randomZone}`;
+// create a new cluster to test the delete sample on
+before(async () => {
+  projectId = await client.getProjectId();
+  clusterLocation = `projects/${projectId}/locations/${randomZone}`;
+});
 
-  // clean up the cluster regardless of whether the test passed or not
-  after(async function () {
-    this.timeout(1000000);
-    const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
-    const [deleteOperation] = await client.deleteCluster(request);
-    const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
-    await untilDone(client, opIdentifier);
-  });
-
-  it('should create cluster and wait for completion', async function () {
-    this.timeout(1000000);
+describe('container samples - create cluster long running op', () => {
+  it('should create cluster and wait for completion', async () => {
     const stdout = execSync(
       `node create_cluster.js --zone=${randomZone} --name=${randomClusterName}`
     );
@@ -58,7 +53,9 @@ describe('container samples - create cluster long running op', async () => {
       /Cluster creation not complete. will try after .* delay/
     );
     assert.match(stdout, /Cluster creation completed./);
+  });
 
+  it('should contain the created cluster in list', async () => {
     const [response] = await client.listClusters({
       projectId: projectId,
       zone: randomZone,
@@ -69,4 +66,12 @@ describe('container samples - create cluster long running op', async () => {
     );
     expect(clustersList).to.include(randomClusterName);
   });
+});
+
+// clean up the cluster regardless of whether the test passed or not
+after(async () => {
+  const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
+  const [deleteOperation] = await client.deleteCluster(request);
+  const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
+  await untilDone(client, opIdentifier);
 });

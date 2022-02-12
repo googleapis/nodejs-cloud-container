@@ -22,57 +22,41 @@ const container = require('@google-cloud/container');
 const untilDone = require('./test_util.js');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
+const zones = [
+  'us-central1-a',
+  'us-central1-b',
+  'us-central1-c',
+  'us-central1-f',
+];
+const randomZone = zones[Math.floor(Math.random() * zones.length)];
+const randomClusterName = `nodejs-container-test-${randomUUID().substring(
+  0,
+  8
+)}`;
+const client = new container.v1.ClusterManagerClient();
+let projectId;
+let clusterLocation;
 
-describe('container samples - delete cluster long running op', async () => {
-  const zones = [
-    'us-central1-a',
-    'us-central1-b',
-    'us-central1-c',
-    'us-central1-f',
-  ];
-  const randomZone = zones[Math.floor(Math.random() * zones.length)];
-  const randomClusterName = `nodejs-container-test-${randomUUID().substring(
-    0,
-    8
-  )}`;
-  const client = new container.v1.ClusterManagerClient();
-  const projectId = await client.getProjectId();
-  const clusterLocation = `projects/${projectId}/locations/${randomZone}`;
+// create a new cluster to test the delete sample on
+before(async () => {
+  projectId = await client.getProjectId();
+  clusterLocation = `projects/${projectId}/locations/${randomZone}`;
+  const request = {
+    parent: clusterLocation,
+    cluster: {
+      name: randomClusterName,
+      initialNodeCount: 2,
+      nodeConfig: {machineType: 'e2-standard-2'},
+    },
+  };
+  const [createOperation] = await client.createCluster(request);
+  const opIdentifier = `${clusterLocation}/operations/${createOperation.name}`;
+  await untilDone(client, opIdentifier);
+});
 
-  // create a new cluster to test the delete sample on
-  before(async function () {
-    this.timeout(1000000);
-    const request = {
-      parent: clusterLocation,
-      cluster: {
-        name: randomClusterName,
-        initialNodeCount: 2,
-        nodeConfig: {machineType: 'e2-standard-2'},
-      },
-    };
-    const [createOperation] = await client.createCluster(request);
-    const opIdentifier = `${clusterLocation}/operations/${createOperation.name}`;
-    await untilDone(client, opIdentifier);
-  });
-
-  // clean up the cluster regardless of whether the test passed or not
-  after(async function () {
-    this.timeout(1000000);
-    const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
-    try {
-      const [deleteOperation] = await client.deleteCluster(request);
-      const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
-      await untilDone(client, opIdentifier);
-    } catch (ex) {
-      // Error code 5 is NOT_FOUND meaning the cluster was deleted
-      if (ex.code === 5) {
-        return;
-      }
-    }
-  });
-
-  it('should delete cluster and wait for completion', async function () {
-    this.timeout(1000000);
+// run the tests
+describe('container samples - delete cluster long running op', () => {
+  it('should delete cluster and wait for completion', async () => {
     const stdout = execSync(
       `node delete_cluster.js --zone=${randomZone} --name=${randomClusterName}`
     );
@@ -81,7 +65,9 @@ describe('container samples - delete cluster long running op', async () => {
       /Cluster deletion not complete. will try after .* delay/
     );
     assert.match(stdout, /Cluster deletion completed./);
+  });
 
+  it('should not see the deleted cluster in the list', async () => {
     const [response] = await client.listClusters({
       projectId: projectId,
       zone: randomZone,
@@ -92,4 +78,19 @@ describe('container samples - delete cluster long running op', async () => {
     );
     expect(clustersList).to.not.include(randomClusterName);
   });
+});
+
+// clean up the cluster regardless of whether the test passed or not
+after(async () => {
+  const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
+  try {
+    const [deleteOperation] = await client.deleteCluster(request);
+    const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
+    await untilDone(client, opIdentifier);
+  } catch (ex) {
+    // Error code 5 is NOT_FOUND meaning the cluster was deleted during the test
+    if (ex.code === 5) {
+      return;
+    }
+  }
 });

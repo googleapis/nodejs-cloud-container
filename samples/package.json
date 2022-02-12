@@ -11,7 +11,7 @@
     "*.js"
   ],
   "scripts": {
-    "test": "mocha system-test --timeout 10000"
+    "test": "mocha system-test --timeout 1000000"
   },
   "dependencies": {
     "@google-cloud/container": "^2.6.0",
