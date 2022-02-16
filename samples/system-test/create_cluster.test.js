@@ -16,7 +16,7 @@
 
 const {assert, expect} = require('chai');
 const {describe, it, before, after} = require('mocha');
-const randomUUID = require('uuid');
+const uuid = require('uuid');
 const cp = require('child_process');
 const container = require('@google-cloud/container');
 const untilDone = require('./test_util.js');
@@ -29,10 +29,8 @@ const zones = [
   'us-central1-f',
 ];
 const randomZone = zones[Math.floor(Math.random() * zones.length)];
-const randomClusterName = `nodejs-container-test-${randomUUID.v1().substring(
-  0,
-  8
-)}`;
+const randomUUID = uuid.v1().substring(0, 8);
+const randomClusterName = `nodejs-container-test-${randomUUID}`;
 const client = new container.v1.ClusterManagerClient();
 let projectId;
 let clusterLocation;

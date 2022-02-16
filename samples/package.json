@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@google-cloud/container": "^2.6.0",
+    "uuid": "^8.3.2",
     "yargs": "^17.3.1"
   },
   "devDependencies": {
