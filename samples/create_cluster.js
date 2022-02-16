@@ -152,7 +152,7 @@ async function main() {
     exit(1);
   }
   if (!args.name) {
-    console.log('Missing cluster name argument. (e.g. --name=gke_cluster)');
+    console.log('Missing cluster name argument. (e.g. --name=gke-cluster)');
     exit(1);
   }
   // Create a new GKE cluster
