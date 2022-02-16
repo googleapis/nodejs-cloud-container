@@ -32,6 +32,7 @@ const randomZone = zones[Math.floor(Math.random() * zones.length)];
 const randomUUID = uuid.v1().substring(0, 8);
 const randomClusterName = `nodejs-container-test-${randomUUID}`;
 const client = new container.v1.ClusterManagerClient();
+const ciNetwork = 'default-compute';
 let projectId;
 let clusterLocation;
 
@@ -43,6 +44,7 @@ before(async () => {
     parent: clusterLocation,
     cluster: {
       name: randomClusterName,
+      network: ciNetwork,
       initialNodeCount: 2,
       nodeConfig: {machineType: 'e2-standard-2'},
     },
