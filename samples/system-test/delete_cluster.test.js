@@ -29,10 +29,9 @@ const zones = [
   'us-central1-f',
 ];
 const randomZone = zones[Math.floor(Math.random() * zones.length)];
-const randomClusterName = `nodejs-container-test-${randomUUID.v1().substring(
-  0,
-  8
-)}`;
+const randomClusterName = `nodejs-container-test-${randomUUID
+  .v1()
+  .substring(0, 8)}`;
 const client = new container.v1.ClusterManagerClient();
 let projectId;
 let clusterLocation;
