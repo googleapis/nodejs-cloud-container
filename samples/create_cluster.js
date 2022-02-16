@@ -116,7 +116,7 @@ function checkStatusWithRetry(client, opId, delay, maxtries, retryCount = 1) {
  * @param {string} gcpZone the GCP zone where the cluster is to be created
  * @param {string} clusterName the name to be given to the new cluster
  */
-async function createCluster(gcpZone, clusterName) {
+async function createCluster(gcpZone, clusterName, networkName) {
   // Create the Cluster Manager Client
   const client = new container.v1.ClusterManagerClient();
   const gcpProject = await client.getProjectId();
@@ -125,6 +125,7 @@ async function createCluster(gcpZone, clusterName) {
     parent: clusterLocation,
     cluster: {
       name: clusterName,
+      network: networkName,
       initialNodeCount: 2,
       nodeConfig: {
         machineType: 'e2-standard-2',
@@ -147,16 +148,21 @@ async function createCluster(gcpZone, clusterName) {
  * > node create_cluster.js --zone=<GCP_ZONE> --name=<CLUSTER_NAME>
  */
 async function main() {
-  if (!args.zone) {
-    console.log('Missing zone argument. (e.g. --zone=us-west1-a)');
+  if (!args.name || !args.zone) {
+    console.log(
+      'Missing argument. Required name and zone (e.g. --name=gke-cluster, --zone=us-west1-a)'
+    );
     exit(1);
   }
-  if (!args.name) {
-    console.log('Missing cluster name argument. (e.g. --name=gke-cluster)');
-    exit(1);
+  // use the default network if no network is provided
+  let network = 'default';
+  if (args.network) {
+    network = args.network;
+  } else {
+    console.log(`No network provided; using ${network} network`);
   }
   // Create a new GKE cluster
-  createCluster(args.zone, args.name);
+  createCluster(args.zone, args.name, network);
 }
 
 // program starts here

@@ -137,12 +137,10 @@ async function deleteCluster(gcpZone, clusterName) {
  * > node delete_cluster.js --project=<GCP_PROJECT> --zone=<GCP_ZONE> --name=<CLUSTER_NAME>
  */
 async function main() {
-  if (!args.zone) {
-    console.log('Missing zone argument. (e.g. --zone=us-west1-a)');
-    exit(1);
-  }
-  if (!args.name) {
-    console.log('Missing cluster name argument. (e.g. --name=gke_cluster)');
+  if (!args.name || !args.zone) {
+    console.log(
+      'Missing argument. Required name and zone (e.g. --name=gke-cluster, --zone=us-west1-a)'
+    );
     exit(1);
   }
   // Delete the GKE cluster

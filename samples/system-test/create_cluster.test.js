@@ -14,14 +14,14 @@
 
 'use strict';
 
-const {assert, expect} = require('chai');
-const {describe, it, before, after} = require('mocha');
+const { assert, expect } = require('chai');
+const { describe, it, before, after } = require('mocha');
 const uuid = require('uuid');
 const cp = require('child_process');
 const container = require('@google-cloud/container');
 const untilDone = require('./test_util.js');
 
-const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
+const execSync = cmd => cp.execSync(cmd, { encoding: 'utf-8' });
 const zones = [
   'us-central1-a',
   'us-central1-b',
@@ -32,6 +32,7 @@ const randomZone = zones[Math.floor(Math.random() * zones.length)];
 const randomUUID = uuid.v1().substring(0, 8);
 const randomClusterName = `nodejs-container-test-${randomUUID}`;
 const client = new container.v1.ClusterManagerClient();
+const ciNetwork = 'default-compute';
 let projectId;
 let clusterLocation;
 
@@ -44,7 +45,7 @@ before(async () => {
 describe('container samples - create cluster long running op', () => {
   it('should create cluster and wait for completion', async () => {
     const stdout = execSync(
-      `node create_cluster.js --zone=${randomZone} --name=${randomClusterName}`
+      `node create_cluster.js --zone=${randomZone} --name=${randomClusterName} --network=${ciNetwork}`
     );
     assert.match(
       stdout,
@@ -68,7 +69,7 @@ describe('container samples - create cluster long running op', () => {
 
 // clean up the cluster regardless of whether the test passed or not
 after(async () => {
-  const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
+  const request = { name: `${clusterLocation}/clusters/${randomClusterName}` };
   const [deleteOperation] = await client.deleteCluster(request);
   const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
   await untilDone(client, opIdentifier);
