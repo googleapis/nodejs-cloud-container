@@ -43,7 +43,8 @@
     "precompile": "gts clean"
   },
   "dependencies": {
-    "google-gax": "^2.24.1"
+    "google-gax": "^2.24.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/mocha": "^8.0.0",
