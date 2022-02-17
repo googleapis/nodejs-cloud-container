@@ -24,16 +24,16 @@ let prevDelay;
 let currDelay;
 
 /**
- * We use a custom wait and retry methos for the test cases, which is different
+ * We use a custom wait and retry method for the test cases, which is different
  * from the approach we have for the samples itself. The samples use an async
  * function with delayed setIntervals. Since, the last function call of the
  * samples is the wait for the long running operation to complete, the program
- * waits until the delayed setInterval async functions resolves. 
+ * waits until the delayed setInterval async functions resolve. 
  * 
  * However, when running the tests we have certain setup to be done in the
  * before() hook which are also long running operations. We would want to block
  * until these setup steps are fully complete before allowing for the tests to
- * start. If we use the same approach as used in the samples (with an async
+ * start. If we use the same approach used in the samples (with an async
  * function scheduled on setIntervals), the before() hook will not block. Rather
  * it will return and the tests will start running.
  * 
