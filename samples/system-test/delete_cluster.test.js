@@ -58,7 +58,7 @@ before(async () => {
 describe('container samples - delete cluster long running op', () => {
   it('should delete cluster and wait for completion', async () => {
     const stdout = execSync(
-      `node delete_cluster.js --zone=${randomZone} --name=${randomClusterName}`
+      `node delete_cluster.js ${randomClusterName} ${randomZone}`
     );
     assert.match(
       stdout,
