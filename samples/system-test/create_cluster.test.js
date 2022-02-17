@@ -45,7 +45,7 @@ before(async () => {
 describe('container samples - create cluster long running op', () => {
   it('should create cluster and wait for completion', async () => {
     const stdout = execSync(
-      `node create_cluster.js --zone=${randomZone} --name=${randomClusterName} --network=${ciNetwork}`
+      `node create_cluster.js ${randomClusterName} ${randomZone} ${ciNetwork}`
     );
     assert.match(
       stdout,
