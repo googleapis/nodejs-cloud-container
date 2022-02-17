@@ -36,10 +36,10 @@ let currDelay;
  * start. If we use the same approach used in the samples (with an async
  * function scheduled on setIntervals), the before() hook will not block. Rather
  * it will return and the tests will start running.
- * 
+ *
  * To prevent this scenario, we have employed a sleep based retry and wait
- * method below to be used only for the test cases. 
- * 
+ * method below to be used only for the test cases.
+ *
  * @param {container.v1.ClusterManagerClient} client the google cloud API client used to submit the request
  * @param {string} opIdentifier the unique identifier of the operation we want to check
  */
