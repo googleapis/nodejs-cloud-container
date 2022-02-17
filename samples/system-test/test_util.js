@@ -28,18 +28,18 @@ let currDelay;
  * from the approach we have for the samples itself. The samples use an async
  * function with delayed setIntervals. Since, the last function call of the
  * samples is the wait for the long running operation to complete, the program
- * waits until the delayed setInterval async functions resolves. 
- * 
+ * waits until the delayed setInterval async functions resolves.
+ *
  * However, when running the tests we have certain setup to be done in the
  * before() hook which are also long running operations. We would want to block
  * until these setup steps are fully complete before allowing for the tests to
  * start. If we use the same approach as used in the samples (with an async
  * function scheduled on setIntervals), the before() hook will not block. Rather
  * it will return and the tests will start running.
- * 
+ *
  * To prevent this scenario, we have employed a sleep based retry and wait
- * method below to be used only for the test cases. 
- * 
+ * method below to be used only for the test cases.
+ *
  * @param {container.v1.ClusterManagerClient} client the google cloud API client used to submit the request
  * @param {string} opIdentifier the unique identifier of the operation we want to check
  */
