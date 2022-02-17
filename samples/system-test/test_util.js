@@ -28,8 +28,8 @@ let currDelay;
  * from the approach we have for the samples itself. The samples use an async
  * function with delayed setIntervals. Since, the last function call of the
  * samples is the wait for the long running operation to complete, the program
- * waits until the delayed setInterval async functions resolve. 
- * 
+ * waits until the delayed setInterval async functions resolve.
+ *
  * However, when running the tests we have certain setup to be done in the
  * before() hook which are also long running operations. We would want to block
  * until these setup steps are fully complete before allowing for the tests to
