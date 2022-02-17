@@ -54,6 +54,21 @@ before(async () => {
   await untilDone(client, opIdentifier);
 });
 
+// clean up the cluster regardless of whether the test passed or not
+after(async () => {
+  const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
+  try {
+    const [deleteOperation] = await client.deleteCluster(request);
+    const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
+    await untilDone(client, opIdentifier);
+  } catch (ex) {
+    // Error code 5 is NOT_FOUND meaning the cluster was deleted during the test
+    if (ex.code === 5) {
+      return;
+    }
+  }
+});
+
 // run the tests
 describe('container samples - delete cluster long running op', () => {
   it('should delete cluster and wait for completion', async () => {
@@ -78,19 +93,4 @@ describe('container samples - delete cluster long running op', () => {
     );
     expect(clustersList).to.not.include(randomClusterName);
   });
-});
-
-// clean up the cluster regardless of whether the test passed or not
-after(async () => {
-  const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
-  try {
-    const [deleteOperation] = await client.deleteCluster(request);
-    const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
-    await untilDone(client, opIdentifier);
-  } catch (ex) {
-    // Error code 5 is NOT_FOUND meaning the cluster was deleted during the test
-    if (ex.code === 5) {
-      return;
-    }
-  }
 });

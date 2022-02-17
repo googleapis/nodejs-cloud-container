@@ -42,6 +42,14 @@ before(async () => {
   clusterLocation = `projects/${projectId}/locations/${randomZone}`;
 });
 
+// clean up the cluster regardless of whether the test passed or not
+after(async () => {
+  const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
+  const [deleteOperation] = await client.deleteCluster(request);
+  const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
+  await untilDone(client, opIdentifier);
+});
+
 describe('container samples - create cluster long running op', () => {
   it('should create cluster and wait for completion', async () => {
     const stdout = execSync(
@@ -65,12 +73,4 @@ describe('container samples - create cluster long running op', () => {
     );
     expect(clustersList).to.include(randomClusterName);
   });
-});
-
-// clean up the cluster regardless of whether the test passed or not
-after(async () => {
-  const request = {name: `${clusterLocation}/clusters/${randomClusterName}`};
-  const [deleteOperation] = await client.deleteCluster(request);
-  const opIdentifier = `${clusterLocation}/operations/${deleteOperation.name}`;
-  await untilDone(client, opIdentifier);
 });
