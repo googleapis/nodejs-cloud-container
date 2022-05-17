@@ -90,7 +90,7 @@
                     };
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#listClusters}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|listClusters}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef ListClustersCallback
                      * @type {function}
@@ -123,7 +123,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#getCluster}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|getCluster}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef GetClusterCallback
                      * @type {function}
@@ -156,7 +156,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#createCluster}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|createCluster}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef CreateClusterCallback
                      * @type {function}
@@ -189,7 +189,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#updateCluster}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|updateCluster}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef UpdateClusterCallback
                      * @type {function}
@@ -222,7 +222,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#updateNodePool}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|updateNodePool}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef UpdateNodePoolCallback
                      * @type {function}
@@ -255,7 +255,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setNodePoolAutoscaling}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setNodePoolAutoscaling}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetNodePoolAutoscalingCallback
                      * @type {function}
@@ -288,7 +288,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setLoggingService}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setLoggingService}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetLoggingServiceCallback
                      * @type {function}
@@ -321,7 +321,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setMonitoringService}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setMonitoringService}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetMonitoringServiceCallback
                      * @type {function}
@@ -354,7 +354,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setAddonsConfig}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setAddonsConfig}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetAddonsConfigCallback
                      * @type {function}
@@ -387,7 +387,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setLocations}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setLocations}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetLocationsCallback
                      * @type {function}
@@ -420,7 +420,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#updateMaster}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|updateMaster}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef UpdateMasterCallback
                      * @type {function}
@@ -453,7 +453,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setMasterAuth}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setMasterAuth}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetMasterAuthCallback
                      * @type {function}
@@ -486,7 +486,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#deleteCluster}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|deleteCluster}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef DeleteClusterCallback
                      * @type {function}
@@ -519,7 +519,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#listOperations}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|listOperations}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef ListOperationsCallback
                      * @type {function}
@@ -552,7 +552,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#getOperation}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|getOperation}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef GetOperationCallback
                      * @type {function}
@@ -585,7 +585,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#cancelOperation}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|cancelOperation}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef CancelOperationCallback
                      * @type {function}
@@ -618,7 +618,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#getServerConfig}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|getServerConfig}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef GetServerConfigCallback
                      * @type {function}
@@ -651,7 +651,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#getJSONWebKeys}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|getJSONWebKeys}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef GetJSONWebKeysCallback
                      * @type {function}
@@ -684,7 +684,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#listNodePools}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|listNodePools}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef ListNodePoolsCallback
                      * @type {function}
@@ -717,7 +717,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#getNodePool}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|getNodePool}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef GetNodePoolCallback
                      * @type {function}
@@ -750,7 +750,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#createNodePool}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|createNodePool}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef CreateNodePoolCallback
                      * @type {function}
@@ -783,7 +783,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#deleteNodePool}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|deleteNodePool}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef DeleteNodePoolCallback
                      * @type {function}
@@ -816,7 +816,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#rollbackNodePoolUpgrade}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|rollbackNodePoolUpgrade}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef RollbackNodePoolUpgradeCallback
                      * @type {function}
@@ -849,7 +849,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setNodePoolManagement}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setNodePoolManagement}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetNodePoolManagementCallback
                      * @type {function}
@@ -882,7 +882,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setLabels}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setLabels}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetLabelsCallback
                      * @type {function}
@@ -915,7 +915,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setLegacyAbac}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setLegacyAbac}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetLegacyAbacCallback
                      * @type {function}
@@ -948,7 +948,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#startIPRotation}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|startIPRotation}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef StartIPRotationCallback
                      * @type {function}
@@ -981,7 +981,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#completeIPRotation}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|completeIPRotation}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef CompleteIPRotationCallback
                      * @type {function}
@@ -1014,7 +1014,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setNodePoolSize}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setNodePoolSize}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetNodePoolSizeCallback
                      * @type {function}
@@ -1047,7 +1047,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setNetworkPolicy}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setNetworkPolicy}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetNetworkPolicyCallback
                      * @type {function}
@@ -1080,7 +1080,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#setMaintenancePolicy}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|setMaintenancePolicy}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef SetMaintenancePolicyCallback
                      * @type {function}
@@ -1113,7 +1113,7 @@
                      */
     
                     /**
-                     * Callback as used by {@link google.container.v1.ClusterManager#listUsableSubnetworks}.
+                     * Callback as used by {@link google.container.v1.ClusterManager|listUsableSubnetworks}.
                      * @memberof google.container.v1.ClusterManager
                      * @typedef ListUsableSubnetworksCallback
                      * @type {function}
@@ -44219,6 +44219,7 @@
                  * @property {boolean|null} [packed] FieldOptions packed
                  * @property {google.protobuf.FieldOptions.JSType|null} [jstype] FieldOptions jstype
                  * @property {boolean|null} [lazy] FieldOptions lazy
+                 * @property {boolean|null} [unverifiedLazy] FieldOptions unverifiedLazy
                  * @property {boolean|null} [deprecated] FieldOptions deprecated
                  * @property {boolean|null} [weak] FieldOptions weak
                  * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] FieldOptions uninterpretedOption
@@ -44274,6 +44275,14 @@
                  * @instance
                  */
                 FieldOptions.prototype.lazy = false;
+    
+                /**
+                 * FieldOptions unverifiedLazy.
+                 * @member {boolean} unverifiedLazy
+                 * @memberof google.protobuf.FieldOptions
+                 * @instance
+                 */
+                FieldOptions.prototype.unverifiedLazy = false;
     
                 /**
                  * FieldOptions deprecated.
@@ -44351,6 +44360,8 @@
                         writer.uint32(/* id 6, wireType 0 =*/48).int32(message.jstype);
                     if (message.weak != null && Object.hasOwnProperty.call(message, "weak"))
                         writer.uint32(/* id 10, wireType 0 =*/80).bool(message.weak);
+                    if (message.unverifiedLazy != null && Object.hasOwnProperty.call(message, "unverifiedLazy"))
+                        writer.uint32(/* id 15, wireType 0 =*/120).bool(message.unverifiedLazy);
                     if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                         for (var i = 0; i < message.uninterpretedOption.length; ++i)
                             $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
@@ -44407,6 +44418,9 @@
                             break;
                         case 5:
                             message.lazy = reader.bool();
+                            break;
+                        case 15:
+                            message.unverifiedLazy = reader.bool();
                             break;
                         case 3:
                             message.deprecated = reader.bool();
@@ -44491,6 +44505,9 @@
                     if (message.lazy != null && message.hasOwnProperty("lazy"))
                         if (typeof message.lazy !== "boolean")
                             return "lazy: boolean expected";
+                    if (message.unverifiedLazy != null && message.hasOwnProperty("unverifiedLazy"))
+                        if (typeof message.unverifiedLazy !== "boolean")
+                            return "unverifiedLazy: boolean expected";
                     if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                         if (typeof message.deprecated !== "boolean")
                             return "deprecated: boolean expected";
@@ -44576,6 +44593,8 @@
                     }
                     if (object.lazy != null)
                         message.lazy = Boolean(object.lazy);
+                    if (object.unverifiedLazy != null)
+                        message.unverifiedLazy = Boolean(object.unverifiedLazy);
                     if (object.deprecated != null)
                         message.deprecated = Boolean(object.deprecated);
                     if (object.weak != null)
@@ -44663,6 +44682,7 @@
                         object.lazy = false;
                         object.jstype = options.enums === String ? "JS_NORMAL" : 0;
                         object.weak = false;
+                        object.unverifiedLazy = false;
                         object[".google.api.resourceReference"] = null;
                     }
                     if (message.ctype != null && message.hasOwnProperty("ctype"))
@@ -44677,6 +44697,8 @@
                         object.jstype = options.enums === String ? $root.google.protobuf.FieldOptions.JSType[message.jstype] : message.jstype;
                     if (message.weak != null && message.hasOwnProperty("weak"))
                         object.weak = message.weak;
+                    if (message.unverifiedLazy != null && message.hasOwnProperty("unverifiedLazy"))
+                        object.unverifiedLazy = message.unverifiedLazy;
                     if (message.uninterpretedOption && message.uninterpretedOption.length) {
                         object.uninterpretedOption = [];
                         for (var j = 0; j < message.uninterpretedOption.length; ++j)
