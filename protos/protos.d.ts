@@ -495,224 +495,224 @@ export namespace google {
             namespace ClusterManager {
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|listClusters}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#listClusters}.
                  * @param error Error, if any
                  * @param [response] ListClustersResponse
                  */
                 type ListClustersCallback = (error: (Error|null), response?: google.container.v1.ListClustersResponse) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|getCluster}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#getCluster}.
                  * @param error Error, if any
                  * @param [response] Cluster
                  */
                 type GetClusterCallback = (error: (Error|null), response?: google.container.v1.Cluster) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|createCluster}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#createCluster}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type CreateClusterCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|updateCluster}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#updateCluster}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type UpdateClusterCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|updateNodePool}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#updateNodePool}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type UpdateNodePoolCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setNodePoolAutoscaling}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setNodePoolAutoscaling}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetNodePoolAutoscalingCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setLoggingService}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setLoggingService}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetLoggingServiceCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setMonitoringService}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setMonitoringService}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetMonitoringServiceCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setAddonsConfig}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setAddonsConfig}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetAddonsConfigCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setLocations}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setLocations}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetLocationsCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|updateMaster}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#updateMaster}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type UpdateMasterCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setMasterAuth}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setMasterAuth}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetMasterAuthCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|deleteCluster}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#deleteCluster}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type DeleteClusterCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|listOperations}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#listOperations}.
                  * @param error Error, if any
                  * @param [response] ListOperationsResponse
                  */
                 type ListOperationsCallback = (error: (Error|null), response?: google.container.v1.ListOperationsResponse) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|getOperation}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#getOperation}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type GetOperationCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|cancelOperation}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#cancelOperation}.
                  * @param error Error, if any
                  * @param [response] Empty
                  */
                 type CancelOperationCallback = (error: (Error|null), response?: google.protobuf.Empty) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|getServerConfig}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#getServerConfig}.
                  * @param error Error, if any
                  * @param [response] ServerConfig
                  */
                 type GetServerConfigCallback = (error: (Error|null), response?: google.container.v1.ServerConfig) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|getJSONWebKeys}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#getJSONWebKeys}.
                  * @param error Error, if any
                  * @param [response] GetJSONWebKeysResponse
                  */
                 type GetJSONWebKeysCallback = (error: (Error|null), response?: google.container.v1.GetJSONWebKeysResponse) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|listNodePools}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#listNodePools}.
                  * @param error Error, if any
                  * @param [response] ListNodePoolsResponse
                  */
                 type ListNodePoolsCallback = (error: (Error|null), response?: google.container.v1.ListNodePoolsResponse) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|getNodePool}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#getNodePool}.
                  * @param error Error, if any
                  * @param [response] NodePool
                  */
                 type GetNodePoolCallback = (error: (Error|null), response?: google.container.v1.NodePool) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|createNodePool}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#createNodePool}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type CreateNodePoolCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|deleteNodePool}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#deleteNodePool}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type DeleteNodePoolCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|rollbackNodePoolUpgrade}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#rollbackNodePoolUpgrade}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type RollbackNodePoolUpgradeCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setNodePoolManagement}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setNodePoolManagement}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetNodePoolManagementCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setLabels}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setLabels}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetLabelsCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setLegacyAbac}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setLegacyAbac}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetLegacyAbacCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|startIPRotation}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#startIPRotation}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type StartIPRotationCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|completeIPRotation}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#completeIPRotation}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type CompleteIPRotationCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setNodePoolSize}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setNodePoolSize}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetNodePoolSizeCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setNetworkPolicy}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setNetworkPolicy}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetNetworkPolicyCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|setMaintenancePolicy}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#setMaintenancePolicy}.
                  * @param error Error, if any
                  * @param [response] Operation
                  */
                 type SetMaintenancePolicyCallback = (error: (Error|null), response?: google.container.v1.Operation) => void;
 
                 /**
-                 * Callback as used by {@link google.container.v1.ClusterManager|listUsableSubnetworks}.
+                 * Callback as used by {@link google.container.v1.ClusterManager#listUsableSubnetworks}.
                  * @param error Error, if any
                  * @param [response] ListUsableSubnetworksResponse
                  */
@@ -17454,9 +17454,6 @@ export namespace google {
             /** FieldOptions lazy */
             lazy?: (boolean|null);
 
-            /** FieldOptions unverifiedLazy */
-            unverifiedLazy?: (boolean|null);
-
             /** FieldOptions deprecated */
             deprecated?: (boolean|null);
 
@@ -17493,9 +17490,6 @@ export namespace google {
 
             /** FieldOptions lazy. */
             public lazy: boolean;
-
-            /** FieldOptions unverifiedLazy. */
-            public unverifiedLazy: boolean;
 
             /** FieldOptions deprecated. */
             public deprecated: boolean;
