@@ -69,7 +69,7 @@ export class ClusterManagerClient {
    *
    * @param {object} [options] - The configuration object.
    * The options accepted by the constructor are described in detail
-   * in [this document](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#creating-the-client-instance).
+   * in [this document](https://github.com/googleapis/gax-nodejs/blob/main/client-libraries.md#creating-the-client-instance).
    * The common options are:
    * @param {object} [options.credentials] - Credentials object.
    * @param {string} [options.credentials.client_email]
@@ -92,11 +92,10 @@ export class ClusterManagerClient {
    *     API remote host.
    * @param {gax.ClientConfig} [options.clientConfig] - Client configuration override.
    *     Follows the structure of {@link gapicConfig}.
-   * @param {boolean} [options.fallback] - Use HTTP fallback mode.
-   *     In fallback mode, a special browser-compatible transport implementation is used
-   *     instead of gRPC transport. In browser context (if the `window` object is defined)
-   *     the fallback mode is enabled automatically; set `options.fallback` to `false`
-   *     if you need to override this behavior.
+   * @param {boolean | "rest"} [options.fallback] - Use HTTP fallback mode.
+   *     Pass "rest" to use HTTP/1.1 REST API instead of gRPC.
+   *     For more information, please check the
+   *     {@link https://github.com/googleapis/gax-nodejs/blob/main/client-libraries.md#http11-rest-api-mode documentation}.
    */
   constructor(opts?: ClientOptions) {
     // Ensure that options include all the required fields.
@@ -237,7 +236,7 @@ export class ClusterManagerClient {
       'getOperation',
       'cancelOperation',
       'getServerConfig',
-      'getJSONWebKeys',
+      'getJsonWebKeys',
       'listNodePools',
       'getNodePool',
       'createNodePool',
@@ -246,8 +245,8 @@ export class ClusterManagerClient {
       'setNodePoolManagement',
       'setLabels',
       'setLegacyAbac',
-      'startIPRotation',
-      'completeIPRotation',
+      'startIpRotation',
+      'completeIpRotation',
       'setNodePoolSize',
       'setNetworkPolicy',
       'setMaintenancePolicy',
@@ -2242,7 +2241,7 @@ export class ClusterManagerClient {
         parent: request.parent || '',
       });
     this.initialize();
-    return this.innerApiCalls.getJSONWebKeys(request, options, callback);
+    return this.innerApiCalls.getJsonWebKeys(request, options, callback);
   }
   /**
    * Lists the node pools for a cluster.
@@ -3192,7 +3191,7 @@ export class ClusterManagerClient {
         cluster_id: request.clusterId || '',
       });
     this.initialize();
-    return this.innerApiCalls.startIPRotation(request, options, callback);
+    return this.innerApiCalls.startIpRotation(request, options, callback);
   }
   /**
    * Completes master IP rotation.
@@ -3293,7 +3292,7 @@ export class ClusterManagerClient {
         cluster_id: request.clusterId || '',
       });
     this.initialize();
-    return this.innerApiCalls.completeIPRotation(request, options, callback);
+    return this.innerApiCalls.completeIpRotation(request, options, callback);
   }
   /**
    * Sets the size for a specific node pool. The new size will be used for all
