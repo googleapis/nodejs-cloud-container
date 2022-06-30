@@ -3274,6 +3274,139 @@ describe('v1.ClusterManagerClient', () => {
     });
   });
 
+  describe('completeNodePoolUpgrade', () => {
+    it('invokes completeNodePoolUpgrade without error', async () => {
+      const client = new clustermanagerModule.v1.ClusterManagerClient({
+        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        projectId: 'bogus',
+      });
+      client.initialize();
+      const request = generateSampleMessage(
+        new protos.google.container.v1.CompleteNodePoolUpgradeRequest()
+      );
+      request.name = '';
+      const expectedHeaderRequestParams = 'name=';
+      const expectedOptions = {
+        otherArgs: {
+          headers: {
+            'x-goog-request-params': expectedHeaderRequestParams,
+          },
+        },
+      };
+      const expectedResponse = generateSampleMessage(
+        new protos.google.protobuf.Empty()
+      );
+      client.innerApiCalls.completeNodePoolUpgrade =
+        stubSimpleCall(expectedResponse);
+      const [response] = await client.completeNodePoolUpgrade(request);
+      assert.deepStrictEqual(response, expectedResponse);
+      assert(
+        (client.innerApiCalls.completeNodePoolUpgrade as SinonStub)
+          .getCall(0)
+          .calledWith(request, expectedOptions, undefined)
+      );
+    });
+
+    it('invokes completeNodePoolUpgrade without error using callback', async () => {
+      const client = new clustermanagerModule.v1.ClusterManagerClient({
+        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        projectId: 'bogus',
+      });
+      client.initialize();
+      const request = generateSampleMessage(
+        new protos.google.container.v1.CompleteNodePoolUpgradeRequest()
+      );
+      request.name = '';
+      const expectedHeaderRequestParams = 'name=';
+      const expectedOptions = {
+        otherArgs: {
+          headers: {
+            'x-goog-request-params': expectedHeaderRequestParams,
+          },
+        },
+      };
+      const expectedResponse = generateSampleMessage(
+        new protos.google.protobuf.Empty()
+      );
+      client.innerApiCalls.completeNodePoolUpgrade =
+        stubSimpleCallWithCallback(expectedResponse);
+      const promise = new Promise((resolve, reject) => {
+        client.completeNodePoolUpgrade(
+          request,
+          (
+            err?: Error | null,
+            result?: protos.google.protobuf.IEmpty | null
+          ) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+      });
+      const response = await promise;
+      assert.deepStrictEqual(response, expectedResponse);
+      assert(
+        (client.innerApiCalls.completeNodePoolUpgrade as SinonStub)
+          .getCall(0)
+          .calledWith(request, expectedOptions /*, callback defined above */)
+      );
+    });
+
+    it('invokes completeNodePoolUpgrade with error', async () => {
+      const client = new clustermanagerModule.v1.ClusterManagerClient({
+        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        projectId: 'bogus',
+      });
+      client.initialize();
+      const request = generateSampleMessage(
+        new protos.google.container.v1.CompleteNodePoolUpgradeRequest()
+      );
+      request.name = '';
+      const expectedHeaderRequestParams = 'name=';
+      const expectedOptions = {
+        otherArgs: {
+          headers: {
+            'x-goog-request-params': expectedHeaderRequestParams,
+          },
+        },
+      };
+      const expectedError = new Error('expected');
+      client.innerApiCalls.completeNodePoolUpgrade = stubSimpleCall(
+        undefined,
+        expectedError
+      );
+      await assert.rejects(
+        client.completeNodePoolUpgrade(request),
+        expectedError
+      );
+      assert(
+        (client.innerApiCalls.completeNodePoolUpgrade as SinonStub)
+          .getCall(0)
+          .calledWith(request, expectedOptions, undefined)
+      );
+    });
+
+    it('invokes completeNodePoolUpgrade with closed client', async () => {
+      const client = new clustermanagerModule.v1.ClusterManagerClient({
+        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        projectId: 'bogus',
+      });
+      client.initialize();
+      const request = generateSampleMessage(
+        new protos.google.container.v1.CompleteNodePoolUpgradeRequest()
+      );
+      request.name = '';
+      const expectedError = new Error('The client has already been closed.');
+      client.close();
+      await assert.rejects(
+        client.completeNodePoolUpgrade(request),
+        expectedError
+      );
+    });
+  });
+
   describe('rollbackNodePoolUpgrade', () => {
     it('invokes rollbackNodePoolUpgrade without error', async () => {
       const client = new clustermanagerModule.v1.ClusterManagerClient({

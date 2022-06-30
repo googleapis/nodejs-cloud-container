@@ -26,7 +26,7 @@ function main() {
    * TODO(developer): Uncomment these variables before running the sample.
    */
   /**
-   *  The cluster (project, location, cluster id) to get keys for. Specified in
+   *  The cluster (project, location, cluster name) to get keys for. Specified in
    *  the format `projects/* /locations/* /clusters/*`.
    */
   // const parent = 'abc123'
