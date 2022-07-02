@@ -2598,11 +2598,11 @@ describe('v1.ClusterManagerClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.container.v1.GetJSONWebKeysResponse()
       );
-      client.innerApiCalls.getJSONWebKeys = stubSimpleCall(expectedResponse);
+      client.innerApiCalls.getJsonWebKeys = stubSimpleCall(expectedResponse);
       const [response] = await client.getJSONWebKeys(request);
       assert.deepStrictEqual(response, expectedResponse);
       assert(
-        (client.innerApiCalls.getJSONWebKeys as SinonStub)
+        (client.innerApiCalls.getJsonWebKeys as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions, undefined)
       );
@@ -2629,7 +2629,7 @@ describe('v1.ClusterManagerClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.container.v1.GetJSONWebKeysResponse()
       );
-      client.innerApiCalls.getJSONWebKeys =
+      client.innerApiCalls.getJsonWebKeys =
         stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.getJSONWebKeys(
@@ -2649,7 +2649,7 @@ describe('v1.ClusterManagerClient', () => {
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
       assert(
-        (client.innerApiCalls.getJSONWebKeys as SinonStub)
+        (client.innerApiCalls.getJsonWebKeys as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions /*, callback defined above */)
       );
@@ -2674,13 +2674,13 @@ describe('v1.ClusterManagerClient', () => {
         },
       };
       const expectedError = new Error('expected');
-      client.innerApiCalls.getJSONWebKeys = stubSimpleCall(
+      client.innerApiCalls.getJsonWebKeys = stubSimpleCall(
         undefined,
         expectedError
       );
       await assert.rejects(client.getJSONWebKeys(request), expectedError);
       assert(
-        (client.innerApiCalls.getJSONWebKeys as SinonStub)
+        (client.innerApiCalls.getJsonWebKeys as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions, undefined)
       );
@@ -4009,11 +4009,11 @@ describe('v1.ClusterManagerClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.container.v1.Operation()
       );
-      client.innerApiCalls.startIPRotation = stubSimpleCall(expectedResponse);
+      client.innerApiCalls.startIpRotation = stubSimpleCall(expectedResponse);
       const [response] = await client.startIPRotation(request);
       assert.deepStrictEqual(response, expectedResponse);
       assert(
-        (client.innerApiCalls.startIPRotation as SinonStub)
+        (client.innerApiCalls.startIpRotation as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions, undefined)
       );
@@ -4043,7 +4043,7 @@ describe('v1.ClusterManagerClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.container.v1.Operation()
       );
-      client.innerApiCalls.startIPRotation =
+      client.innerApiCalls.startIpRotation =
         stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.startIPRotation(
@@ -4063,7 +4063,7 @@ describe('v1.ClusterManagerClient', () => {
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
       assert(
-        (client.innerApiCalls.startIPRotation as SinonStub)
+        (client.innerApiCalls.startIpRotation as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions /*, callback defined above */)
       );
@@ -4091,13 +4091,13 @@ describe('v1.ClusterManagerClient', () => {
         },
       };
       const expectedError = new Error('expected');
-      client.innerApiCalls.startIPRotation = stubSimpleCall(
+      client.innerApiCalls.startIpRotation = stubSimpleCall(
         undefined,
         expectedError
       );
       await assert.rejects(client.startIPRotation(request), expectedError);
       assert(
-        (client.innerApiCalls.startIPRotation as SinonStub)
+        (client.innerApiCalls.startIpRotation as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions, undefined)
       );
@@ -4147,12 +4147,12 @@ describe('v1.ClusterManagerClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.container.v1.Operation()
       );
-      client.innerApiCalls.completeIPRotation =
+      client.innerApiCalls.completeIpRotation =
         stubSimpleCall(expectedResponse);
       const [response] = await client.completeIPRotation(request);
       assert.deepStrictEqual(response, expectedResponse);
       assert(
-        (client.innerApiCalls.completeIPRotation as SinonStub)
+        (client.innerApiCalls.completeIpRotation as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions, undefined)
       );
@@ -4182,7 +4182,7 @@ describe('v1.ClusterManagerClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.container.v1.Operation()
       );
-      client.innerApiCalls.completeIPRotation =
+      client.innerApiCalls.completeIpRotation =
         stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.completeIPRotation(
@@ -4202,7 +4202,7 @@ describe('v1.ClusterManagerClient', () => {
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
       assert(
-        (client.innerApiCalls.completeIPRotation as SinonStub)
+        (client.innerApiCalls.completeIpRotation as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions /*, callback defined above */)
       );
@@ -4230,13 +4230,13 @@ describe('v1.ClusterManagerClient', () => {
         },
       };
       const expectedError = new Error('expected');
-      client.innerApiCalls.completeIPRotation = stubSimpleCall(
+      client.innerApiCalls.completeIpRotation = stubSimpleCall(
         undefined,
         expectedError
       );
       await assert.rejects(client.completeIPRotation(request), expectedError);
       assert(
-        (client.innerApiCalls.completeIPRotation as SinonStub)
+        (client.innerApiCalls.completeIpRotation as SinonStub)
           .getCall(0)
           .calledWith(request, expectedOptions, undefined)
       );
