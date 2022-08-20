@@ -28,7 +28,6 @@ import {
 } from 'google-gax';
 
 import {Transform} from 'stream';
-import {RequestType} from 'google-gax/build/src/apitypes';
 import * as protos from '../../protos/protos';
 import jsonProtos = require('../../protos/protos.json');
 /**
@@ -272,7 +271,8 @@ export class ClusterManagerClient {
       const apiCall = this._gaxModule.createApiCall(
         callPromise,
         this._defaults[methodName],
-        descriptor
+        descriptor,
+        this._opts.fallback
       );
 
       this.innerApiCalls[methodName] = apiCall;
@@ -3890,7 +3890,7 @@ export class ClusterManagerClient {
     const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listUsableSubnetworks.createStream(
-      this.innerApiCalls.listUsableSubnetworks as gax.GaxCall,
+      this.innerApiCalls.listUsableSubnetworks as GaxCall,
       request,
       callSettings
     );
@@ -3948,7 +3948,7 @@ export class ClusterManagerClient {
     this.initialize();
     return this.descriptors.page.listUsableSubnetworks.asyncIterate(
       this.innerApiCalls['listUsableSubnetworks'] as GaxCall,
-      request as unknown as RequestType,
+      request as {},
       callSettings
     ) as AsyncIterable<protos.google.container.v1.IUsableSubnetwork>;
   }
