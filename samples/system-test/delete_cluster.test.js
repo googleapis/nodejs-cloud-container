@@ -56,8 +56,12 @@ before(async () => {
     [createOperation] = await client.createCluster(request);
     opIdentifier = `${clusterLocation}/operations/${createOperation.name}`;
     await untilDone(client, opIdentifier);
-  } catch(err) {
-    if (err.toString().includes('7 PERMISSION_DENIED: Insufficient regional quota')) {
+  } catch (err) {
+    if (
+      err
+        .toString()
+        .includes('7 PERMISSION_DENIED: Insufficient regional quota')
+    ) {
       test = false;
     } else {
       throw err;

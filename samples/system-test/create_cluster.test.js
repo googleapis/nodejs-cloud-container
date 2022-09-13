@@ -58,8 +58,12 @@ describe('container samples - create cluster long running op', () => {
       stdout = execSync(
         `node create_cluster.js ${randomClusterName} ${randomZone} ${ciNetwork}`
       );
-    } catch(err) {
-      if (err.toString().includes('7 PERMISSION_DENIED: Insufficient regional quota')) {
+    } catch (err) {
+      if (
+        err
+          .toString()
+          .includes('7 PERMISSION_DENIED: Insufficient regional quota')
+      ) {
         test = false;
       } else {
         throw err;
@@ -82,6 +86,6 @@ describe('container samples - create cluster long running op', () => {
         []
       );
       expect(clustersList).to.include(randomClusterName);
-    };
+    }
   });
 });
