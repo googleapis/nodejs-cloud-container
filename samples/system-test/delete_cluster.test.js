@@ -51,7 +51,7 @@ before(async () => {
   };
   let createOperation;
   let opIdentifier;
-  let test;
+  let test = true;
   try {
     [createOperation] = await client.createCluster(request);
     opIdentifier = `${clusterLocation}/operations/${createOperation.name}`;
