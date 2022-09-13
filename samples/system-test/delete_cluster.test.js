@@ -35,6 +35,7 @@ const client = new container.v1.ClusterManagerClient();
 const ciNetwork = 'default-compute';
 let projectId;
 let clusterLocation;
+let test = true;
 
 // create a new cluster to test the delete sample on
 before(async () => {
@@ -51,7 +52,6 @@ before(async () => {
   };
   let createOperation;
   let opIdentifier;
-  let test = true;
   try {
     [createOperation] = await client.createCluster(request);
     opIdentifier = `${clusterLocation}/operations/${createOperation.name}`;
