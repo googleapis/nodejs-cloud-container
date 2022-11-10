@@ -1388,6 +1388,12 @@
                                 message.sysctls[keys[i]] = String(object.sysctls[keys[i]]);
                         }
                         switch (object.cgroupMode) {
+                        default:
+                            if (typeof object.cgroupMode === "number") {
+                                message.cgroupMode = object.cgroupMode;
+                                break;
+                            }
+                            break;
                         case "CGROUP_MODE_UNSPECIFIED":
                         case 0:
                             message.cgroupMode = 0;
@@ -1428,7 +1434,7 @@
                                 object.sysctls[keys2[j]] = message.sysctls[keys2[j]];
                         }
                         if (message.cgroupMode != null && message.hasOwnProperty("cgroupMode"))
-                            object.cgroupMode = options.enums === String ? $root.google.container.v1.LinuxNodeConfig.CgroupMode[message.cgroupMode] : message.cgroupMode;
+                            object.cgroupMode = options.enums === String ? $root.google.container.v1.LinuxNodeConfig.CgroupMode[message.cgroupMode] === undefined ? message.cgroupMode : $root.google.container.v1.LinuxNodeConfig.CgroupMode[message.cgroupMode] : message.cgroupMode;
                         return object;
                     };
     
@@ -35515,6 +35521,12 @@
                             return object;
                         var message = new $root.google.container.v1.GatewayAPIConfig();
                         switch (object.channel) {
+                        default:
+                            if (typeof object.channel === "number") {
+                                message.channel = object.channel;
+                                break;
+                            }
+                            break;
                         case "CHANNEL_UNSPECIFIED":
                         case 0:
                             message.channel = 0;
@@ -35551,7 +35563,7 @@
                         if (options.defaults)
                             object.channel = options.enums === String ? "CHANNEL_UNSPECIFIED" : 0;
                         if (message.channel != null && message.hasOwnProperty("channel"))
-                            object.channel = options.enums === String ? $root.google.container.v1.GatewayAPIConfig.Channel[message.channel] : message.channel;
+                            object.channel = options.enums === String ? $root.google.container.v1.GatewayAPIConfig.Channel[message.channel] === undefined ? message.channel : $root.google.container.v1.GatewayAPIConfig.Channel[message.channel] : message.channel;
                         return object;
                     };
     
