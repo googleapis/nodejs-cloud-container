@@ -63,25 +63,6 @@ __Usage:__
 `node samples/delete_cluster.js`
 
 
------
-
-
-
-
-### Quickstart
-
-View the [source code](https://github.com/googleapis/nodejs-cloud-container/blob/main/samples/quickstart.js).
-
-[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-cloud-container&page=editor&open_in_editor=samples/quickstart.js,samples/README.md)
-
-__Usage:__
-
-
-`node samples/quickstart.js`
-
-
-
-
 
 
 [shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
